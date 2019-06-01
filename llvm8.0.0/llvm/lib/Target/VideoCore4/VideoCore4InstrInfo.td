@@ -139,7 +139,7 @@ def calltarget : Operand<i32>;
 // Instruction list..
 //===----------------------------------------------------------------------===//
 
-let neverHasSideEffects = 1 in
+let hasSideEffects = 0 in
 	def NOP : VideoCore4Inst<(outs), (ins),
 													"nop", []>;
 
@@ -160,9 +160,9 @@ let isReturn = 1, isTerminator = 1, isBarrier = 1 in {
 // sub / add which can clobber SP.
 let Defs = [SP], Uses = [SP] in {
 	def ADJCALLSTACKDOWN : VideoCore4Inst<
-				(outs), (ins i32imm:$d),
+				(outs), (ins i32imm:$d, i32imm:$e),
 				"#ADJCALLSTACKDOWN $d",
-				[(callseq_start timm:$d)]
+				[(callseq_start timm:$d, (i32 timm:$e))]
 			>;
 
 	def ADJCALLSTACKUP : VideoCore4Inst<
