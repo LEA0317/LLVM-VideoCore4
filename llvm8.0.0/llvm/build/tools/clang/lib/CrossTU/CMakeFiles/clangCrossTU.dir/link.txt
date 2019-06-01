@@ -1,2 +1,0 @@
-/usr/bin/ar qc ../../../../lib/libclangCrossTU.a  CMakeFiles/clangCrossTU.dir/CrossTranslationUnit.cpp.o
-/usr/bin/ranlib ../../../../lib/libclangCrossTU.a
