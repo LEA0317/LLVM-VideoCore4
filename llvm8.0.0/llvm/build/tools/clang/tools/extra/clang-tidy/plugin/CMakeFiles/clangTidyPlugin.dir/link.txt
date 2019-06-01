@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../../../../lib/libclangTidyPlugin.a  CMakeFiles/clangTidyPlugin.dir/ClangTidyPlugin.cpp.o
+/usr/bin/ranlib ../../../../../../lib/libclangTidyPlugin.a

@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../lib/liblldMinGW.a  CMakeFiles/lldMinGW.dir/Driver.cpp.o
+/usr/bin/ranlib ../../../lib/liblldMinGW.a

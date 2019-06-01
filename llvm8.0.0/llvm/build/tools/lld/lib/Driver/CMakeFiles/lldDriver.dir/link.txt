@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../../lib/liblldDriver.a  CMakeFiles/lldDriver.dir/DarwinLdDriver.cpp.o
+/usr/bin/ranlib ../../../../lib/liblldDriver.a

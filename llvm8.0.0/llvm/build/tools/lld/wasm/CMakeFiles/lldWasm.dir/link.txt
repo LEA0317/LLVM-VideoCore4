@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../lib/liblldWasm.a  CMakeFiles/lldWasm.dir/Driver.cpp.o CMakeFiles/lldWasm.dir/InputChunks.cpp.o CMakeFiles/lldWasm.dir/InputFiles.cpp.o CMakeFiles/lldWasm.dir/LTO.cpp.o CMakeFiles/lldWasm.dir/MarkLive.cpp.o CMakeFiles/lldWasm.dir/OutputSections.cpp.o CMakeFiles/lldWasm.dir/SymbolTable.cpp.o CMakeFiles/lldWasm.dir/Symbols.cpp.o CMakeFiles/lldWasm.dir/Writer.cpp.o CMakeFiles/lldWasm.dir/WriterUtils.cpp.o
+/usr/bin/ranlib ../../../lib/liblldWasm.a

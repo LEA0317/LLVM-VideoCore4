@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../../lib/liblldCore.a  CMakeFiles/lldCore.dir/DefinedAtom.cpp.o CMakeFiles/lldCore.dir/Error.cpp.o CMakeFiles/lldCore.dir/File.cpp.o CMakeFiles/lldCore.dir/LinkingContext.cpp.o CMakeFiles/lldCore.dir/Reader.cpp.o CMakeFiles/lldCore.dir/Resolver.cpp.o CMakeFiles/lldCore.dir/SymbolTable.cpp.o CMakeFiles/lldCore.dir/Writer.cpp.o
+/usr/bin/ranlib ../../../../lib/liblldCore.a

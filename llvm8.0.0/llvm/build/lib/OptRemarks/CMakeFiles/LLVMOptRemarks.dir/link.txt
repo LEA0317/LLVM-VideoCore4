@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../libLLVMOptRemarks.a  CMakeFiles/LLVMOptRemarks.dir/OptRemarksParser.cpp.o
+/usr/bin/ranlib ../libLLVMOptRemarks.a

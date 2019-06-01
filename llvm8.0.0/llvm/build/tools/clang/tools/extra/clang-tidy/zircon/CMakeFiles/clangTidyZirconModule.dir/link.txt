@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../../../../lib/libclangTidyZirconModule.a  CMakeFiles/clangTidyZirconModule.dir/TemporaryObjectsCheck.cpp.o CMakeFiles/clangTidyZirconModule.dir/ZirconTidyModule.cpp.o
+/usr/bin/ranlib ../../../../../../lib/libclangTidyZirconModule.a

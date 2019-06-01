@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../../../../lib/libclangTidyHICPPModule.a  CMakeFiles/clangTidyHICPPModule.dir/ExceptionBaseclassCheck.cpp.o CMakeFiles/clangTidyHICPPModule.dir/HICPPTidyModule.cpp.o CMakeFiles/clangTidyHICPPModule.dir/MultiwayPathsCoveredCheck.cpp.o CMakeFiles/clangTidyHICPPModule.dir/NoAssemblerCheck.cpp.o CMakeFiles/clangTidyHICPPModule.dir/SignedBitwiseCheck.cpp.o
+/usr/bin/ranlib ../../../../../../lib/libclangTidyHICPPModule.a

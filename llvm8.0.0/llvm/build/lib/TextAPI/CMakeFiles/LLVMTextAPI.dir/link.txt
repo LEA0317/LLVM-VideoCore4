@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../libLLVMTextAPI.a  CMakeFiles/LLVMTextAPI.dir/ELF/ELFStub.cpp.o CMakeFiles/LLVMTextAPI.dir/ELF/TBEHandler.cpp.o
+/usr/bin/ranlib ../libLLVMTextAPI.a

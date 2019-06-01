@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../../../lib/libclangToolingInclusions.a  CMakeFiles/clangToolingInclusions.dir/HeaderIncludes.cpp.o CMakeFiles/clangToolingInclusions.dir/IncludeStyle.cpp.o
+/usr/bin/ranlib ../../../../../lib/libclangToolingInclusions.a

@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../../../lib/libclangApplyReplacements.a  CMakeFiles/clangApplyReplacements.dir/lib/Tooling/ApplyReplacements.cpp.o
+/usr/bin/ranlib ../../../../../lib/libclangApplyReplacements.a

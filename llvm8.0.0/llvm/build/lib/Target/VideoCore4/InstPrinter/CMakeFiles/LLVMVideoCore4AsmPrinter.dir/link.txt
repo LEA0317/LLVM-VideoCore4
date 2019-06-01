@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../libLLVMVideoCore4AsmPrinter.a  CMakeFiles/LLVMVideoCore4AsmPrinter.dir/VideoCore4InstPrinter.cpp.o
+/usr/bin/ranlib ../../../libLLVMVideoCore4AsmPrinter.a

@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../../../lib/libclangChangeNamespace.a  CMakeFiles/clangChangeNamespace.dir/ChangeNamespace.cpp.o
+/usr/bin/ranlib ../../../../../lib/libclangChangeNamespace.a

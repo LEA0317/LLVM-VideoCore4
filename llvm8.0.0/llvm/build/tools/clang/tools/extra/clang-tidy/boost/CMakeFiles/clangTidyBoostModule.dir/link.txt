@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../../../../lib/libclangTidyBoostModule.a  CMakeFiles/clangTidyBoostModule.dir/BoostTidyModule.cpp.o CMakeFiles/clangTidyBoostModule.dir/UseToStringCheck.cpp.o
+/usr/bin/ranlib ../../../../../../lib/libclangTidyBoostModule.a

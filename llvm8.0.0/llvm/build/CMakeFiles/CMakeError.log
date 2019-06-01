@@ -1,0 +1,1332 @@
+Determining if the include file malloc/malloc.h exists failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5db86/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_5db86.dir/build.make CMakeFiles/cmTC_5db86.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_5db86.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_5db86.dir/CheckIncludeFile.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c:1:10: fatal error: malloc/malloc.h: そのようなファイルやディレクトリはありません
+ #include <malloc/malloc.h>
+          ^~~~~~~~~~~~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_5db86.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_5db86.dir/CheckIncludeFile.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_5db86.dir/CheckIncludeFile.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_5db86/fast' failed
+make[1]: *** [cmTC_5db86/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+
+Determining if the include file valgrind/valgrind.h exists failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_82cc9/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_82cc9.dir/build.make CMakeFiles/cmTC_82cc9.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_82cc9.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_82cc9.dir/CheckIncludeFile.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c:1:10: fatal error: valgrind/valgrind.h: そのようなファイルやディレクトリはありません
+ #include <valgrind/valgrind.h>
+          ^~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_82cc9.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_82cc9.dir/CheckIncludeFile.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_82cc9.dir/CheckIncludeFile.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_82cc9/fast' failed
+make[1]: *** [cmTC_82cc9/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+
+Determining if the include file mach/mach.h exists failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ba69b/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_ba69b.dir/build.make CMakeFiles/cmTC_ba69b.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_ba69b.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_ba69b.dir/CheckIncludeFile.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c:1:10: fatal error: mach/mach.h: そのようなファイルやディレクトリはありません
+ #include <mach/mach.h>
+          ^~~~~~~~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_ba69b.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_ba69b.dir/CheckIncludeFile.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_ba69b.dir/CheckIncludeFile.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_ba69b/fast' failed
+make[1]: *** [cmTC_ba69b/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+
+Determining if the include file CrashReporterClient.h exists failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_7767f/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_7767f.dir/build.make CMakeFiles/cmTC_7767f.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_7767f.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_7767f.dir/CheckIncludeFile.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c:1:10: fatal error: CrashReporterClient.h: そのようなファイルやディレクトリはありません
+ #include <CrashReporterClient.h>
+          ^~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_7767f.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_7767f.dir/CheckIncludeFile.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_7767f.dir/CheckIncludeFile.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_7767f/fast' failed
+make[1]: *** [cmTC_7767f/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+
+Determining if the function pfm_initialize exists in the pfm failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_61664/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_61664.dir/build.make CMakeFiles/cmTC_61664.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_61664.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pfm_initialize   -o CMakeFiles/cmTC_61664.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+Linking C executable cmTC_61664
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_61664.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pfm_initialize    CMakeFiles/cmTC_61664.dir/CheckFunctionExists.c.o  -o cmTC_61664 -lpfm -lm 
+/usr/bin/ld: -lpfm が見つかりません
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_61664.dir/build.make:97: recipe for target 'cmTC_61664' failed
+make[2]: *** [cmTC_61664] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_61664/fast' failed
+make[1]: *** [cmTC_61664/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a85f4/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_a85f4.dir/build.make CMakeFiles/cmTC_a85f4.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_a85f4.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_a85f4.dir/CheckSymbolExists.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_a85f4
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a85f4.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_a85f4.dir/CheckSymbolExists.c.o  -o cmTC_a85f4 -lm 
+CMakeFiles/cmTC_a85f4.dir/CheckSymbolExists.c.o: 関数 `main' 内:
+CheckSymbolExists.c:(.text+0x1b): `pthread_create' に対する定義されていない参照です
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_a85f4.dir/build.make:97: recipe for target 'cmTC_a85f4' failed
+make[2]: *** [cmTC_a85f4] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_a85f4/fast' failed
+make[1]: *** [cmTC_a85f4/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+File /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_05bd5/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_05bd5.dir/build.make CMakeFiles/cmTC_05bd5.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_05bd5.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_05bd5.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+Linking C executable cmTC_05bd5
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_05bd5.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_05bd5.dir/CheckFunctionExists.c.o  -o cmTC_05bd5 -lpthreads -lm 
+/usr/bin/ld: -lpthreads が見つかりません
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_05bd5.dir/build.make:97: recipe for target 'cmTC_05bd5' failed
+make[2]: *** [cmTC_05bd5] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_05bd5/fast' failed
+make[1]: *** [cmTC_05bd5/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+
+Determining if the function setupterm exists in the terminfo failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_99826/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_99826.dir/build.make CMakeFiles/cmTC_99826.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_99826.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=setupterm   -o CMakeFiles/cmTC_99826.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+Linking C executable cmTC_99826
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_99826.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=setupterm    CMakeFiles/cmTC_99826.dir/CheckFunctionExists.c.o  -o cmTC_99826 -lterminfo -lm 
+/usr/bin/ld: -lterminfo が見つかりません
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_99826.dir/build.make:97: recipe for target 'cmTC_99826' failed
+make[2]: *** [cmTC_99826] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_99826/fast' failed
+make[1]: *** [cmTC_99826/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+
+Determining if the function xar_open exists in the xar failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0613f/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_0613f.dir/build.make CMakeFiles/cmTC_0613f.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_0613f.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=xar_open   -o CMakeFiles/cmTC_0613f.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+Linking C executable cmTC_0613f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0613f.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=xar_open    CMakeFiles/cmTC_0613f.dir/CheckFunctionExists.c.o  -o cmTC_0613f -lxar -lm 
+/usr/bin/ld: -lxar が見つかりません
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_0613f.dir/build.make:97: recipe for target 'cmTC_0613f' failed
+make[2]: *** [cmTC_0613f] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_0613f/fast' failed
+make[1]: *** [cmTC_0613f/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+
+Determining if the arc4random exist failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_39818/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_39818.dir/build.make CMakeFiles/cmTC_39818.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_39818.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_39818.dir/CheckSymbolExists.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: ‘arc4random’ undeclared (first use in this function); did you mean ‘srandom’?
+   return ((int*)(&arc4random))[argc];
+                   ^~~~~~~~~~
+                   srandom
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: note: each undeclared identifier is reported only once for each function it appears in
+CMakeFiles/cmTC_39818.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_39818.dir/CheckSymbolExists.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_39818.dir/CheckSymbolExists.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_39818/fast' failed
+make[1]: *** [cmTC_39818/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+File /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdlib.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef arc4random
+  return ((int*)(&arc4random))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Performing C SOURCE FILE Test C_SUPPORTS_WERROR_UNGUARDED_AVAILABILITY_NEW failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_3d38d/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_3d38d.dir/build.make CMakeFiles/cmTC_3d38d.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_3d38d.dir/src.c.o
+/usr/bin/cc   -DC_SUPPORTS_WERROR_UNGUARDED_AVAILABILITY_NEW   -Werror=unguarded-availability-new -o CMakeFiles/cmTC_3d38d.dir/src.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.c
+cc1: error: -Werror=unguarded-availability-new: no option -Wunguarded-availability-new
+CMakeFiles/cmTC_3d38d.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_3d38d.dir/src.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_3d38d.dir/src.c.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_3d38d/fast' failed
+make[1]: *** [cmTC_3d38d/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Determining if the mallctl exist failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_34c1d/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_34c1d.dir/build.make CMakeFiles/cmTC_34c1d.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_34c1d.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_34c1d.dir/CheckSymbolExists.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:2:10: fatal error: malloc_np.h: そのようなファイルやディレクトリはありません
+ #include <malloc_np.h>
+          ^~~~~~~~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_34c1d.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_34c1d.dir/CheckSymbolExists.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_34c1d.dir/CheckSymbolExists.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_34c1d/fast' failed
+make[1]: *** [cmTC_34c1d/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+File /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <malloc_np.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef mallctl
+  return ((int*)(&mallctl))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the malloc_zone_statistics exist failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ad855/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_ad855.dir/build.make CMakeFiles/cmTC_ad855.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_ad855.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_ad855.dir/CheckSymbolExists.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:2:10: fatal error: malloc/malloc.h: そのようなファイルやディレクトリはありません
+ #include <malloc/malloc.h>
+          ^~~~~~~~~~~~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_ad855.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_ad855.dir/CheckSymbolExists.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_ad855.dir/CheckSymbolExists.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_ad855/fast' failed
+make[1]: *** [cmTC_ad855/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+File /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <malloc/malloc.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef malloc_zone_statistics
+  return ((int*)(&malloc_zone_statistics))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the strerror_s exist failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c29be/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_c29be.dir/build.make CMakeFiles/cmTC_c29be.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_c29be.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_c29be.dir/CheckSymbolExists.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: ‘strerror_s’ undeclared (first use in this function); did you mean ‘strerror_l’?
+   return ((int*)(&strerror_s))[argc];
+                   ^~~~~~~~~~
+                   strerror_l
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: note: each undeclared identifier is reported only once for each function it appears in
+CMakeFiles/cmTC_c29be.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_c29be.dir/CheckSymbolExists.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_c29be.dir/CheckSymbolExists.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_c29be/fast' failed
+make[1]: *** [cmTC_c29be/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+File /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <string.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strerror_s
+  return ((int*)(&strerror_s))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the dladdr exist failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5cc59/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_5cc59.dir/build.make CMakeFiles/cmTC_5cc59.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_5cc59.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_5cc59.dir/CheckSymbolExists.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: ‘dladdr’ undeclared (first use in this function)
+   return ((int*)(&dladdr))[argc];
+                   ^~~~~~
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: note: each undeclared identifier is reported only once for each function it appears in
+CMakeFiles/cmTC_5cc59.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_5cc59.dir/CheckSymbolExists.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_5cc59.dir/CheckSymbolExists.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_5cc59/fast' failed
+make[1]: *** [cmTC_5cc59/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+File /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <dlfcn.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef dladdr
+  return ((int*)(&dladdr))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Performing C SOURCE FILE Test HAVE_STRUCT_STAT_ST_MTIMESPEC_TV_NSEC failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_52e92/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_52e92.dir/build.make CMakeFiles/cmTC_52e92.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_52e92.dir/src.c.o
+/usr/bin/cc   -DHAVE_STRUCT_STAT_ST_MTIMESPEC_TV_NSEC   -o CMakeFiles/cmTC_52e92.dir/src.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.c: In function ‘main’:
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.c:7:37: error: ‘struct stat’ has no member named ‘st_mtimespec’; did you mean ‘st_mtim’?
+    (void)sizeof(((struct stat *)0)->st_mtimespec.tv_nsec);
+                                     ^~~~~~~~~~~~
+                                     st_mtim
+CMakeFiles/cmTC_52e92.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_52e92.dir/src.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_52e92.dir/src.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_52e92/fast' failed
+make[1]: *** [cmTC_52e92/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+Source file was:
+
+#include <sys/types.h>
+#include <sys/stat.h>
+
+int main()
+{
+   (void)sizeof(((struct stat *)0)->st_mtimespec.tv_nsec);
+   return 0;
+}
+
+Performing C++ SOURCE FILE Test SUPPORTS_GNU_ZERO_VARIADIC_MACRO_ARGUMENTS_FLAG failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a5f7a/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_a5f7a.dir/build.make CMakeFiles/cmTC_a5f7a.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_a5f7a.dir/src.cxx.o
+/usr/bin/c++    -DDEBUG_REGISTER -DSUPPORTS_GNU_ZERO_VARIADIC_MACRO_ARGUMENTS_FLAG   -Wgnu-zero-variadic-macro-arguments -o CMakeFiles/cmTC_a5f7a.dir/src.cxx.o -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wgnu-zero-variadic-macro-arguments'; did you mean '-Wno-variadic-macros'?
+CMakeFiles/cmTC_a5f7a.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_a5f7a.dir/src.cxx.o' failed
+make[2]: *** [CMakeFiles/cmTC_a5f7a.dir/src.cxx.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_a5f7a/fast' failed
+make[1]: *** [cmTC_a5f7a/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test CXX_SUPPORTS_WERROR_UNGUARDED_AVAILABILITY_NEW failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_62a1b/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_62a1b.dir/build.make CMakeFiles/cmTC_62a1b.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_62a1b.dir/src.cxx.o
+/usr/bin/c++    -DDEBUG_REGISTER -fPIC -fvisibility-inlines-hidden -Werror=date-time -DCXX_SUPPORTS_WERROR_UNGUARDED_AVAILABILITY_NEW   -Werror -Werror=unguarded-availability-new -o CMakeFiles/cmTC_62a1b.dir/src.cxx.o -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.cxx
+cc1plus: error: -Werror=unguarded-availability-new: no option -Wunguarded-availability-new
+CMakeFiles/cmTC_62a1b.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_62a1b.dir/src.cxx.o' failed
+make[2]: *** [CMakeFiles/cmTC_62a1b.dir/src.cxx.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_62a1b/fast' failed
+make[1]: *** [cmTC_62a1b/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C SOURCE FILE Test C_SUPPORTS_COVERED_SWITCH_DEFAULT_FLAG failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1c806/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_1c806.dir/build.make CMakeFiles/cmTC_1c806.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1c806.dir/src.c.o
+/usr/bin/cc   -fPIC -Werror=date-time -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -DC_SUPPORTS_COVERED_SWITCH_DEFAULT_FLAG   -Werror -Wcovered-switch-default -o CMakeFiles/cmTC_1c806.dir/src.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.c
+cc: error: unrecognized command line option '-Wcovered-switch-default'; did you mean '-Wno-switch-default'?
+CMakeFiles/cmTC_1c806.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_1c806.dir/src.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_1c806.dir/src.c.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_1c806/fast' failed
+make[1]: *** [cmTC_1c806/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C++ SOURCE FILE Test CXX_SUPPORTS_COVERED_SWITCH_DEFAULT_FLAG failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6ead1/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_6ead1.dir/build.make CMakeFiles/cmTC_6ead1.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_6ead1.dir/src.cxx.o
+/usr/bin/c++    -DDEBUG_REGISTER -fPIC -fvisibility-inlines-hidden -Werror=date-time -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wcast-qual -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -DCXX_SUPPORTS_COVERED_SWITCH_DEFAULT_FLAG   -Werror -Wcovered-switch-default -o CMakeFiles/cmTC_6ead1.dir/src.cxx.o -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wcovered-switch-default'; did you mean '-Wno-switch-default'?
+CMakeFiles/cmTC_6ead1.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_6ead1.dir/src.cxx.o' failed
+make[2]: *** [CMakeFiles/cmTC_6ead1.dir/src.cxx.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_6ead1/fast' failed
+make[1]: *** [cmTC_6ead1/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test CXX_SUPPORTS_CLASS_MEMACCESS_FLAG failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_09d30/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_09d30.dir/build.make CMakeFiles/cmTC_09d30.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_09d30.dir/src.cxx.o
+/usr/bin/c++    -DDEBUG_REGISTER -fPIC -fvisibility-inlines-hidden -Werror=date-time -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wcast-qual -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -Wno-maybe-uninitialized -DCXX_SUPPORTS_CLASS_MEMACCESS_FLAG   -Wclass-memaccess -o CMakeFiles/cmTC_09d30.dir/src.cxx.o -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wclass-memaccess'
+CMakeFiles/cmTC_09d30.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_09d30.dir/src.cxx.o' failed
+make[2]: *** [CMakeFiles/cmTC_09d30.dir/src.cxx.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_09d30/fast' failed
+make[1]: *** [cmTC_09d30/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C SOURCE FILE Test C_SUPPORTS_DELETE_NON_VIRTUAL_DTOR_FLAG failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4219d/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_4219d.dir/build.make CMakeFiles/cmTC_4219d.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4219d.dir/src.c.o
+/usr/bin/cc   -fPIC -Werror=date-time -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -DC_SUPPORTS_DELETE_NON_VIRTUAL_DTOR_FLAG   -Werror -Wdelete-non-virtual-dtor -o CMakeFiles/cmTC_4219d.dir/src.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.c
+cc1: error: command line option '-Wdelete-non-virtual-dtor' is valid for C++/ObjC++ but not for C [-Werror]
+cc1: all warnings being treated as errors
+CMakeFiles/cmTC_4219d.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_4219d.dir/src.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_4219d.dir/src.c.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_4219d/fast' failed
+make[1]: *** [cmTC_4219d/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test C_WCOMMENT_ALLOWS_LINE_WRAP failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9f172/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_9f172.dir/build.make CMakeFiles/cmTC_9f172.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_9f172.dir/src.c.o
+/usr/bin/cc -D_GNU_SOURCE  -fPIC -Werror=date-time -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -DC_WCOMMENT_ALLOWS_LINE_WRAP  -Werror -Wcomment   -o CMakeFiles/cmTC_9f172.dir/src.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.c:1:1: error: multi-line comment [-Werror=comment]
+ // \
+ ^
+cc1: all warnings being treated as errors
+CMakeFiles/cmTC_9f172.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_9f172.dir/src.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_9f172.dir/src.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_9f172/fast' failed
+make[1]: *** [cmTC_9f172/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+Source file was:
+// \
+//
+int main() {return 0;}
+Performing C SOURCE FILE Test C_SUPPORTS_STRING_CONVERSION_FLAG failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a761d/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_a761d.dir/build.make CMakeFiles/cmTC_a761d.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a761d.dir/src.c.o
+/usr/bin/cc   -fPIC -Werror=date-time -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -Wno-comment -DC_SUPPORTS_STRING_CONVERSION_FLAG   -Werror -Wstring-conversion -o CMakeFiles/cmTC_a761d.dir/src.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.c
+cc: error: unrecognized command line option '-Wstring-conversion'; did you mean '-Wint-conversion'?
+CMakeFiles/cmTC_a761d.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_a761d.dir/src.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_a761d.dir/src.c.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_a761d/fast' failed
+make[1]: *** [cmTC_a761d/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C++ SOURCE FILE Test CXX_SUPPORTS_STRING_CONVERSION_FLAG failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1159c/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_1159c.dir/build.make CMakeFiles/cmTC_1159c.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_1159c.dir/src.cxx.o
+/usr/bin/c++    -DDEBUG_REGISTER -fPIC -fvisibility-inlines-hidden -Werror=date-time -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wcast-qual -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -Wno-maybe-uninitialized -Wno-noexcept-type -Wdelete-non-virtual-dtor -Wno-comment -DCXX_SUPPORTS_STRING_CONVERSION_FLAG   -Werror -Wstring-conversion -o CMakeFiles/cmTC_1159c.dir/src.cxx.o -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wstring-conversion'; did you mean '-Wint-conversion'?
+CMakeFiles/cmTC_1159c.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_1159c.dir/src.cxx.o' failed
+make[2]: *** [CMakeFiles/cmTC_1159c.dir/src.cxx.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_1159c/fast' failed
+make[1]: *** [cmTC_1159c/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test CXX_SUPPORTS_NO_NESTED_ANON_TYPES_FLAG failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b791b/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_b791b.dir/build.make CMakeFiles/cmTC_b791b.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_b791b.dir/src.cxx.o
+/usr/bin/c++    -DDEBUG_REGISTER -fPIC -fvisibility-inlines-hidden -Werror=date-time -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wcast-qual -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -Wno-maybe-uninitialized -Wno-noexcept-type -Wdelete-non-virtual-dtor -Wno-comment -ffunction-sections -fdata-sections -fno-common -Woverloaded-virtual -fno-strict-aliasing -DCXX_SUPPORTS_NO_NESTED_ANON_TYPES_FLAG   -Werror -Wnested-anon-types -o CMakeFiles/cmTC_b791b.dir/src.cxx.o -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wnested-anon-types'; did you mean '-Wnested-externs'?
+CMakeFiles/cmTC_b791b.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_b791b.dir/src.cxx.o' failed
+make[2]: *** [CMakeFiles/cmTC_b791b.dir/src.cxx.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_b791b/fast' failed
+make[1]: *** [cmTC_b791b/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Determining if the include file malloc/malloc.h exists failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_3b1d4/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_3b1d4.dir/build.make CMakeFiles/cmTC_3b1d4.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_3b1d4.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_3b1d4.dir/CheckIncludeFile.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c:1:10: fatal error: malloc/malloc.h: そのようなファイルやディレクトリはありません
+ #include <malloc/malloc.h>
+          ^~~~~~~~~~~~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_3b1d4.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_3b1d4.dir/CheckIncludeFile.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_3b1d4.dir/CheckIncludeFile.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_3b1d4/fast' failed
+make[1]: *** [cmTC_3b1d4/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+
+Determining if the include file valgrind/valgrind.h exists failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4c8fe/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_4c8fe.dir/build.make CMakeFiles/cmTC_4c8fe.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_4c8fe.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_4c8fe.dir/CheckIncludeFile.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c:1:10: fatal error: valgrind/valgrind.h: そのようなファイルやディレクトリはありません
+ #include <valgrind/valgrind.h>
+          ^~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_4c8fe.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_4c8fe.dir/CheckIncludeFile.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_4c8fe.dir/CheckIncludeFile.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_4c8fe/fast' failed
+make[1]: *** [cmTC_4c8fe/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+
+Determining if the include file mach/mach.h exists failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_eba44/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_eba44.dir/build.make CMakeFiles/cmTC_eba44.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_eba44.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_eba44.dir/CheckIncludeFile.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c:1:10: fatal error: mach/mach.h: そのようなファイルやディレクトリはありません
+ #include <mach/mach.h>
+          ^~~~~~~~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_eba44.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_eba44.dir/CheckIncludeFile.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_eba44.dir/CheckIncludeFile.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_eba44/fast' failed
+make[1]: *** [cmTC_eba44/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+
+Determining if the include file CrashReporterClient.h exists failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6d00a/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_6d00a.dir/build.make CMakeFiles/cmTC_6d00a.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_6d00a.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_6d00a.dir/CheckIncludeFile.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c:1:10: fatal error: CrashReporterClient.h: そのようなファイルやディレクトリはありません
+ #include <CrashReporterClient.h>
+          ^~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_6d00a.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_6d00a.dir/CheckIncludeFile.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_6d00a.dir/CheckIncludeFile.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_6d00a/fast' failed
+make[1]: *** [cmTC_6d00a/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+
+Determining if the function pfm_initialize exists in the pfm failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_dda5b/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_dda5b.dir/build.make CMakeFiles/cmTC_dda5b.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_dda5b.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pfm_initialize   -o CMakeFiles/cmTC_dda5b.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+Linking C executable cmTC_dda5b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dda5b.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pfm_initialize    CMakeFiles/cmTC_dda5b.dir/CheckFunctionExists.c.o  -o cmTC_dda5b -lpfm -lm 
+/usr/bin/ld: -lpfm が見つかりません
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_dda5b.dir/build.make:97: recipe for target 'cmTC_dda5b' failed
+make[2]: *** [cmTC_dda5b] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_dda5b/fast' failed
+make[1]: *** [cmTC_dda5b/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_d05e4/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_d05e4.dir/build.make CMakeFiles/cmTC_d05e4.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_d05e4.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_d05e4.dir/CheckSymbolExists.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_d05e4
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d05e4.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_d05e4.dir/CheckSymbolExists.c.o  -o cmTC_d05e4 -lm 
+CMakeFiles/cmTC_d05e4.dir/CheckSymbolExists.c.o: 関数 `main' 内:
+CheckSymbolExists.c:(.text+0x1b): `pthread_create' に対する定義されていない参照です
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_d05e4.dir/build.make:97: recipe for target 'cmTC_d05e4' failed
+make[2]: *** [cmTC_d05e4] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_d05e4/fast' failed
+make[1]: *** [cmTC_d05e4/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+File /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_e79fb/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_e79fb.dir/build.make CMakeFiles/cmTC_e79fb.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_e79fb.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_e79fb.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+Linking C executable cmTC_e79fb
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e79fb.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_e79fb.dir/CheckFunctionExists.c.o  -o cmTC_e79fb -lpthreads -lm 
+/usr/bin/ld: -lpthreads が見つかりません
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_e79fb.dir/build.make:97: recipe for target 'cmTC_e79fb' failed
+make[2]: *** [cmTC_e79fb] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_e79fb/fast' failed
+make[1]: *** [cmTC_e79fb/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+
+Determining if the function setupterm exists in the terminfo failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4d6f3/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_4d6f3.dir/build.make CMakeFiles/cmTC_4d6f3.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_4d6f3.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=setupterm   -o CMakeFiles/cmTC_4d6f3.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+Linking C executable cmTC_4d6f3
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4d6f3.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=setupterm    CMakeFiles/cmTC_4d6f3.dir/CheckFunctionExists.c.o  -o cmTC_4d6f3 -lterminfo -lm 
+/usr/bin/ld: -lterminfo が見つかりません
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_4d6f3.dir/build.make:97: recipe for target 'cmTC_4d6f3' failed
+make[2]: *** [cmTC_4d6f3] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_4d6f3/fast' failed
+make[1]: *** [cmTC_4d6f3/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+
+Determining if the function xar_open exists in the xar failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_04cdc/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_04cdc.dir/build.make CMakeFiles/cmTC_04cdc.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_04cdc.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=xar_open   -o CMakeFiles/cmTC_04cdc.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+Linking C executable cmTC_04cdc
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_04cdc.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=xar_open    CMakeFiles/cmTC_04cdc.dir/CheckFunctionExists.c.o  -o cmTC_04cdc -lxar -lm 
+/usr/bin/ld: -lxar が見つかりません
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_04cdc.dir/build.make:97: recipe for target 'cmTC_04cdc' failed
+make[2]: *** [cmTC_04cdc] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_04cdc/fast' failed
+make[1]: *** [cmTC_04cdc/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+
+Determining if the arc4random exist failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_34fb7/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_34fb7.dir/build.make CMakeFiles/cmTC_34fb7.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_34fb7.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_34fb7.dir/CheckSymbolExists.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: ‘arc4random’ undeclared (first use in this function); did you mean ‘srandom’?
+   return ((int*)(&arc4random))[argc];
+                   ^~~~~~~~~~
+                   srandom
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: note: each undeclared identifier is reported only once for each function it appears in
+CMakeFiles/cmTC_34fb7.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_34fb7.dir/CheckSymbolExists.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_34fb7.dir/CheckSymbolExists.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_34fb7/fast' failed
+make[1]: *** [cmTC_34fb7/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+File /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdlib.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef arc4random
+  return ((int*)(&arc4random))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Performing C SOURCE FILE Test C_SUPPORTS_WERROR_UNGUARDED_AVAILABILITY_NEW failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_e92ca/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_e92ca.dir/build.make CMakeFiles/cmTC_e92ca.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e92ca.dir/src.c.o
+/usr/bin/cc   -DC_SUPPORTS_WERROR_UNGUARDED_AVAILABILITY_NEW   -Werror=unguarded-availability-new -o CMakeFiles/cmTC_e92ca.dir/src.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.c
+cc1: error: -Werror=unguarded-availability-new: no option -Wunguarded-availability-new
+CMakeFiles/cmTC_e92ca.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_e92ca.dir/src.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_e92ca.dir/src.c.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_e92ca/fast' failed
+make[1]: *** [cmTC_e92ca/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Determining if the mallctl exist failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_126d8/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_126d8.dir/build.make CMakeFiles/cmTC_126d8.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_126d8.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_126d8.dir/CheckSymbolExists.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:2:10: fatal error: malloc_np.h: そのようなファイルやディレクトリはありません
+ #include <malloc_np.h>
+          ^~~~~~~~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_126d8.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_126d8.dir/CheckSymbolExists.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_126d8.dir/CheckSymbolExists.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_126d8/fast' failed
+make[1]: *** [cmTC_126d8/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+File /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <malloc_np.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef mallctl
+  return ((int*)(&mallctl))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the malloc_zone_statistics exist failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f2099/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_f2099.dir/build.make CMakeFiles/cmTC_f2099.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_f2099.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_f2099.dir/CheckSymbolExists.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:2:10: fatal error: malloc/malloc.h: そのようなファイルやディレクトリはありません
+ #include <malloc/malloc.h>
+          ^~~~~~~~~~~~~~~~~
+compilation terminated.
+CMakeFiles/cmTC_f2099.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_f2099.dir/CheckSymbolExists.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_f2099.dir/CheckSymbolExists.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_f2099/fast' failed
+make[1]: *** [cmTC_f2099/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+File /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <malloc/malloc.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef malloc_zone_statistics
+  return ((int*)(&malloc_zone_statistics))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the strerror_s exist failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_718c9/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_718c9.dir/build.make CMakeFiles/cmTC_718c9.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_718c9.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_718c9.dir/CheckSymbolExists.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: ‘strerror_s’ undeclared (first use in this function); did you mean ‘strerror_l’?
+   return ((int*)(&strerror_s))[argc];
+                   ^~~~~~~~~~
+                   strerror_l
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: note: each undeclared identifier is reported only once for each function it appears in
+CMakeFiles/cmTC_718c9.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_718c9.dir/CheckSymbolExists.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_718c9.dir/CheckSymbolExists.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_718c9/fast' failed
+make[1]: *** [cmTC_718c9/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+File /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <string.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strerror_s
+  return ((int*)(&strerror_s))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the dladdr exist failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_50f40/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_50f40.dir/build.make CMakeFiles/cmTC_50f40.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_50f40.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_50f40.dir/CheckSymbolExists.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: ‘dladdr’ undeclared (first use in this function)
+   return ((int*)(&dladdr))[argc];
+                   ^~~~~~
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: note: each undeclared identifier is reported only once for each function it appears in
+CMakeFiles/cmTC_50f40.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_50f40.dir/CheckSymbolExists.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_50f40.dir/CheckSymbolExists.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_50f40/fast' failed
+make[1]: *** [cmTC_50f40/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+File /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <dlfcn.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef dladdr
+  return ((int*)(&dladdr))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Performing C SOURCE FILE Test HAVE_STRUCT_STAT_ST_MTIMESPEC_TV_NSEC failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_d53f8/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_d53f8.dir/build.make CMakeFiles/cmTC_d53f8.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_d53f8.dir/src.c.o
+/usr/bin/cc   -DHAVE_STRUCT_STAT_ST_MTIMESPEC_TV_NSEC   -o CMakeFiles/cmTC_d53f8.dir/src.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.c: In function ‘main’:
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.c:7:37: error: ‘struct stat’ has no member named ‘st_mtimespec’; did you mean ‘st_mtim’?
+    (void)sizeof(((struct stat *)0)->st_mtimespec.tv_nsec);
+                                     ^~~~~~~~~~~~
+                                     st_mtim
+CMakeFiles/cmTC_d53f8.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_d53f8.dir/src.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_d53f8.dir/src.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_d53f8/fast' failed
+make[1]: *** [cmTC_d53f8/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+Source file was:
+
+#include <sys/types.h>
+#include <sys/stat.h>
+
+int main()
+{
+   (void)sizeof(((struct stat *)0)->st_mtimespec.tv_nsec);
+   return 0;
+}
+
+Performing C++ SOURCE FILE Test SUPPORTS_GNU_ZERO_VARIADIC_MACRO_ARGUMENTS_FLAG failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ae371/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_ae371.dir/build.make CMakeFiles/cmTC_ae371.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_ae371.dir/src.cxx.o
+/usr/bin/c++    -DDEBUG_REGISTER -DSUPPORTS_GNU_ZERO_VARIADIC_MACRO_ARGUMENTS_FLAG   -Wgnu-zero-variadic-macro-arguments -o CMakeFiles/cmTC_ae371.dir/src.cxx.o -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wgnu-zero-variadic-macro-arguments'; did you mean '-Wno-variadic-macros'?
+CMakeFiles/cmTC_ae371.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_ae371.dir/src.cxx.o' failed
+make[2]: *** [CMakeFiles/cmTC_ae371.dir/src.cxx.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_ae371/fast' failed
+make[1]: *** [cmTC_ae371/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test CXX_SUPPORTS_WERROR_UNGUARDED_AVAILABILITY_NEW failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_8f13d/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_8f13d.dir/build.make CMakeFiles/cmTC_8f13d.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_8f13d.dir/src.cxx.o
+/usr/bin/c++    -DDEBUG_REGISTER -fPIC -fvisibility-inlines-hidden -Werror=date-time -DCXX_SUPPORTS_WERROR_UNGUARDED_AVAILABILITY_NEW   -Werror -Werror=unguarded-availability-new -o CMakeFiles/cmTC_8f13d.dir/src.cxx.o -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.cxx
+cc1plus: error: -Werror=unguarded-availability-new: no option -Wunguarded-availability-new
+CMakeFiles/cmTC_8f13d.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_8f13d.dir/src.cxx.o' failed
+make[2]: *** [CMakeFiles/cmTC_8f13d.dir/src.cxx.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_8f13d/fast' failed
+make[1]: *** [cmTC_8f13d/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C SOURCE FILE Test C_SUPPORTS_COVERED_SWITCH_DEFAULT_FLAG failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_2f66a/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_2f66a.dir/build.make CMakeFiles/cmTC_2f66a.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2f66a.dir/src.c.o
+/usr/bin/cc   -fPIC -Werror=date-time -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -DC_SUPPORTS_COVERED_SWITCH_DEFAULT_FLAG   -Werror -Wcovered-switch-default -o CMakeFiles/cmTC_2f66a.dir/src.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.c
+cc: error: unrecognized command line option '-Wcovered-switch-default'; did you mean '-Wno-switch-default'?
+CMakeFiles/cmTC_2f66a.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_2f66a.dir/src.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_2f66a.dir/src.c.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_2f66a/fast' failed
+make[1]: *** [cmTC_2f66a/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C++ SOURCE FILE Test CXX_SUPPORTS_COVERED_SWITCH_DEFAULT_FLAG failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_dc750/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_dc750.dir/build.make CMakeFiles/cmTC_dc750.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_dc750.dir/src.cxx.o
+/usr/bin/c++    -DDEBUG_REGISTER -fPIC -fvisibility-inlines-hidden -Werror=date-time -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wcast-qual -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -DCXX_SUPPORTS_COVERED_SWITCH_DEFAULT_FLAG   -Werror -Wcovered-switch-default -o CMakeFiles/cmTC_dc750.dir/src.cxx.o -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wcovered-switch-default'; did you mean '-Wno-switch-default'?
+CMakeFiles/cmTC_dc750.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_dc750.dir/src.cxx.o' failed
+make[2]: *** [CMakeFiles/cmTC_dc750.dir/src.cxx.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_dc750/fast' failed
+make[1]: *** [cmTC_dc750/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test CXX_SUPPORTS_CLASS_MEMACCESS_FLAG failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_297c2/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_297c2.dir/build.make CMakeFiles/cmTC_297c2.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_297c2.dir/src.cxx.o
+/usr/bin/c++    -DDEBUG_REGISTER -fPIC -fvisibility-inlines-hidden -Werror=date-time -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wcast-qual -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -Wno-maybe-uninitialized -DCXX_SUPPORTS_CLASS_MEMACCESS_FLAG   -Wclass-memaccess -o CMakeFiles/cmTC_297c2.dir/src.cxx.o -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wclass-memaccess'
+CMakeFiles/cmTC_297c2.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_297c2.dir/src.cxx.o' failed
+make[2]: *** [CMakeFiles/cmTC_297c2.dir/src.cxx.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_297c2/fast' failed
+make[1]: *** [cmTC_297c2/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C SOURCE FILE Test C_SUPPORTS_DELETE_NON_VIRTUAL_DTOR_FLAG failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_8bf7d/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_8bf7d.dir/build.make CMakeFiles/cmTC_8bf7d.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8bf7d.dir/src.c.o
+/usr/bin/cc   -fPIC -Werror=date-time -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -DC_SUPPORTS_DELETE_NON_VIRTUAL_DTOR_FLAG   -Werror -Wdelete-non-virtual-dtor -o CMakeFiles/cmTC_8bf7d.dir/src.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.c
+cc1: error: command line option '-Wdelete-non-virtual-dtor' is valid for C++/ObjC++ but not for C [-Werror]
+cc1: all warnings being treated as errors
+CMakeFiles/cmTC_8bf7d.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_8bf7d.dir/src.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_8bf7d.dir/src.c.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_8bf7d/fast' failed
+make[1]: *** [cmTC_8bf7d/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test C_WCOMMENT_ALLOWS_LINE_WRAP failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_bafe6/fast"
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+/usr/bin/make -f CMakeFiles/cmTC_bafe6.dir/build.make CMakeFiles/cmTC_bafe6.dir/build
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_bafe6.dir/src.c.o
+/usr/bin/cc -D_GNU_SOURCE  -fPIC -Werror=date-time -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -DC_WCOMMENT_ALLOWS_LINE_WRAP  -Werror -Wcomment   -o CMakeFiles/cmTC_bafe6.dir/src.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.c
+/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.c:1:1: error: multi-line comment [-Werror=comment]
+ // \
+ ^
+cc1: all warnings being treated as errors
+CMakeFiles/cmTC_bafe6.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_bafe6.dir/src.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_bafe6.dir/src.c.o] Error 1
+make[2]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: recipe for target 'cmTC_bafe6/fast' failed
+make[1]: *** [cmTC_bafe6/fast] Error 2
+make[1]: ディレクトリ '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp' から出ます
+
+Source file was:
+// \
+//
+int main() {return 0;}
+Performing C SOURCE FILE Test C_SUPPORTS_STRING_CONVERSION_FLAG failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b565a/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_b565a.dir/build.make CMakeFiles/cmTC_b565a.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b565a.dir/src.c.o
+/usr/bin/cc   -fPIC -Werror=date-time -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -Wno-comment -DC_SUPPORTS_STRING_CONVERSION_FLAG   -Werror -Wstring-conversion -o CMakeFiles/cmTC_b565a.dir/src.c.o   -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.c
+cc: error: unrecognized command line option '-Wstring-conversion'; did you mean '-Wint-conversion'?
+CMakeFiles/cmTC_b565a.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_b565a.dir/src.c.o' failed
+make[2]: *** [CMakeFiles/cmTC_b565a.dir/src.c.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_b565a/fast' failed
+make[1]: *** [cmTC_b565a/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
+Performing C++ SOURCE FILE Test CXX_SUPPORTS_STRING_CONVERSION_FLAG failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c02e8/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_c02e8.dir/build.make CMakeFiles/cmTC_c02e8.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_c02e8.dir/src.cxx.o
+/usr/bin/c++    -DDEBUG_REGISTER -fPIC -fvisibility-inlines-hidden -Werror=date-time -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wcast-qual -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -Wno-maybe-uninitialized -Wno-noexcept-type -Wdelete-non-virtual-dtor -Wno-comment -DCXX_SUPPORTS_STRING_CONVERSION_FLAG   -Werror -Wstring-conversion -o CMakeFiles/cmTC_c02e8.dir/src.cxx.o -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wstring-conversion'; did you mean '-Wint-conversion'?
+CMakeFiles/cmTC_c02e8.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_c02e8.dir/src.cxx.o' failed
+make[2]: *** [CMakeFiles/cmTC_c02e8.dir/src.cxx.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_c02e8/fast' failed
+make[1]: *** [cmTC_c02e8/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test CXX_SUPPORTS_NO_NESTED_ANON_TYPES_FLAG failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_36e7c/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_36e7c.dir/build.make CMakeFiles/cmTC_36e7c.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_36e7c.dir/src.cxx.o
+/usr/bin/c++    -DDEBUG_REGISTER -fPIC -fvisibility-inlines-hidden -Werror=date-time -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wcast-qual -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -Wno-maybe-uninitialized -Wno-noexcept-type -Wdelete-non-virtual-dtor -Wno-comment -ffunction-sections -fdata-sections -fno-common -Woverloaded-virtual -fno-strict-aliasing -DCXX_SUPPORTS_NO_NESTED_ANON_TYPES_FLAG   -Werror -Wnested-anon-types -o CMakeFiles/cmTC_36e7c.dir/src.cxx.o -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wnested-anon-types'; did you mean '-Wnested-externs'?
+CMakeFiles/cmTC_36e7c.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_36e7c.dir/src.cxx.o' failed
+make[2]: *** [CMakeFiles/cmTC_36e7c.dir/src.cxx.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_36e7c/fast' failed
+make[1]: *** [cmTC_36e7c/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test HAVE_CXX_FLAG_WSHORTEN_64_TO_32 failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_15c84/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_15c84.dir/build.make CMakeFiles/cmTC_15c84.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_15c84.dir/src.cxx.o
+/usr/bin/c++    -DDEBUG_REGISTER -fPIC -fvisibility-inlines-hidden -Werror=date-time -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wcast-qual -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -Wno-maybe-uninitialized -Wno-noexcept-type -Wdelete-non-virtual-dtor -Wno-comment -ffunction-sections -fdata-sections  -std=c++11  -Wall  -Wextra  -Wshadow  -pedantic  -pedantic-errors -DHAVE_CXX_FLAG_WSHORTEN_64_TO_32  -Wshorten-64-to-32   -Wshorten-64-to-32 -o CMakeFiles/cmTC_15c84.dir/src.cxx.o -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wshorten-64-to-32'
+c++: error: unrecognized command line option '-Wshorten-64-to-32'
+CMakeFiles/cmTC_15c84.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_15c84.dir/src.cxx.o' failed
+make[2]: *** [CMakeFiles/cmTC_15c84.dir/src.cxx.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_15c84/fast' failed
+make[1]: *** [cmTC_15c84/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test HAVE_CXX_FLAG_WD654 failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ba240/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_ba240.dir/build.make CMakeFiles/cmTC_ba240.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_ba240.dir/src.cxx.o
+/usr/bin/c++    -DDEBUG_REGISTER -fPIC -fvisibility-inlines-hidden -Werror=date-time -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wcast-qual -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -Wno-maybe-uninitialized -Wno-noexcept-type -Wdelete-non-virtual-dtor -Wno-comment -ffunction-sections -fdata-sections  -std=c++11  -Wall  -Wextra  -Wshadow  -pedantic  -pedantic-errors  -Wfloat-equal  -fstrict-aliasing  -fno-exceptions  -Wstrict-aliasing -DHAVE_CXX_FLAG_WD654  -wd654   -wd654 -o CMakeFiles/cmTC_ba240.dir/src.cxx.o -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-wd654'
+c++: error: unrecognized command line option '-wd654'
+CMakeFiles/cmTC_ba240.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_ba240.dir/src.cxx.o' failed
+make[2]: *** [CMakeFiles/cmTC_ba240.dir/src.cxx.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_ba240/fast' failed
+make[1]: *** [cmTC_ba240/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test HAVE_CXX_FLAG_WTHREAD_SAFETY failed with the following output:
+Change Dir: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_fea01/fast"
+make[1]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_fea01.dir/build.make CMakeFiles/cmTC_fea01.dir/build
+make[2]: Entering directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_fea01.dir/src.cxx.o
+/usr/bin/c++    -DDEBUG_REGISTER -fPIC -fvisibility-inlines-hidden -Werror=date-time -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wwrite-strings -Wcast-qual -Wno-missing-field-initializers -pedantic -Wno-long-long -Wimplicit-fallthrough -Wno-maybe-uninitialized -Wno-noexcept-type -Wdelete-non-virtual-dtor -Wno-comment -ffunction-sections -fdata-sections  -std=c++11  -Wall  -Wextra  -Wshadow  -pedantic  -pedantic-errors  -Wfloat-equal  -fstrict-aliasing  -fno-exceptions  -Wstrict-aliasing -DHAVE_CXX_FLAG_WTHREAD_SAFETY  -Wthread-safety   -Wthread-safety -o CMakeFiles/cmTC_fea01.dir/src.cxx.o -c /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wthread-safety'; did you mean '-fthread-jumps'?
+c++: error: unrecognized command line option '-Wthread-safety'; did you mean '-fthread-jumps'?
+CMakeFiles/cmTC_fea01.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_fea01.dir/src.cxx.o' failed
+make[2]: *** [CMakeFiles/cmTC_fea01.dir/src.cxx.o] Error 1
+make[2]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_fea01/fast' failed
+make[1]: *** [cmTC_fea01/fast] Error 2
+make[1]: Leaving directory '/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }

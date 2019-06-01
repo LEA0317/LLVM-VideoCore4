@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../../../lib/libclangToolingASTDiff.a  CMakeFiles/clangToolingASTDiff.dir/ASTDiff.cpp.o
+/usr/bin/ranlib ../../../../../lib/libclangToolingASTDiff.a

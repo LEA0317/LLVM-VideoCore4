@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../../../../lib/libclangIncludeFixerPlugin.a  CMakeFiles/clangIncludeFixerPlugin.dir/IncludeFixerPlugin.cpp.o
+/usr/bin/ranlib ../../../../../../lib/libclangIncludeFixerPlugin.a

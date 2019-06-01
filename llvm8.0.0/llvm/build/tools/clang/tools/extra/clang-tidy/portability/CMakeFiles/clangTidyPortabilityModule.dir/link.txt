@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../../../../lib/libclangTidyPortabilityModule.a  CMakeFiles/clangTidyPortabilityModule.dir/PortabilityTidyModule.cpp.o CMakeFiles/clangTidyPortabilityModule.dir/SIMDIntrinsicsCheck.cpp.o
+/usr/bin/ranlib ../../../../../../lib/libclangTidyPortabilityModule.a

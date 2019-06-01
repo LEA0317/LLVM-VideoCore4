@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../../../lib/libclangReorderFields.a  CMakeFiles/clangReorderFields.dir/ReorderFieldsAction.cpp.o
+/usr/bin/ranlib ../../../../../lib/libclangReorderFields.a

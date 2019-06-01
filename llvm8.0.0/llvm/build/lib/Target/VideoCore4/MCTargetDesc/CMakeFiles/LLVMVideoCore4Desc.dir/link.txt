@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../libLLVMVideoCore4Desc.a  CMakeFiles/LLVMVideoCore4Desc.dir/VideoCore4MCAsmInfo.cpp.o CMakeFiles/LLVMVideoCore4Desc.dir/VideoCore4MCTargetDesc.cpp.o
+/usr/bin/ranlib ../../../libLLVMVideoCore4Desc.a

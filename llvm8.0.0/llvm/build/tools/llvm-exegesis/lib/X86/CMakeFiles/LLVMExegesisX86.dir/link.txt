@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../../lib/libLLVMExegesisX86.a  CMakeFiles/LLVMExegesisX86.dir/Target.cpp.o
+/usr/bin/ranlib ../../../../lib/libLLVMExegesisX86.a

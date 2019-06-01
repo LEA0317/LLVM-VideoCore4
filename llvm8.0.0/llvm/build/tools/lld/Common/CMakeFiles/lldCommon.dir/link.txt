@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../lib/liblldCommon.a  CMakeFiles/lldCommon.dir/Args.cpp.o CMakeFiles/lldCommon.dir/ErrorHandler.cpp.o CMakeFiles/lldCommon.dir/Memory.cpp.o CMakeFiles/lldCommon.dir/Reproduce.cpp.o CMakeFiles/lldCommon.dir/Strings.cpp.o CMakeFiles/lldCommon.dir/TargetOptionsCommandFlags.cpp.o CMakeFiles/lldCommon.dir/Threads.cpp.o CMakeFiles/lldCommon.dir/Timer.cpp.o CMakeFiles/lldCommon.dir/Version.cpp.o
+/usr/bin/ranlib ../../../lib/liblldCommon.a
