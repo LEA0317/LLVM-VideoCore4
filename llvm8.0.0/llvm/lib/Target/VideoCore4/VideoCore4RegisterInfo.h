@@ -14,7 +14,7 @@
 #ifndef LLVM_TARGET_VIDEOCORE4REGISTERINFO_H
 #define LLVM_TARGET_VIDEOCORE4REGISTERINFO_H
 
-#include "llvm/Target/TargetRegisterInfo.h"
+#include "llvm/CodeGen/TargetRegisterInfo.h"
 
 #define GET_REGINFO_HEADER
 #include "VideoCore4GenRegisterInfo.inc"

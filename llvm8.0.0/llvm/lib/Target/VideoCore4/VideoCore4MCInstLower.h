@@ -30,7 +30,7 @@ class LLVM_LIBRARY_VISIBILITY VideoCore4MCInstLower {
 	AsmPrinter &AP;
 
 public:
-  VideoCore4MCInstLower(MCContext &ctx, Mangler &mang, AsmPrinter &printer)
+  VideoCore4MCInstLower(MCContext &ctx, AsmPrinter &printer)
     : Ctx(ctx), AP(printer) {}
   void Lower(const MachineInstr *MI, MCInst &OutMI) const;
 };

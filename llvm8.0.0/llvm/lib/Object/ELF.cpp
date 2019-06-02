@@ -146,6 +146,15 @@ StringRef llvm::object::getELFRelocationTypeName(uint32_t Machine,
       break;
     }
     break;
+    /* FIX ME (konda)
+  case ELF::EM_VideoCORE:
+    switch (Type) {
+#include "llvm/BinaryFormat/ELFRelocs/VideoCore4.def"
+    default:
+      break;
+    }
+    break;
+    */
   default:
     break;
   }

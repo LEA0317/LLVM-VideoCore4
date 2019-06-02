@@ -14,13 +14,13 @@
 #ifndef VIDEOCORE4SELECTIONDAGINFO_H
 #define VIDEOCORE4SELECTIONDAGINFO_H
 
-#include "llvm/Target/TargetSelectionDAGInfo.h"
+#include "llvm/CodeGen/SelectionDAGTargetInfo.h"
 
 namespace llvm {
 
 class VideoCore4TargetMachine;
 
-class VideoCore4SelectionDAGInfo : public TargetSelectionDAGInfo {
+class VideoCore4SelectionDAGInfo : public SelectionDAGTargetInfo {
 public:
   explicit VideoCore4SelectionDAGInfo(const VideoCore4TargetMachine &TM);
   ~VideoCore4SelectionDAGInfo();

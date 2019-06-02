@@ -19,13 +19,21 @@ include "llvm/Target/Target.td"
 // Subtarget Features. 
 //===----------------------------------------------------------------------===//
 
+def FeatureVideoCore4 : SubtargetFeature<"vc4",
+                                         "VideoCoreArchVersion", 
+                                         "videocore4I",
+		                         "videocore4I ISA Support",
+		 		         []>;
+
 //===----------------------------------------------------------------------===//
 // VideoCore4 supported processors.
 //===----------------------------------------------------------------------===//
 class Proc<string Name, list<SubtargetFeature> Features>
  : Processor<Name, NoItineraries, Features>;
 
-def : Proc<"generic", []>;
+// FIX ME (konda)
+def : Proc<"generic", [FeatureVideoCore4]>;
+def : Proc<"vc4",     [FeatureVideoCore4]>;
 
 //===----------------------------------------------------------------------===//
 // Register File Description

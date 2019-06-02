@@ -136,6 +136,25 @@ SubtargetFeatures ELFObjectFileBase::getMIPSFeatures() const {
   return Features;
 }
 
+SubtargetFeatures
+ELFObjectFileBase::getVideoCore4Features() const {
+  SubtargetFeatures Features;
+  unsigned          PlatformFlags = getPlatformFlags();
+
+  switch (PlatformFlags & ELF::EF_VIDEOCORE_ISA) {
+  case ELF::EF_VIDEOCORE_ISA_V4:
+    {
+      Features.AddFeature("vc4");
+      break;
+    }
+  default:
+    {
+      llvm_unreachable("Unknown EM_VIDEOCORE_ISA value");
+    }
+  }
+  return Features;
+}
+
 SubtargetFeatures ELFObjectFileBase::getARMFeatures() const {
   SubtargetFeatures Features;
   ARMAttributeParser Attributes;
@@ -253,6 +272,8 @@ SubtargetFeatures ELFObjectFileBase::getRISCVFeatures() const {
 
 SubtargetFeatures ELFObjectFileBase::getFeatures() const {
   switch (getEMachine()) {
+  case ELF::EM_VIDEOCORE:
+    return getVideoCore4Features();
   case ELF::EM_MIPS:
     return getMIPSFeatures();
   case ELF::EM_ARM:

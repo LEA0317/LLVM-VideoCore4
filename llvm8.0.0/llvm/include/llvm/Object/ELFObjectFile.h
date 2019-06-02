@@ -83,6 +83,8 @@ public:
 
   SubtargetFeatures getRISCVFeatures() const;
 
+  SubtargetFeatures getVideoCore4Features() const;
+
   void setARMSubArch(Triple &TheTriple) const override;
 
   virtual uint16_t getEType() const = 0;
@@ -1049,6 +1051,8 @@ StringRef ELFObjectFile<ELFT>::getFileFormatName() const {
       return "ELF32-sparc";
     case ELF::EM_AMDGPU:
       return "ELF32-amdgpu";
+    case ELF::EM_VIDEOCORE:
+      return "ELF32-videocore";
     default:
       return "ELF32-unknown";
     }
@@ -1152,6 +1156,9 @@ template <class ELFT> Triple::ArchType ELFObjectFile<ELFT>::getArch() const {
   case ELF::EM_BPF:
     return IsLittleEndian ? Triple::bpfel : Triple::bpfeb;
 
+  case ELF::EM_VIDEOCORE:
+    return Triple::videocore;
+    
   default:
     return Triple::UnknownArch;
   }

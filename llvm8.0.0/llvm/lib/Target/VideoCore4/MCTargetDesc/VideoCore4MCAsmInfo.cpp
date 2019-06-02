@@ -17,5 +17,6 @@ using namespace llvm;
 
 void VideoCore4MCAsmInfo::anchor() { }
 
-VideoCore4MCAsmInfo::VideoCore4MCAsmInfo(StringRef TT) {
+VideoCore4MCAsmInfo::VideoCore4MCAsmInfo(const MCRegisterInfo &MRI,
+					 const Triple &TT) {
 }

@@ -46,45 +46,47 @@ using namespace llvm;
  */
 
 void VideoCore4FrameLowering::determineFrameLayout(MachineFunction& MF) const {
-	MachineFrameInfo* MFI = MF.getFrameInfo();
+	MachineFrameInfo &MFI = MF.getFrameInfo();
 
-	unsigned alignment = MF.getTarget().getFrameLowering()->getStackAlignment();
-	unsigned SLsize = MFI->getStackSize();
-	unsigned Asize = MFI->getMaxCallFrameSize();
+	unsigned alignment = getStackAlignment();
+	unsigned SLsize = MFI.getStackSize();
+	unsigned Asize = MFI.getMaxCallFrameSize();
 
-	if (MFI->hasVarSizedObjects())
-		Asize = RoundUpToAlignment(Asize, alignment);
+	if (MFI.hasVarSizedObjects())
+		Asize = alignTo(Asize, alignment);
 
-	MFI->setMaxCallFrameSize(Asize);
+	MFI.setMaxCallFrameSize(Asize);
 	unsigned SLAsize = SLsize + Asize;
 
-	SLAsize = RoundUpToAlignment(SLAsize, alignment);
-	MFI->setStackSize(SLAsize);
+	SLAsize = alignTo(SLAsize, alignment);
+	MFI.setStackSize(SLAsize);
 }
 
 bool VideoCore4FrameLowering::hasFP(const MachineFunction &MF) const {
-  const MachineFrameInfo *MFI = MF.getFrameInfo();
+  const MachineFrameInfo &MFI = MF.getFrameInfo();
 
   return (MF.getTarget().Options.DisableFramePointerElim(MF) ||
-          MF.getFrameInfo()->hasVarSizedObjects() ||
-          MFI->isFrameAddressTaken());
+          MFI.hasVarSizedObjects() ||
+          MFI.isFrameAddressTaken());
 }
 
-void VideoCore4FrameLowering::emitPrologue(MachineFunction &MF) const {
-	MachineBasicBlock& MBB = MF.front();
-	MachineFrameInfo* MFI = MF.getFrameInfo();
+void
+VideoCore4FrameLowering::emitPrologue(MachineFunction &MF,
+				      MachineBasicBlock &MBB) const {
+  //MachineBasicBlock &MBB = MF.front();
+	MachineFrameInfo &MFI = MF.getFrameInfo();
 
 	determineFrameLayout(MF);
 
 	const VideoCore4InstrInfo& TII = *static_cast<const VideoCore4InstrInfo*>(
-				MF.getTarget().getInstrInfo());
+				MF.getTarget().getMCInstrInfo());
 	const VideoCore4RegisterInfo& RI = *static_cast<const VideoCore4RegisterInfo*>(
-				MF.getTarget().getRegisterInfo());
+				MF.getTarget().getMCRegisterInfo());
 
 	MachineBasicBlock::iterator MI = MBB.begin();
 	DebugLoc dl = MI != MBB.end() ? MI->getDebugLoc() : DebugLoc();
 
-	int stacksize = (int) MFI->getStackSize();
+	int stacksize = (int) MFI.getStackSize();
 
 	if (hasFP(MF))
 		stacksize += 4;
@@ -100,33 +102,33 @@ void VideoCore4FrameLowering::emitPrologue(MachineFunction &MF) const {
 	}
 }
 
-bool VideoCore4FrameLowering::
-spillCalleeSavedRegisters(MachineBasicBlock &MBB,
-                        MachineBasicBlock::iterator MI,
-                        const std::vector<CalleeSavedInfo> &CSI,
-                        const TargetRegisterInfo *TRI) const
+bool
+VideoCore4FrameLowering::spillCalleeSavedRegisters(MachineBasicBlock &MBB,
+						   MachineBasicBlock::iterator MI,
+						   const std::vector<CalleeSavedInfo> &CSI,
+						   const TargetRegisterInfo *TRI) const
 {
 	
 	return false;
 }
 
-bool VideoCore4FrameLowering::
-restoreCalleeSavedRegisters(MachineBasicBlock &MBB,
-                          MachineBasicBlock::iterator MI,
-                          const std::vector<CalleeSavedInfo> &CSI,
-                          const TargetRegisterInfo *TRI) const
+bool
+VideoCore4FrameLowering::restoreCalleeSavedRegisters(MachineBasicBlock &MBB,
+						     MachineBasicBlock::iterator MI,
+						     const std::vector<CalleeSavedInfo> &CSI,
+						     const TargetRegisterInfo *TRI) const
 {
 	return false;
 }
 
 void VideoCore4FrameLowering::emitEpilogue(MachineFunction &MF,
-                                         MachineBasicBlock &MBB) const {
-	MachineFrameInfo* MFI = MF.getFrameInfo();
+					   MachineBasicBlock &MBB) const {
+  MachineFrameInfo &MFI = MF.getFrameInfo();
 
-	const VideoCore4InstrInfo& TII = *static_cast<const VideoCore4InstrInfo*>(
-				MF.getTarget().getInstrInfo());
+  const VideoCore4InstrInfo& TII = *static_cast<const VideoCore4InstrInfo*>(
+									    MF.getTarget().getMCInstrInfo());
 	const VideoCore4RegisterInfo& RI = *static_cast<const VideoCore4RegisterInfo*>(
-				MF.getTarget().getRegisterInfo());
+				MF.getTarget().getMCRegisterInfo());
 	MachineBasicBlock::iterator MBBI = MBB.getLastNonDebugInstr();
 	DebugLoc dl = MBBI != MBB.end() ? MBBI->getDebugLoc() : DebugLoc();
 
@@ -140,7 +142,7 @@ void VideoCore4FrameLowering::emitEpilogue(MachineFunction &MF,
 		//	.addReg(VideoCore4::R6);
 	}
 
-	int stacksize = (int) MFI->getStackSize();
+	int stacksize = (int) MFI.getStackSize();
 
 	if (hasFP(MF))
 		stacksize += 4;
@@ -149,11 +151,13 @@ void VideoCore4FrameLowering::emitEpilogue(MachineFunction &MF,
 }
 
 int VideoCore4FrameLowering::getFrameIndexOffset(const MachineFunction& MF, int FI) const {
-	return MF.getFrameInfo()->getObjectOffset(FI);
+	return MF.getFrameInfo().getObjectOffset(FI);
 }
 
-void VideoCore4FrameLowering::eliminateCallFramePseudoInstr(
-			MachineFunction &MF, MachineBasicBlock &MBB, MachineBasicBlock::iterator I) const {
+MachineBasicBlock::iterator
+VideoCore4FrameLowering::eliminateCallFramePseudoInstr(MachineFunction            &MF,
+						       MachineBasicBlock          &MBB,
+						       MachineBasicBlock::iterator I) const {
   MachineInstr &MI = *I;
 
   if (MI.getOpcode() == VideoCore4::ADJCALLSTACKDOWN) {

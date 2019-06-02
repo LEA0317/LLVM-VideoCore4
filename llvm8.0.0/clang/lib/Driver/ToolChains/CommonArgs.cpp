@@ -246,6 +246,15 @@ static StringRef getWebAssemblyTargetCPU(const ArgList &Args) {
   return "generic";
 }
 
+static std::string getVideoCore4TargetCPU(const ArgList &Args) {
+  if (Arg *A = Args.getLastArg(options::OPT_mcpu_EQ)) {
+    const char *GPUName = A->getValue();
+    return llvm::StringSwitch<const char *>(GPUName)
+      .Default(GPUName);
+  }
+  return "generic";
+}
+
 std::string tools::getCPUName(const ArgList &Args, const llvm::Triple &T,
                               bool FromAs) {
   Arg *A;
@@ -336,6 +345,9 @@ std::string tools::getCPUName(const ArgList &Args, const llvm::Triple &T,
   case llvm::Triple::wasm32:
   case llvm::Triple::wasm64:
     return getWebAssemblyTargetCPU(Args);
+
+  case llvm::Triple::videocore:
+    return getVideoCore4TargetCPU(Args);
   }
 }
 

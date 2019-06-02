@@ -17,6 +17,7 @@
 #include "VideoCore4.h"
 #include "VideoCore4TargetMachine.h"
 #include "llvm/CodeGen/AsmPrinter.h"
+#include "llvm/MC/MCStreamer.h"
 #include "llvm/Support/Compiler.h"
 #include "llvm/Support/raw_ostream.h"
 
@@ -25,12 +26,13 @@ namespace llvm {
     const VideoCore4Subtarget *Subtarget;
 
   public:
-    explicit VideoCore4AsmPrinter(TargetMachine &TM, MCStreamer &Streamer)
-      : AsmPrinter(TM, Streamer) {
-      Subtarget = &TM.getSubtarget<VideoCore4Subtarget>();
-    }
+  explicit VideoCore4AsmPrinter(TargetMachine              &TM,
+				std::unique_ptr<MCStreamer> Streamer)
+    : AsmPrinter(TM, std::move(Streamer)) {
+    Subtarget = static_cast<VideoCore4TargetMachine &>(TM).getSubtargetImpl();
+  }
 
-    virtual const char *getPassName() const {
+    virtual StringRef getPassName() const {
       return "VideoCore4 Assembly Printer";
     }
 

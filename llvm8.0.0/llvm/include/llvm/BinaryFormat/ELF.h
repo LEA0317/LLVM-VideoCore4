@@ -612,6 +612,16 @@ enum {
 #include "ELFRelocs/Hexagon.def"
 };
 
+enum {
+  EF_VIDEOCORE_ISA_V4 = 0x0008,
+  EF_VIDEOCORE_ISA    = 0x000f,
+};
+// FIX ME (konda)
+// ELF Relocation types for VideoCore4
+//enum {
+//#include ELFRelocs/VideoCore4.def
+//};
+  
 // ELF Relocation type for Lanai.
 enum {
 #include "ELFRelocs/Lanai.def"

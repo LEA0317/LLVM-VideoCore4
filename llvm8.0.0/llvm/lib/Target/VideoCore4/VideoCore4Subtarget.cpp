@@ -25,11 +25,17 @@ using namespace llvm;
 
 void VideoCore4Subtarget::anchor() { }
 
-VideoCore4Subtarget::VideoCore4Subtarget(const std::string &TT,
-                                     const std::string &CPU,
-                                     const std::string &FS) :
+VideoCore4Subtarget::VideoCore4Subtarget(const Triple &TT,
+					 StringRef CPU,
+					 StringRef FS) :
   VideoCore4GenSubtargetInfo(TT, CPU, FS) {
-  std::string CPUName = "generic";
+  std::string CPUName = CPU;
+
+  if (CPUName.empty()) {
+    CPUName = "generic";
+  } else {
+    CPUName = "vc4";
+  }
 
   // Parse features string.
   ParseSubtargetFeatures(CPUName, FS);

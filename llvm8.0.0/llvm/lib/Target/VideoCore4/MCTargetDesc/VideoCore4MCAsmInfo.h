@@ -15,6 +15,7 @@
 #define VIDEOCORE4TARGETASMINFO_H
 
 #include "llvm/MC/MCAsmInfo.h"
+#include "llvm/MC/MCRegisterInfo.h"
 
 namespace llvm {
   class StringRef;
@@ -22,7 +23,8 @@ namespace llvm {
   class VideoCore4MCAsmInfo : public MCAsmInfo {
     virtual void anchor();
   public:
-    explicit VideoCore4MCAsmInfo(StringRef TT);
+    explicit VideoCore4MCAsmInfo(const MCRegisterInfo &MRI,
+				 const Triple &TT);
   };
 
 } // namespace llvm

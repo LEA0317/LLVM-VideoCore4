@@ -17,7 +17,7 @@
 
 #include "VideoCore4.h"
 #include "llvm/CodeGen/SelectionDAG.h"
-#include "llvm/Target/TargetLowering.h"
+#include "llvm/CodeGen/TargetLowering.h"
 
 namespace llvm {
   namespace VideoCore4ISD {

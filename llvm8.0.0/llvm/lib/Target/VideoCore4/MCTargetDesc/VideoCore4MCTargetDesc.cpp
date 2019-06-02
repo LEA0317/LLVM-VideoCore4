@@ -14,7 +14,6 @@
 #include "VideoCore4MCTargetDesc.h"
 #include "VideoCore4MCAsmInfo.h"
 #include "InstPrinter/VideoCore4InstPrinter.h"
-#include "llvm/MC/MCCodeGenInfo.h"
 #include "llvm/MC/MCInstrInfo.h"
 #include "llvm/MC/MCRegisterInfo.h"
 #include "llvm/MC/MCSubtargetInfo.h"
@@ -31,54 +30,79 @@
 
 using namespace llvm;
 
+static std::string selectVideoCoreArchFeature(const Triple &TT, StringRef CPU) {
+  std::string VideoCoreArchFeature;
+  if (CPU.empty() || CPU == "generic") {
+    if (TT.getArch() == Triple::videocore) {
+      if (CPU == "generic") {
+        VideoCoreArchFeature = "+generic";        
+      } else if (CPU == "vc4") {
+        VideoCoreArchFeature = "+vc4";
+      }
+    }
+  }
+  return VideoCoreArchFeature;
+}
+
 static MCInstrInfo *createVideoCore4MCInstrInfo() {
   MCInstrInfo *X = new MCInstrInfo();
   InitVideoCore4MCInstrInfo(X);
   return X;
 }
 
-static MCRegisterInfo *createVideoCore4MCRegisterInfo(StringRef TT) {
+static MCRegisterInfo *createVideoCore4MCRegisterInfo(const Triple &TT) {
   MCRegisterInfo *X = new MCRegisterInfo();
-  InitVideoCore4MCRegisterInfo(X, VideoCore4::PC);
+  InitVideoCore4MCRegisterInfo(X,
+			       VideoCore4::PC);
   return X;
 }
 
-static MCSubtargetInfo *createVideoCore4MCSubtargetInfo(StringRef TT, StringRef CPU,
-                                                      StringRef FS) {
-  MCSubtargetInfo *X = new MCSubtargetInfo();
-  InitVideoCore4MCSubtargetInfo(X, TT, CPU, FS);
-  return X;
+static MCSubtargetInfo *createVideoCore4MCSubtargetInfo(const Triple &TT, StringRef CPU,
+							StringRef FS) {
+  std::string ArchFS = selectVideoCoreArchFeature(TT,
+						  CPU);
+  if (!FS.empty()) {
+    if (!ArchFS.empty())
+      ArchFS = ArchFS + "," + FS.str();
+    else
+      ArchFS = FS;
+  }
+  return createVideoCore4MCSubtargetInfoImpl(TT, CPU, ArchFS);
 }
 
-static MCCodeGenInfo *createVideoCore4MCCodeGenInfo(StringRef TT, Reloc::Model RM,
-                                                  CodeModel::Model CM,
-                                                  CodeGenOpt::Level OL) {
-  MCCodeGenInfo *X = new MCCodeGenInfo();
-  X->InitMCCodeGenInfo(RM, CM, OL);
-  return X;
+static MCInstPrinter*
+createVideoCore4MCInstPrinter(const Triple &T,
+			      unsigned SyntaxVariant,
+			      const MCAsmInfo &MAI,
+			      const MCInstrInfo &MII,
+			      const MCRegisterInfo &MRI) {
+  return new VideoCore4InstPrinter(MAI,
+				   MII,
+				   MRI);
 }
 
-static MCInstPrinter *createVideoCore4MCInstPrinter(const Target &T,
-                                                  unsigned SyntaxVariant,
-                                                  const MCAsmInfo &MAI,
-                                                  const MCInstrInfo &MII,
-                                                  const MCRegisterInfo &MRI,
-                                                  const MCSubtargetInfo &STI) {
-  if (SyntaxVariant == 0)
-    return new VideoCore4InstPrinter(MAI, MII, MRI);
-  return 0;
+static MCAsmInfo*
+createVideoCore4MCAsmInfo(const MCRegisterInfo &MRI,
+			  const Triple         &TT) {
+  MCAsmInfo       *MAI  = new VideoCore4MCAsmInfo(MRI, TT);
+  unsigned         SP   = MRI.getDwarfRegNum(VideoCore4::SP,
+                                             true);
+  MCCFIInstruction Inst = MCCFIInstruction::createDefCfa(nullptr,
+                                                         SP,
+                                                         0);
+  MAI->addInitialFrameState(Inst);
+
+  return MAI;
 }
 
 extern "C" void LLVMInitializeVideoCore4TargetMC() {
   // Register the MC asm info.
-  RegisterMCAsmInfo<VideoCore4MCAsmInfo> X(TheVideoCore4Target);
-
-  // Register the MC codegen info.
-  TargetRegistry::RegisterMCCodeGenInfo(TheVideoCore4Target,
-                                        createVideoCore4MCCodeGenInfo);
+  RegisterMCAsmInfoFn X(TheVideoCore4Target,
+			createVideoCore4MCAsmInfo);
 
   // Register the MC instruction info.
-  TargetRegistry::RegisterMCInstrInfo(TheVideoCore4Target, createVideoCore4MCInstrInfo);
+  TargetRegistry::RegisterMCInstrInfo(TheVideoCore4Target,
+				      createVideoCore4MCInstrInfo);
 
   // Register the MC register info.
   TargetRegistry::RegisterMCRegInfo(TheVideoCore4Target,

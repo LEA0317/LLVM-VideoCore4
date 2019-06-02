@@ -24,7 +24,7 @@
 #include "llvm/CodeGen/MachineRegisterInfo.h"
 #include "llvm/CodeGen/SelectionDAG.h"
 #include "llvm/CodeGen/SelectionDAGISel.h"
-#include "llvm/Target/TargetLowering.h"
+#include "llvm/CodeGen/TargetLowering.h"
 #include "llvm/Support/Compiler.h"
 #include "llvm/Support/Debug.h"
 #include "llvm/Support/ErrorHandling.h"
@@ -49,20 +49,24 @@ namespace {
         Lowering(*TM.getTargetLowering()),
         Subtarget(*TM.getSubtargetImpl()) { }
 
-    virtual const char *getPassName() const {
+    virtual StringRef getPassName() const {
       return "VideoCore4 DAG->DAG Pattern Instruction Selection";
     }
 
     /// getI16Imm - Return a target constant with the specified value, of type
     /// i16.
-    inline SDValue getI16Imm(uint64_t Imm) {
-      return CurDAG->getTargetConstant(Imm, MVT::i16);
+    inline SDValue getI16Imm(const SDNode *Node, uint64_t Imm) {
+      return CurDAG->getTargetConstant(Imm,
+				       SDLoc(Node),
+				       MVT::i16);
     }
 
     /// getI32Imm - Return a target constant with the specified value, of type
     /// i32.
-    inline SDValue getI32Imm(uint64_t Imm) {
-      return CurDAG->getTargetConstant(Imm, MVT::i32);
+    inline SDValue getI32Imm(const SDNode *Node, uint64_t Imm) {
+      return CurDAG->getTargetConstant(Imm,
+				       SDLoc(Node),
+				       MVT::i32);
     }
     
 		bool SelectStacked(SDValue N, SDValue& R1, SDValue& R2);
@@ -74,7 +78,7 @@ namespace {
     #include "VideoCore4GenDAGISel.inc"
 
   private:
-    SDNode *Select(SDNode *N);
+    void Select(SDNode *N) override;
   };
 }  // end anonymous namespace
 
@@ -86,21 +90,21 @@ FunctionPass *llvm::createVideoCore4ISelDag(VideoCore4TargetMachine &TM,
   return new VideoCore4DAGToDAGISel(TM, OptLevel);
 }
 
-SDNode *VideoCore4DAGToDAGISel::Select(SDNode *N) {
+void VideoCore4DAGToDAGISel::Select(SDNode *N) {
   SDLoc dl(N);
 
   // Dump information about the Node being selected
-  DEBUG(errs() << "Selecting: ");
-  DEBUG(N->dump(CurDAG));
-  DEBUG(errs() << "\n");
+  LLVM_DEBUG(errs() << "Selecting: ");
+  LLVM_DEBUG(N->dump(CurDAG));
+  LLVM_DEBUG(errs() << "\n");
 
   // If we have a custom node, we already have selected!
   if (N->isMachineOpcode()) {
-    DEBUG(errs() << "== ";
-          N->dump(CurDAG);
-          errs() << "\n");
-		N->setNodeId(-1);
-    return NULL;
+    LLVM_DEBUG(errs() << "== ";
+	       N->dump(CurDAG);
+	       errs() << "\n");
+    N->setNodeId(-1);
+    return;
   }
 
 	switch (N->getOpcode()) {
@@ -115,12 +119,12 @@ SDNode *VideoCore4DAGToDAGISel::Select(SDNode *N) {
 
       SDNode* res;
       if (N->hasOneUse()) {
-        res = CurDAG->SelectNodeTo(N, Opc, VT, TFI, CurDAG->getTargetConstant(0, MVT::i32));
+        res = CurDAG->SelectNodeTo(N, Opc, VT, TFI, CurDAG->getTargetConstant(0, SDLoc(N), MVT::i32));
       }
       else {
         res = CurDAG->getMachineNode(Opc, dl, VT, TFI, CurDAG->getRegister(VideoCore4::SP, MVT::i32));
       }
-      return res;
+      return;
     }
     case ISD::BRCOND: {
       SDValue Chain = N->getOperand(0);
@@ -133,7 +137,7 @@ SDNode *VideoCore4DAGToDAGISel::Select(SDNode *N) {
 
       if (ConstantSDNode *CSN = dyn_cast<ConstantSDNode>(TestAgainst)) {
         Opc = VideoCore4::CMP_LI;
-        TestAgainst = getI32Imm( CSN->getZExtValue() );
+        TestAgainst = getI32Imm(CSN, CSN->getZExtValue() );
       }
       else {
         Opc = VideoCore4::CMP_F;
@@ -157,7 +161,8 @@ SDNode *VideoCore4DAGToDAGISel::Select(SDNode *N) {
       }
 
       if (Opc != 0xFFFFFFFF) {
-        return CurDAG->SelectNodeTo(N, Opc, MVT::Other, Dest, Chain, Glue);
+	CurDAG->SelectNodeTo(N, Opc, MVT::Other, Dest, Chain, Glue);
+	return;
       }
     }
 		default:
@@ -169,15 +174,15 @@ SDNode *VideoCore4DAGToDAGISel::Select(SDNode *N) {
 
 bool VideoCore4DAGToDAGISel::SelectStacked(SDValue addr, SDValue& base, SDValue& offset)
 {
-  DEBUG(errs() << "SelectStacke1d! " << "\n";);
+  LLVM_DEBUG(errs() << "SelectStacke1d! " << "\n");
 
-  DEBUG(addr.dump());
+  LLVM_DEBUG(addr.dump());
 
 	FrameIndexSDNode* FIN = dyn_cast<FrameIndexSDNode>(addr);
 	if (FIN)
 	{
 		base = CurDAG->getTargetFrameIndex(FIN->getIndex(), MVT::i32);
-		offset = CurDAG->getTargetConstant(0, MVT::i32);
+		offset = CurDAG->getTargetConstant(0, SDLoc(offset), MVT::i32);
 		return true;
 	}
 	return false;

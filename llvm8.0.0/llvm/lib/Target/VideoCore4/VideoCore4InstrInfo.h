@@ -15,7 +15,7 @@
 #define LLVM_TARGET_VIDEOCORE4INSTRINFO_H
 
 #include "VideoCore4RegisterInfo.h"
-#include "llvm/Target/TargetInstrInfo.h"
+#include "llvm/CodeGen/TargetInstrInfo.h"
 
 #define GET_INSTRINFO_HEADER
 #include "VideoCore4GenInstrInfo.inc"

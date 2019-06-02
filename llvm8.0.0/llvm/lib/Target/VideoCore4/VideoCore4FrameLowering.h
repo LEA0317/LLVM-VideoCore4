@@ -16,7 +16,7 @@
 
 #include "VideoCore4.h"
 #include "VideoCore4Subtarget.h"
-#include "llvm/Target/TargetFrameLowering.h"
+#include "llvm/CodeGen/TargetFrameLowering.h"
 
 namespace llvm {
   class VideoCore4Subtarget;
@@ -33,14 +33,18 @@ public:
 
   /// emitProlog/emitEpilog - These methods insert prolog and epilog code into
   /// the function.
-  void emitPrologue(MachineFunction &MF) const;
-  void emitEpilogue(MachineFunction &MF, MachineBasicBlock &MBB) const;
+  void emitPrologue(MachineFunction &MF,
+		    MachineBasicBlock &MBB) const override;
+  void emitEpilogue(MachineFunction &MF,
+		    MachineBasicBlock &MBB) const override;
 
 	int getFrameIndexOffset(const MachineFunction& MF, int FI) const;
   bool hasFP(const MachineFunction &MF) const;
 
-	void eliminateCallFramePseudoInstr(MachineFunction &MF,
-			MachineBasicBlock &MBB, MachineBasicBlock::iterator MI) const;
+  MachineBasicBlock::iterator
+  eliminateCallFramePseudoInstr(MachineFunction &MF,
+				MachineBasicBlock &MBB,
+				MachineBasicBlock::iterator MI) const;
 
   bool
   spillCalleeSavedRegisters(MachineBasicBlock &MBB,

@@ -416,6 +416,9 @@ void ScalarBitSetTraits<ELFYAML::ELF_EF>::bitset(IO &IO,
     break;
   case ELF::EM_X86_64:
     break;
+  case ELF::EM_VIDEOCORE:
+    BCaseMask(EF_VIDEOCORE_ISA_V4, EF_VIDEOCORE_ISA);
+    break;
   default:
     llvm_unreachable("Unsupported architecture");
   }
@@ -654,6 +657,11 @@ void ScalarEnumerationTraits<ELFYAML::ELF_REL>::enumeration(
   case ELF::EM_BPF:
 #include "llvm/BinaryFormat/ELFRelocs/BPF.def"
     break;
+    /* FIX ME (konda)
+  case ELF::EM_VIDEOCORE:
+#include "llvm/BinaryFormat/ELFRelocs/VideoCore4.def"
+    break;
+    */
   default:
     llvm_unreachable("Unsupported architecture");
   }

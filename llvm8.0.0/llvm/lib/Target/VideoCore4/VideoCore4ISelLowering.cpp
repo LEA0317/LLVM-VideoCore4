@@ -39,10 +39,10 @@
 using namespace llvm;
 
 VideoCore4TargetLowering::VideoCore4TargetLowering(VideoCore4TargetMachine &tm) :
-	TargetLowering(tm, new TargetLoweringObjectFileELF()),
+        TargetLowering(tm),
 	Subtarget(*tm.getSubtargetImpl()) {
 
-	TD = getDataLayout();
+  //TD = getDataLayout();
 
 	// Set up the register classes.
 	addRegisterClass(MVT::i32, &VideoCore4::GR32RegClass);
@@ -52,7 +52,7 @@ VideoCore4TargetLowering::VideoCore4TargetLowering(VideoCore4TargetMachine &tm) 
 	//addRegisterClass(MVT::i32, &VideoCore4::IR32RegClass);
 
 	// Compute derived properties from the register classes
-	computeRegisterProperties();
+	computeRegisterProperties(Subtarget.getRegisterInfo());
 
 	setOperationAction(ISD::GlobalAddress, MVT::i32, Custom);
 	setOperationAction(ISD::BR_CC,         MVT::i32, Expand);
@@ -84,8 +84,10 @@ VideoCore4TargetLowering::VideoCore4TargetLowering(VideoCore4TargetMachine &tm) 
 	setBooleanContents(ZeroOrOneBooleanContent);
 
 	// Sign extend on some loads.
-	setLoadExtAction(ISD::SEXTLOAD, MVT::i1, Promote);
-	setLoadExtAction(ISD::SEXTLOAD, MVT::i8, Expand);
+	for (MVT VT : MVT::integer_valuetypes()) {
+	  setLoadExtAction(ISD::SEXTLOAD, VT, MVT::i1, Promote);
+	  setLoadExtAction(ISD::SEXTLOAD, VT, MVT::i8, Expand);
+	}
 
 	setOperationAction(ISD::STACKSAVE, MVT::Other, Expand);
 	setOperationAction(ISD::STACKRESTORE, MVT::Other, Expand);
@@ -107,17 +109,15 @@ LowerVAARG(SDValue Op, SelectionDAG &DAG) const
 	const Value *SV = cast<SrcValueSDNode>(Node->getOperand(2))->getValue();
 	SDLoc dl(Node);
 	SDValue VAList = DAG.getLoad(PtrVT, dl, InChain,
-															 VAListPtr, MachinePointerInfo(SV),
-															 false, false, false, 0);
+				     VAListPtr, MachinePointerInfo(SV));
 	// Increment the pointer, VAList, to the next vararg
 	SDValue nextPtr = DAG.getNode(ISD::ADD, dl, PtrVT, VAList,
-																DAG.getIntPtrConstant(VT.getSizeInBits() / 8));
+				      DAG.getIntPtrConstant(VT.getSizeInBits() / 8, dl));
 	// Store the incremented VAList to the legalized pointer
 	InChain = DAG.getStore(VAList.getValue(1), dl, nextPtr, VAListPtr,
-												 MachinePointerInfo(SV), false, false, 0);
+			       MachinePointerInfo(SV));
 	// Load the actual argument out of the pointer VAList
-	return DAG.getLoad(VT, dl, InChain, VAList, MachinePointerInfo(),
-										 false, false, false, 0);
+	return DAG.getLoad(VT, dl, InChain, VAList, MachinePointerInfo());
 }
 
 SDValue VideoCore4TargetLowering::
@@ -134,7 +134,7 @@ LowerVASTART(SDValue Op, SelectionDAG &DAG) const
 
 	SDValue Addr = DAG.getFrameIndex(XFI->VarArgsFrameIndex, MVT::i32);
 	return DAG.getStore(Op.getOperand(0), dl, Addr, Op.getOperand(1),
-											MachinePointerInfo(), false, false, 0);
+			    MachinePointerInfo());
 }
 
 SDValue VideoCore4TargetLowering::
@@ -156,7 +156,7 @@ LowerBR_JT(SDValue Op, SelectionDAG &DAG) const
 }
 
 SDValue VideoCore4TargetLowering::LowerOperation(SDValue Op, SelectionDAG &DAG) const {
-	EVT PtrVT = getPointerTy();
+        EVT PtrVT = getPointerTy(DAG.getDataLayout());
 	SDLoc dl(Op);
 	
 
@@ -247,13 +247,13 @@ VideoCore4TargetLowering::LowerCCCArguments(SDValue Chain,
 																					SmallVectorImpl<SDValue> &InVals)
 																					const {
 	MachineFunction &MF = DAG.getMachineFunction();
-	MachineFrameInfo *MFI = MF.getFrameInfo();
+	MachineFrameInfo &MFI = MF.getFrameInfo();
 	MachineRegisterInfo &RegInfo = MF.getRegInfo();
 
 	// Assign locations to all of the incoming arguments.
 	SmallVector<CCValAssign, 16> ArgLocs;
 	CCState CCInfo(CallConv, isVarArg, DAG.getMachineFunction(),
-								 getTargetMachine(), ArgLocs, *DAG.getContext());
+		       ArgLocs, *DAG.getContext());
 	CCInfo.AnalyzeFormalArguments(Ins, CC_VideoCore4);
 
 	SmallVector<SDValue, 5> CFRegNode;
@@ -297,7 +297,7 @@ VideoCore4TargetLowering::LowerCCCArguments(SDValue Chain,
 							 << "\n";
 			}
 			// Create the frame index object for this incoming parameter...
-			int FI = MFI->CreateFixedObject(ObjSize,
+			int FI = MFI.CreateFixedObject(ObjSize,
 																			LRSaveSize + VA.getLocMemOffset(),
 																			true);
 
@@ -305,8 +305,8 @@ VideoCore4TargetLowering::LowerCCCArguments(SDValue Chain,
 			//from this parameter
 			SDValue FIN = DAG.getFrameIndex(FI, MVT::i32);
 			ArgIn = DAG.getLoad(VA.getLocVT(), dl, Chain, FIN,
-													MachinePointerInfo::getFixedStack(FI),
-													false, false, false, 0);
+					    MachinePointerInfo::getFixedStack(MF,
+									      FI));
 		}
 		const ArgDataPair ADP = { ArgIn, Ins[i].Flags };
 		ArgData.push_back(ADP);
@@ -320,14 +320,14 @@ VideoCore4TargetLowering::LowerCCCArguments(SDValue Chain,
 			VideoCore4::R4, VideoCore4::R5
 		};
 		VideoCore4MachineFunctionInfo *XFI = MF.getInfo<VideoCore4MachineFunctionInfo>();
-		unsigned FirstVAReg = CCInfo.getFirstUnallocated(ArgRegs, array_lengthof(ArgRegs));
+		unsigned FirstVAReg = CCInfo.getFirstUnallocated(ArgRegs);
 		if (FirstVAReg < array_lengthof(ArgRegs)) {
 			int offset = 0;
 			// Save remaining registers, storing higher register numbers at a higher
 			// address
 			for (int i = array_lengthof(ArgRegs) - 1; i >= (int)FirstVAReg; --i) {
 				// Create a stack slot
-				int FI = MFI->CreateFixedObject(4, offset, true);
+				int FI = MFI.CreateFixedObject(4, offset, true);
 				if (i == (int)FirstVAReg) {
 					 XFI->VarArgsFrameIndex = (FI);
 				}
@@ -339,13 +339,14 @@ VideoCore4TargetLowering::LowerCCCArguments(SDValue Chain,
 				SDValue Val = DAG.getCopyFromReg(Chain, dl, VReg, MVT::i32);
 				CFRegNode.push_back(Val.getValue(Val->getNumValues() - 1));
 				// Move argument from virt reg -> stack
-				SDValue Store = DAG.getStore(Val.getValue(1), dl, Val, FIN,
-																		 MachinePointerInfo(), false, false, 0);
+				SDValue Store = DAG.getStore(Val.getValue(1),
+							     dl, Val, FIN,
+							     MachinePointerInfo());
 				MemOps.push_back(Store);
 			}
 		} else {
 			// This will point to the next argument passed via stack.
-			XFI->VarArgsFrameIndex = MFI->CreateFixedObject(4, LRSaveSize + CCInfo.getNextStackOffset(), true);
+			XFI->VarArgsFrameIndex = MFI.CreateFixedObject(4, LRSaveSize + CCInfo.getNextStackOffset(), true);
 		}
 	}
 
@@ -364,14 +365,23 @@ VideoCore4TargetLowering::LowerCCCArguments(SDValue Chain,
 			unsigned Size = ArgDI->Flags.getByValSize();
 			unsigned Align = std::max(StackSlotSize, ArgDI->Flags.getByValAlign());
 			// Create a new object on the stack and copy the pointee into it.
-			int FI = MFI->CreateStackObject(Size, Align, false);
+			int FI = MFI.CreateStackObject(Size, Align, false);
 			SDValue FIN = DAG.getFrameIndex(FI, MVT::i32);
 			InVals.push_back(FIN);
-			MemOps.push_back(DAG.getMemcpy(Chain, dl, FIN, ArgDI->SDV,
-																		 DAG.getConstant(Size, MVT::i32),
-																		 Align, false, false,
-																		 MachinePointerInfo(),
-																		 MachinePointerInfo()));
+			MemOps.push_back(DAG.getMemcpy(Chain,
+						       dl,
+						       FIN,
+						       ArgDI->SDV,
+						       DAG.getConstant(Size,
+								       dl,
+								       MVT::i32),
+						       
+						       Align,
+						       false,
+						       false,
+						       false,
+						       MachinePointerInfo(),
+						       MachinePointerInfo()));
 		} else {
 			InVals.push_back(ArgDI->SDV);
 		}
@@ -398,7 +408,7 @@ VideoCore4TargetLowering::LowerReturn(SDValue Chain,
 
 	// CCState - Info about the registers and stack slot.
 	CCState CCInfo(CallConv, isVarArg, DAG.getMachineFunction(),
-								 getTargetMachine(), RVLocs, *DAG.getContext());
+		       RVLocs, *DAG.getContext());
 
 	// Analize return values.
 	CCInfo.AnalyzeReturn(Outs, RetCC_VideoCore4);
@@ -502,7 +512,7 @@ VideoCore4TargetLowering::LowerCCCCallTo(SDValue Chain, SDValue Callee,
   // Analyze operands of the call, assigning locations to each operand.
   SmallVector<CCValAssign, 16> ArgLocs;
   CCState CCInfo(CallConv, isVarArg, DAG.getMachineFunction(),
-                 getTargetMachine(), ArgLocs, *DAG.getContext());
+                 ArgLocs, *DAG.getContext());
 
   // The ABI dictates there should be one stack slot available to the callee
   // on function entry (for saving lr).
@@ -515,15 +525,17 @@ VideoCore4TargetLowering::LowerCCCCallTo(SDValue Chain, SDValue Callee,
   SmallVector<CCValAssign, 16> RVLocs;
   // Analyze return values to determine the number of bytes of stack required.
   CCState RetCCInfo(CallConv, isVarArg, DAG.getMachineFunction(),
-                    getTargetMachine(), RVLocs, *DAG.getContext());
+		    RVLocs, *DAG.getContext());
   RetCCInfo.AllocateStack(CCInfo.getNextStackOffset(), 4);
   RetCCInfo.AnalyzeCallResult(Ins, RetCC_VideoCore4);
 
   // Get a count of how many bytes are to be pushed on the stack.
   unsigned NumBytes = RetCCInfo.getNextStackOffset();
 
-  Chain = DAG.getCALLSEQ_START(Chain,DAG.getConstant(NumBytes,
-                                 getPointerTy(), true), dl);
+  Chain = DAG.getCALLSEQ_START(Chain,
+			       NumBytes,
+			       0,
+			       dl);
 
   SmallVector<std::pair<unsigned, SDValue>, 5> RegsToPass;
   SmallVector<SDValue, 12> MemOpChains;
@@ -556,14 +568,14 @@ VideoCore4TargetLowering::LowerCCCCallTo(SDValue Chain, SDValue Callee,
       assert(VA.isMemLoc());
 
 			if (StackPtr.getNode() == 0)
-				StackPtr = DAG.getCopyFromReg(Chain, dl, VideoCore4::SP, getPointerTy());
+				StackPtr = DAG.getCopyFromReg(Chain, dl, VideoCore4::SP, getPointerTy(DAG.getDataLayout()));
 
-			SDValue PtrOff = DAG.getNode(ISD::ADD, dl, getPointerTy(),
+			SDValue PtrOff = DAG.getNode(ISD::ADD, dl, getPointerTy(DAG.getDataLayout()),
 																	 StackPtr,
-																	 DAG.getIntPtrConstant(VA.getLocMemOffset()));
+						     DAG.getIntPtrConstant(VA.getLocMemOffset(), dl));
 
 			MemOpChains.push_back(DAG.getStore(Chain, dl, Arg, PtrOff,
-																				 MachinePointerInfo(),false, false, 0));
+																				 MachinePointerInfo()));
     }
   }
 
@@ -614,9 +626,14 @@ VideoCore4TargetLowering::LowerCCCCallTo(SDValue Chain, SDValue Callee,
 
   // Create the CALLSEQ_END node.
   Chain = DAG.getCALLSEQ_END(Chain,
-                             DAG.getConstant(NumBytes, getPointerTy(), true),
-                             DAG.getConstant(0, getPointerTy(), true),
-                             InFlag, dl);
+			     DAG.getIntPtrConstant(NumBytes,
+						   dl,
+						   true),
+                             DAG.getIntPtrConstant(0,
+						   dl,
+						   true),
+                             InFlag,
+			     dl);
   InFlag = Chain.getValue(1);
 
   // Handle result values, copying them out of physregs into vregs that we

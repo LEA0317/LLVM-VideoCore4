@@ -14,7 +14,9 @@ using namespace llvm;
 
 Target llvm::TheVideoCore4Target;
 
-extern "C" void LLVMInitializeVideoCore4TargetInfo() { 
-  RegisterTarget<Triple::vc4> 
-    X(TheVideoCore4Target, "vc4", "VideoCore4 [demonstration]");
+extern "C" void LLVMInitializeVideoCore4TargetInfo() {
+  RegisterTarget<Triple::videocore, /*HasJIT=*/true> X(TheVideoCore4Target,
+                                                       "videocore",
+                                                       "VideoCore LittleEndian",
+                                                       "VideoCore");
 }

@@ -1,0 +1,42 @@
+Stack dump:
+0.	Program arguments: /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8 -cc1 -triple videocore -emit-llvm -flto=thin -flto-unit -disable-free -disable-llvm-verifier -discard-value-names -main-file-name sub.cpp -mrelocation-model static -mthread-model posix -mdisable-fp-elim -fmath-errno -no-integrated-as -mconstructor-aliases -target-cpu vc4 -dwarf-column-info -debugger-tuning=gdb -coverage-notes-file /home/konda/work/my_github/LLVM-VideoCORE4/playground/sub.gcno -resource-dir /mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/lib/clang/8.0.0 -O3 -fdeprecated-macro -fno-dwarf-directory-asm -fdebug-compilation-dir /home/konda/work/my_github/LLVM-VideoCORE4/playground -ferror-limit 19 -fmessage-length 0 -fobjc-runtime=gcc -fcxx-exceptions -fexceptions -fdiagnostics-show-option -vectorize-loops -vectorize-slp -o sub.ll -x c++ sub.cpp 
+1.	<eof> parser at end of file
+ #0 0x000055c28938528a llvm::sys::PrintStackTrace(llvm::raw_ostream&) (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0x150c28a)
+ #1 0x000055c289383224 llvm::sys::RunSignalHandlers() (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0x150a224)
+ #2 0x000055c289383362 SignalHandler(int) (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0x150a362)
+ #3 0x00007fc141843890 __restore_rt (/lib/x86_64-linux-gnu/libpthread.so.0+0x12890)
+ #4 0x000055c288bc47f1 llvm::TargetLoweringBase::findRepresentativeClass(llvm::TargetRegisterInfo const*, llvm::MVT) const (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0xd4b7f1)
+ #5 0x000055c288bc5fe2 llvm::TargetLoweringBase::computeRegisterProperties(llvm::TargetRegisterInfo const*) (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0xd4cfe2)
+ #6 0x000055c28880f3ae llvm::VideoCore4TargetLowering::VideoCore4TargetLowering(llvm::VideoCore4TargetMachine&) (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0x9963ae)
+ #7 0x000055c28880ae74 llvm::VideoCore4TargetMachine::VideoCore4TargetMachine(llvm::Target const&, llvm::Triple const&, llvm::StringRef, llvm::StringRef, llvm::TargetOptions const&, llvm::Optional<llvm::Reloc::Model>, llvm::Optional<llvm::CodeModel::Model>, llvm::CodeGenOpt::Level, bool) (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0x991e74)
+ #8 0x000055c28880afca llvm::RegisterTargetMachine<llvm::VideoCore4TargetMachine>::Allocator(llvm::Target const&, llvm::Triple const&, llvm::StringRef, llvm::StringRef, llvm::TargetOptions const&, llvm::Optional<llvm::Reloc::Model>, llvm::Optional<llvm::CodeModel::Model>, llvm::CodeGenOpt::Level, bool) (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0x991fca)
+ #9 0x000055c289583f5d (anonymous namespace)::EmitAssemblyHelper::CreateTargetMachine(bool) (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0x170af5d)
+#10 0x000055c289588e70 (anonymous namespace)::EmitAssemblyHelper::EmitAssembly(clang::BackendAction, std::unique_ptr<llvm::raw_pwrite_stream, std::default_delete<llvm::raw_pwrite_stream> >) (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0x170fe70)
+#11 0x000055c28958bbbb clang::EmitBackendOutput(clang::DiagnosticsEngine&, clang::HeaderSearchOptions const&, clang::CodeGenOptions const&, clang::TargetOptions const&, clang::LangOptions const&, llvm::DataLayout const&, llvm::Module*, clang::BackendAction, std::unique_ptr<llvm::raw_pwrite_stream, std::default_delete<llvm::raw_pwrite_stream> >) (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0x1712bbb)
+#12 0x000055c289ec01af clang::BackendConsumer::HandleTranslationUnit(clang::ASTContext&) (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0x20471af)
+#13 0x000055c28a9920e9 clang::ParseAST(clang::Sema&, bool, bool) (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0x2b190e9)
+#14 0x000055c289ebf027 clang::CodeGenAction::ExecuteAction() (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0x2046027)
+#15 0x000055c289a1be26 clang::FrontendAction::Execute() (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0x1ba2e26)
+#16 0x000055c2899dd98c clang::CompilerInstance::ExecuteAction(clang::FrontendAction&) (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0x1b6498c)
+#17 0x000055c289ad5a43 clang::ExecuteCompilerInvocation(clang::CompilerInstance*) (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0x1c5ca43)
+#18 0x000055c2885bd578 cc1_main(llvm::ArrayRef<char const*>, char const*, void*) (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0x744578)
+#19 0x000055c2885519bf main (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0x6d89bf)
+#20 0x00007fc1404d7b97 __libc_start_main /build/glibc-OTsEL5/glibc-2.27/csu/../csu/libc-start.c:344:0
+#21 0x000055c2885ba9ea _start (/mnt/work/my_github/LLVM-VideoCORE4/llvm8.0.0/llvm/build/bin/clang-8+0x7419ea)
+clang-8: error: unable to execute command: Segmentation fault (core dumped)
+clang-8: error: clang frontend command failed due to signal (use -v to see invocation)
+clang version 8.0.0 
+Target: videocore
+Thread model: posix
+InstalledDir: /home/konda/work/my_github/LLVM-VideoCORE4/playground/../llvm8.0.0/llvm/build/bin
+clang-8: note: diagnostic msg: PLEASE submit a bug report to https://bugs.llvm.org/ and include the crash backtrace, preprocessed source, and associated run script.
+clang-8: note: diagnostic msg: 
+********************
+
+PLEASE ATTACH THE FOLLOWING FILES TO THE BUG REPORT:
+Preprocessed source(s) and associated run script(s) are located at:
+clang-8: note: diagnostic msg: /tmp/sub-cc5a96.cpp
+clang-8: note: diagnostic msg: /tmp/sub-cc5a96.sh
+clang-8: note: diagnostic msg: 
+
+********************

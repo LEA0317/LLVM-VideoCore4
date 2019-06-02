@@ -22,7 +22,7 @@
 #include "VideoCore4RegisterInfo.h"
 #include "VideoCore4Subtarget.h"
 #include "llvm/IR/DataLayout.h"
-#include "llvm/Target/TargetFrameLowering.h"
+#include "llvm/CodeGen/TargetFrameLowering.h"
 #include "llvm/Target/TargetMachine.h"
 
 namespace llvm {
@@ -38,11 +38,16 @@ class VideoCore4TargetMachine : public LLVMTargetMachine {
   VideoCore4FrameLowering    FrameLowering;
 
 public:
-  VideoCore4TargetMachine(const Target &T, StringRef TT,
-                        StringRef CPU, StringRef FS, const TargetOptions &Options,
-                        Reloc::Model RM, CodeModel::Model CM,
-                        CodeGenOpt::Level OL);
-
+  VideoCore4TargetMachine(const Target &T,
+			  const Triple &TT,
+			  StringRef CPU,
+			  StringRef FS,
+			  const TargetOptions &Options,
+			  Optional<Reloc::Model> RM,
+			  Optional<CodeModel::Model> CM,
+			  CodeGenOpt::Level OL,
+			  bool JIT);
+  
   virtual const TargetFrameLowering *getFrameLowering() const {
     return &FrameLowering;
   }

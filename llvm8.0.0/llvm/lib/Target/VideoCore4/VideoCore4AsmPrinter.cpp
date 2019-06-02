@@ -39,10 +39,11 @@ using namespace llvm;
 namespace llvm {
 	class VideoCore4AsmPrinter : public AsmPrinter {
 	public:
-		VideoCore4AsmPrinter(TargetMachine &TM, MCStreamer &Streamer)
-			: AsmPrinter(TM, Streamer) {}
+	  explicit VideoCore4AsmPrinter(TargetMachine              &TM,
+					std::unique_ptr<MCStreamer> Streamer)
+	    : AsmPrinter(TM, std::move(Streamer)) {}
 
-		virtual const char *getPassName() const {
+		virtual StringRef getPassName() const {
 			return "VideoCore4 Assembly Printer";
 		}
 
@@ -52,7 +53,7 @@ namespace llvm {
 
 	//===----------------------------------------------------------------------===//
 	void VideoCore4AsmPrinter::EmitInstruction(const MachineInstr *MI) {
-		VideoCore4MCInstLower MCInstLowering(OutContext, *Mang, *this);
+	  VideoCore4MCInstLower MCInstLowering(OutContext, *this);
 
 		SmallString<256> Str;
 		raw_svector_ostream O(Str);
@@ -77,14 +78,14 @@ namespace llvm {
 					O << "\tbeq " << *MBB->getSymbol() << "\n";
 				}
 
-  				OutStreamer.EmitRawText(O.str());
+  				OutStreamer->EmitRawText(O.str());
 				return;
 			}	
 		}
 
 		MCInst TmpInst;
 		MCInstLowering.Lower(MI, TmpInst);
-		EmitToStreamer(OutStreamer, TmpInst);
+		EmitToStreamer((*OutStreamer), TmpInst);
 	}
 }
 

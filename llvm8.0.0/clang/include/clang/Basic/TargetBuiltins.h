@@ -200,6 +200,14 @@ namespace clang {
     };
   }
 
+  namespace VideoCore4 {
+    enum {
+      LastTIBuiltin = clang::Builtin::FirstTSBuiltin-1,
+#define BUILTIN(ID, TYPE, ATTRS) BI##ID,
+#include "clang/Basic/BuiltinsVideoCore4.def"
+      LastTSBuiltin
+    };
+  }
 } // end namespace clang.
 
 #endif

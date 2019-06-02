@@ -25,8 +25,10 @@ using namespace llvm;
 // Include the auto-generated portion of the assembly writer.
 #include "VideoCore4GenAsmWriter.inc"
 
-void VideoCore4InstPrinter::printInst(const MCInst *MI, raw_ostream &O,
-                                  StringRef Annot) {
+void VideoCore4InstPrinter::printInst(const MCInst          *MI,
+				      raw_ostream           &O,
+				      StringRef              Annot,
+				      const MCSubtargetInfo &STI) {
   printInstruction(MI, O);
   printAnnotation(O, Annot);
 }

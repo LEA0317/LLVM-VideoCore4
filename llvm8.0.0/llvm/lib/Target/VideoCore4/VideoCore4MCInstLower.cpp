@@ -38,42 +38,42 @@ void VideoCore4MCInstLower::Lower(const MachineInstr *MI, MCInst &OutMI) const {
     MCOperand MCOp;
     switch (MO.getType()) {
 			default:
-				MI->dump();
+			  //MI->dump();
 				llvm_unreachable("unknown operand type");
 
 			case MachineOperand::MO_Register:
 				// Ignore all implicit register operands.
 				if (MO.isImplicit()) continue;
-				MCOp = MCOperand::CreateReg(MO.getReg());
+				MCOp = MCOperand::createReg(MO.getReg());
 				break;
 
 			case MachineOperand::MO_Immediate:
-				MCOp = MCOperand::CreateImm(MO.getImm());
+				MCOp = MCOperand::createImm(MO.getImm());
 				break;
 
 			case MachineOperand::MO_FPImmediate:
 			{
 				APFloat val = MO.getFPImm()->getValueAPF();
 				//MCOp = MCOperand::CreateFPImm(MO.getFPImm());
-				MCOp = MCOperand::CreateImm(*val.bitcastToAPInt().getRawData());
+				MCOp = MCOperand::createImm(*val.bitcastToAPInt().getRawData());
 				break;
 			}
 
 			case MachineOperand::MO_MachineBasicBlock:
 			{
 				const MCSymbol* symbol = MO.getMBB()->getSymbol();
-				const MCSymbolRefExpr* MCSym = MCSymbolRefExpr::Create(symbol, MC);
+				const MCSymbolRefExpr* MCSym = MCSymbolRefExpr::create(symbol, MC);
 				//const MCExpr* ME = MCSymbolRefExpr::Create(symbol, MCSymbolRefExpr::VK_None, MC);
-				MCOp = MCOperand::CreateExpr(MCSym);
+				MCOp = MCOperand::createExpr(MCSym);
 				break;
 			}
 
 			case MachineOperand::MO_GlobalAddress:
 			{
 				const MCSymbol* symbol = AP.getSymbol(MO.getGlobal());
-				const MCSymbolRefExpr* MCSym = MCSymbolRefExpr::Create(symbol, MC);
+				const MCSymbolRefExpr* MCSym = MCSymbolRefExpr::create(symbol, MC);
 				//const MCExpr* ME = MCSymbolRefExpr::Create(symbol, MCSymbolRefExpr::VK_None, MC);
-				MCOp = MCOperand::CreateExpr(MCSym);
+				MCOp = MCOperand::createExpr(MCSym);
 				break;
 			}
 

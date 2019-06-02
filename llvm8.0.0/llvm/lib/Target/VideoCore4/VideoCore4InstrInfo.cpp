@@ -61,10 +61,11 @@ void VideoCore4InstrInfo::storeRegToStackSlot(MachineBasicBlock &MBB, MachineBas
   if (I != MBB.end())
 	  DL = I->getDebugLoc();
 
-  MachineFunction *MF = MBB.getParent();
-  const MachineFrameInfo &MFI = *MF->getFrameInfo();
+  MachineFunction &MF = *MBB.getParent();
+  const MachineFrameInfo &MFI = MF.getFrameInfo();
   MachineMemOperand *MMO =
-    MF->getMachineMemOperand(MachinePointerInfo::getFixedStack(FI),
+    MF.getMachineMemOperand(MachinePointerInfo::getFixedStack(MF,
+							      FI),
                              MachineMemOperand::MOStore,
                              MFI.getObjectSize(FI),
                              MFI.getObjectAlignment(FI));
@@ -84,10 +85,11 @@ void VideoCore4InstrInfo::loadRegFromStackSlot(MachineBasicBlock &MBB, MachineBa
   if (I != MBB.end())
 	  DL = I->getDebugLoc();
 
-  MachineFunction *MF = MBB.getParent();
-  const MachineFrameInfo &MFI = *MF->getFrameInfo();
+  MachineFunction &MF = *MBB.getParent();
+  const MachineFrameInfo &MFI = MF.getFrameInfo();
   MachineMemOperand *MMO =
-    MF->getMachineMemOperand(MachinePointerInfo::getFixedStack(FI),
+    MF.getMachineMemOperand(MachinePointerInfo::getFixedStack(MF,
+							      FI),
                              MachineMemOperand::MOStore,
                              MFI.getObjectSize(FI),
                              MFI.getObjectAlignment(FI));
@@ -139,7 +141,7 @@ bool VideoCore4InstrInfo::AnalyzeBranch(MachineBasicBlock &MBB, MachineBasicBloc
                           bool AllowModify) const
 {
 	MachineBasicBlock::iterator I = MBB.end();
-	MachineInstr *LastInst = I;
+	MachineInstr *LastInst = &(*I);
 
 	//LastInst->getOpcode()
 
