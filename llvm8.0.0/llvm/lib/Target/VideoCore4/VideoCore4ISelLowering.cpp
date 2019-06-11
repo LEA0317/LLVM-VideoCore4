@@ -38,62 +38,70 @@
 #include "llvm/Support/raw_ostream.h"
 using namespace llvm;
 
-VideoCore4TargetLowering::VideoCore4TargetLowering(VideoCore4TargetMachine &tm) :
+VideoCore4TargetLowering*
+VideoCore4TargetLowering::create(const VideoCore4TargetMachine &TM) {
+  return new llvm::VideoCore4TargetLowering(TM);
+}
+
+VideoCore4TargetLowering::VideoCore4TargetLowering(const VideoCore4TargetMachine &tm) :
         TargetLowering(tm),
 	Subtarget(*tm.getSubtargetImpl()) {
 
+  MaxStoresPerMemset  = (unsigned) 0xffffffff;
+  MaxStoresPerMemcpy  = (unsigned) 0xffffffff;
+  MaxStoresPerMemmove = (unsigned) 0xffffffff;
   //TD = getDataLayout();
 
-	// Set up the register classes.
-	addRegisterClass(MVT::i32, &VideoCore4::GR32RegClass);
-	addRegisterClass(MVT::f32, &VideoCore4::GR32RegClass);
-	addRegisterClass(MVT::i32, &VideoCore4::FR32RegClass);
-	addRegisterClass(MVT::f32, &VideoCore4::FR32RegClass);
-	//addRegisterClass(MVT::i32, &VideoCore4::IR32RegClass);
-
-	// Compute derived properties from the register classes
-	computeRegisterProperties(Subtarget.getRegisterInfo());
-
-	setOperationAction(ISD::GlobalAddress, MVT::i32, Custom);
-	setOperationAction(ISD::BR_CC,         MVT::i32, Expand);
-	setOperationAction(ISD::BR_CC,         MVT::f32, Expand);
-	setOperationAction(ISD::SELECT_CC,     MVT::i32, Expand);
-
-	setOperationAction(ISD::ADDC, MVT::i32, Expand);
-	setOperationAction(ISD::ADDE, MVT::i32, Expand);
-	setOperationAction(ISD::SUBC, MVT::i32, Expand);
-	setOperationAction(ISD::SUBE, MVT::i32, Expand);
+  // Set up the register classes.
+  addRegisterClass(MVT::i32, &VideoCore4::GR32RegClass);
+  addRegisterClass(MVT::f32, &VideoCore4::GR32RegClass);
+  addRegisterClass(MVT::i32, &VideoCore4::FR32RegClass);
+  addRegisterClass(MVT::f32, &VideoCore4::FR32RegClass);
+  //addRegisterClass(MVT::i32, &VideoCore4::IR32RegClass);
   
-	setOperationAction(ISD::ConstantFP,    MVT::f32, Legal);
-
-	setOperationAction(ISD::UDIV,          MVT::i32, Legal);
-	setOperationAction(ISD::SDIV,          MVT::i32, Legal);
-
-	//setOperationAction(ISD::MULHU,         MVT::i32, Expand);
-	setOperationAction(ISD::UREM,          MVT::i32, Expand);
-	setOperationAction(ISD::UDIVREM,       MVT::i32, Expand);
-
-	setOperationAction(ISD::BR_JT, MVT::Other, Custom);
-
-	// Varargs
-	setOperationAction(ISD::VAEND, MVT::Other, Expand);
-	setOperationAction(ISD::VACOPY, MVT::Other, Expand);
-	setOperationAction(ISD::VAARG, MVT::Other, Custom);
-	setOperationAction(ISD::VASTART, MVT::Other, Custom);
-
-	setBooleanContents(ZeroOrOneBooleanContent);
-
-	// Sign extend on some loads.
-	for (MVT VT : MVT::integer_valuetypes()) {
-	  setLoadExtAction(ISD::SEXTLOAD, VT, MVT::i1, Promote);
-	  setLoadExtAction(ISD::SEXTLOAD, VT, MVT::i8, Expand);
-	}
-
-	setOperationAction(ISD::STACKSAVE, MVT::Other, Expand);
-	setOperationAction(ISD::STACKRESTORE, MVT::Other, Expand);
-
-	setMinFunctionAlignment(1);
-	setPrefFunctionAlignment(1);
+  // Compute derived properties from the register classes
+  computeRegisterProperties(Subtarget.getRegisterInfo());
+  
+  setOperationAction(ISD::GlobalAddress, MVT::i32, Custom);
+  setOperationAction(ISD::BR_CC,         MVT::i32, Expand);
+  setOperationAction(ISD::BR_CC,         MVT::f32, Expand);
+  setOperationAction(ISD::SELECT_CC,     MVT::i32, Expand);
+  
+  setOperationAction(ISD::ADDC, MVT::i32, Expand);
+  setOperationAction(ISD::ADDE, MVT::i32, Expand);
+  setOperationAction(ISD::SUBC, MVT::i32, Expand);
+  setOperationAction(ISD::SUBE, MVT::i32, Expand);
+  
+  setOperationAction(ISD::ConstantFP,    MVT::f32, Legal);
+  
+  setOperationAction(ISD::UDIV,          MVT::i32, Legal);
+  setOperationAction(ISD::SDIV,          MVT::i32, Legal);
+  
+  //setOperationAction(ISD::MULHU,         MVT::i32, Expand);
+  setOperationAction(ISD::UREM,          MVT::i32, Expand);
+  setOperationAction(ISD::UDIVREM,       MVT::i32, Expand);
+  
+  setOperationAction(ISD::BR_JT, MVT::Other, Custom);
+  
+  // Varargs
+  setOperationAction(ISD::VAEND, MVT::Other, Expand);
+  setOperationAction(ISD::VACOPY, MVT::Other, Expand);
+  setOperationAction(ISD::VAARG, MVT::Other, Custom);
+  setOperationAction(ISD::VASTART, MVT::Other, Custom);
+  
+  setBooleanContents(ZeroOrOneBooleanContent);
+  
+  // Sign extend on some loads.
+  for (MVT VT : MVT::integer_valuetypes()) {
+    setLoadExtAction(ISD::SEXTLOAD, VT, MVT::i1, Promote);
+    setLoadExtAction(ISD::SEXTLOAD, VT, MVT::i8, Expand);
+  }
+  
+  setOperationAction(ISD::STACKSAVE, MVT::Other, Expand);
+  setOperationAction(ISD::STACKRESTORE, MVT::Other, Expand);
+  
+  setMinFunctionAlignment(1);
+  setPrefFunctionAlignment(1);
 }
 
 SDValue VideoCore4TargetLowering::

@@ -27,6 +27,11 @@
 
 using namespace llvm;
 
+VideoCore4FrameLowering*
+VideoCore4FrameLowering::create(const VideoCore4Subtarget &ST) {
+  return new llvm::VideoCore4FrameLowering(ST);
+}
+
 /* Our stack frame is going to look like this:
  *
  *       HI

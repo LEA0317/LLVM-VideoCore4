@@ -40,14 +40,14 @@ using namespace llvm;
 ///
 namespace {
   class VideoCore4DAGToDAGISel : public SelectionDAGISel {
-    const VideoCore4TargetLowering &Lowering;
-    const VideoCore4Subtarget &Subtarget;
+    //const VideoCore4TargetLowering &Lowering;
+    //const VideoCore4Subtarget &Subtarget;
 
   public:
     VideoCore4DAGToDAGISel(VideoCore4TargetMachine &TM, CodeGenOpt::Level OptLevel)
-      : SelectionDAGISel(TM, OptLevel),
-        Lowering(*TM.getTargetLowering()),
-        Subtarget(*TM.getSubtargetImpl()) { }
+      : SelectionDAGISel(TM, OptLevel) {}
+        //Lowering(*TM.getTargetLowering()),
+        //Subtarget(*TM.getSubtargetImpl()) { }
 
     virtual StringRef getPassName() const {
       return "VideoCore4 DAG->DAG Pattern Instruction Selection";

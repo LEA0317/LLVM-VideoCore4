@@ -11,8 +11,18 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "VideoCore4Subtarget.h"
 #include "VideoCore4.h"
+#include "VideoCore4ISelLowering.h"
+#include "VideoCore4RegisterInfo.h"
+#include "VideoCore4Subtarget.h"
+#include "VideoCore4FrameLowering.h"
+#include "VideoCore4TargetMachine.h"
+
+#include "llvm/IR/Attributes.h"
+#include "llvm/IR/Function.h"
+#include "llvm/IR/MDBuilder.h"
+#include "llvm/Support/CommandLine.h"
+#include "llvm/Support/ErrorHandling.h"
 #include "llvm/Support/TargetRegistry.h"
 
 #define DEBUG_TYPE "vc4-subtarget"
@@ -23,12 +33,17 @@
 
 using namespace llvm;
 
-void VideoCore4Subtarget::anchor() { }
-
 VideoCore4Subtarget::VideoCore4Subtarget(const Triple &TT,
 					 StringRef CPU,
-					 StringRef FS) :
-  VideoCore4GenSubtargetInfo(TT, CPU, FS) {
+					 StringRef FS,
+					 const VideoCore4TargetMachine &_TM) :
+  VideoCore4GenSubtargetInfo(TT, CPU, FS), TM(_TM), TSInfo(),
+  InstrInfo(VideoCore4InstrInfo::create(initializeSubtargetDependencies(CPU,
+									FS,
+									TM))),
+  FrameLowering(VideoCore4FrameLowering::create(*this)),
+  TLInfo(VideoCore4TargetLowering::create(TM)) {
+
   std::string CPUName = CPU;
 
   if (CPUName.empty()) {
@@ -39,4 +54,25 @@ VideoCore4Subtarget::VideoCore4Subtarget(const Triple &TT,
 
   // Parse features string.
   ParseSubtargetFeatures(CPUName, FS);
+}
+
+VideoCore4Subtarget&
+VideoCore4Subtarget::initializeSubtargetDependencies(StringRef            CPU,
+						     StringRef            FS,
+						     const TargetMachine &TM) {
+  std::string CPUName = CPU;
+
+  if (CPUName.empty()) {
+    CPUName = "generic";
+  } else {
+    CPUName = "vc4";
+  }
+
+  InstrItins = getInstrItineraryForCPU(CPUName);
+
+  // Parse features string.                                                                                                                                                                                 
+  ParseSubtargetFeatures(CPUName,
+                         FS);
+
+  return *this;
 }

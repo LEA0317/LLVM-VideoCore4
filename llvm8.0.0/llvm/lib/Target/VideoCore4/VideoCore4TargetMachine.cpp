@@ -12,14 +12,20 @@
 //===----------------------------------------------------------------------===//
 
 #include "VideoCore4TargetMachine.h"
+#include "VideoCore4TargetTransformInfo.h"
 #include "VideoCore4.h"
 #include "llvm/CodeGen/Passes.h"
 #include "llvm/MC/MCAsmInfo.h"
 #include "llvm/IR/LegacyPassManager.h"
 #include "llvm/Support/TargetRegistry.h"
 #include "llvm/CodeGen/TargetPassConfig.h"
+#include "llvm/Analysis/TargetTransformInfo.h"
+#include "llvm/CodeGen/BasicTTIImpl.h"
 #include "llvm/Transforms/Scalar.h"
 #include "llvm/Transforms/Scalar/GVN.h"
+#include "llvm/Support/raw_ostream.h"
+#include "llvm/Support/Debug.h"
+#include "llvm/Support/ErrorHandling.h"
 
 using namespace llvm;
 
@@ -55,11 +61,11 @@ computeDataLayout(const Triple        &TT,
   else
     Ret += "E";
 
-  Ret += "-m:m";
-  Ret += "-p:32:32";
-  Ret += "-i8:8:32-i16:16:32";
+  //Ret += "-m:m";
+  Ret += "-p:32:32:32";
+  Ret += "-i8:8:8-i16:16:16";
+  Ret += "-i32:32:32-f32:32:32";
   Ret += "-n32-S32";
-
   return Ret;
 }
 
@@ -75,15 +81,12 @@ VideoCore4TargetMachine::VideoCore4TargetMachine(const Target &T,
   : LLVMTargetMachine(T, computeDataLayout(TT,
 					   CPU,
 					   Options,
-					   true/*isLittle*/),
+					   true /*isLittle*/),
 		      TT, CPU, FS, Options,
 		      getEffectiveRelocModel(JIT, RM),
 		      getVideoCore4EffectiveCodeModel(CM), OL),
-    Subtarget(TT, CPU, FS),
-    // FIXME: Check TargetData string.
-    DL("e-p:32:32:32-i8:8:8-i16:16:16-i32:32:32-f32:32:32-n32-S32"),
-    InstrInfo(*this), TLInfo(*this), TSInfo(*this),
-    FrameLowering(Subtarget) {
+    Subtarget(TT, CPU, FS, *this),
+    DL("e-p:32:32:32-i8:8:8-i16:16:16-i32:32:32-f32:32:32-n32-S32") {
 	initAsmInfo();
     }
 
@@ -98,21 +101,30 @@ public:
     return getTM<VideoCore4TargetMachine>();
   }
 
-  bool addILPOpts()                override;
   bool addInstSelector()           override;
+  /*
+  bool addILPOpts()                override;
   void addIRPasses()               override;
   void addMachineSSAOptimization() override;
   void addPreEmitPass()            override;
   bool addPreISel()                override;
   void addPreRegAlloc()            override;
   void addPreSched2()              override;
+  */
 };
 } // namespace
+
+TargetTransformInfo
+VideoCore4TargetMachine::getTargetTransformInfo(const Function &F) {
+  return TargetTransformInfo(VideoCore4TTIImpl(this, F));
+}
+
 
 TargetPassConfig *VideoCore4TargetMachine::createPassConfig(PassManagerBase &PM) {
   return new VideoCore4PassConfig(*this, PM);
 }
 
+/*
 bool
 VideoCore4PassConfig::addILPOpts() {
   addPass(&MachineCombinerID);
@@ -165,13 +177,15 @@ void
 VideoCore4PassConfig::addPreSched2() {
   addPass(&IfConverterID);
 }
-
+*/
+  
 bool
 VideoCore4PassConfig::addInstSelector() {
   addPass(createVideoCore4ISelDag(getVideoCore4TargetMachine(), getOptLevel()));
   return false;
 }
 
+/*
 void
 VideoCore4PassConfig::addPreRegAlloc() {
   addPass(&PeepholeOptimizerID);
@@ -183,3 +197,4 @@ void
 VideoCore4PassConfig::addPreEmitPass() {
   return;
 }
+*/

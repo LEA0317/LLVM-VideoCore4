@@ -32,10 +32,6 @@ namespace llvm {
 class VideoCore4TargetMachine : public LLVMTargetMachine {
   VideoCore4Subtarget        Subtarget;
   const DataLayout           DL;       // Calculates type size & alignment
-  VideoCore4InstrInfo        InstrInfo;
-  VideoCore4TargetLowering   TLInfo;
-  VideoCore4SelectionDAGInfo TSInfo;
-  VideoCore4FrameLowering    FrameLowering;
 
 public:
   VideoCore4TargetMachine(const Target &T,
@@ -47,25 +43,11 @@ public:
 			  Optional<CodeModel::Model> CM,
 			  CodeGenOpt::Level OL,
 			  bool JIT);
-  
-  virtual const TargetFrameLowering *getFrameLowering() const {
-    return &FrameLowering;
-  }
-  virtual const VideoCore4InstrInfo *getInstrInfo() const  { return &InstrInfo; }
+
+  TargetTransformInfo getTargetTransformInfo(const Function &F) override;
+
   virtual const DataLayout *getDataLayout() const     { return &DL;}
   virtual const VideoCore4Subtarget *getSubtargetImpl() const { return &Subtarget; }
-
-  virtual const TargetRegisterInfo *getRegisterInfo() const {
-    return &InstrInfo.getRegisterInfo();
-  }
-
-  virtual const VideoCore4TargetLowering *getTargetLowering() const {
-    return &TLInfo;
-  }
-
-  virtual const VideoCore4SelectionDAGInfo* getSelectionDAGInfo() const {
-    return &TSInfo;
-  }
 
   virtual TargetPassConfig *createPassConfig(PassManagerBase &PM);
 }; // VideoCore4TargetMachine.

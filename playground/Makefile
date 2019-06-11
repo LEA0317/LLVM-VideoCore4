@@ -4,7 +4,7 @@ BIN_DIR 	:= ../llvm8.0.0/llvm/build/bin
 CLANG		:= $(BIN_DIR)/clang
 CLANG_FLAGS	+= -O3
 CLANG_FLAGS	+= -target videocore -mcpu=vc4
-CLANG_FLAGS	+= -flto=thin
+#CLANG_FLAGS	+= -flto=thin
 
 LLC       := $(BIN_DIR)/llc
 LLC_FLAGS += -O3

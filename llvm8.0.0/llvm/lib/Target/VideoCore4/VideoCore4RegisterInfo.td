@@ -11,34 +11,45 @@
 //  Declarations that describe the VideoCore4 register file
 //===----------------------------------------------------------------------===//
 
-class VideoCore4Reg<bits<4> num, string n> : Register<n> {
-  field bits<4> Num = num;
+class VideoCore4Reg<string n> : Register<n> {
+  field bits<5> Num = 0;
   let Namespace = "VideoCore4";
 }
+
+// Alias reg
+class GRegAlias<string n, VideoCore4Reg R> : VideoCore4Reg<n> {
+  let Num = R.Num;
+}
+
 
 //===----------------------------------------------------------------------===//
 //  Registers
 //===----------------------------------------------------------------------===//
 
-foreach i = 0-23 in {
-	def R#i : VideoCore4Reg<0, "r"#i>;
+foreach i = 0-31 in {
+	def R#i : VideoCore4Reg<"r"#i>;
 }
-def GP  : VideoCore4Reg<0, "gp">;
-def SP  : VideoCore4Reg<0, "sp">;
-def LR  : VideoCore4Reg<0, "lr">;
-def R27 : VideoCore4Reg<0, "r27">;
-def ESP : VideoCore4Reg<0, "esp">;
-def R29 : VideoCore4Reg<0, "r29">;
-def SR  : VideoCore4Reg<0, "sr">;
-def PC  : VideoCore4Reg<0, "pc">;
+def GP  : GRegAlias<"gp",  R24>;
+def SP  : GRegAlias<"sp",  R25>;
+def LR  : GRegAlias<"lr",  R26>;
+def ESP : GRegAlias<"esp", R28>;
+def SR  : GRegAlias<"sr",  R30>;
+def PC  : GRegAlias<"pc",  R31>;
 
 //===----------------------------------------------------------------------===//
 //  Register Classes
 //===----------------------------------------------------------------------===//
 
+//def CCR : RegisterClass<"VideoCore4", [i32], 32, (add SR)> {
+//  let CopyCost = -1;  // Don't allow copying of status registers.
+//
+//  // CCR is not allocatable.
+//  let isAllocatable = 0;
+//}
+
 /* All registers */
 def GR32 : RegisterClass<"VideoCore4", [i32, f32], 32,
-    (add (sequence "R%u", 0, 23), GP, SP, LR, R27, R29)>;
+    (add (sequence "R%u", 0, 29), GP, SP, LR)>;
 
 /* Fast registers */
 def FR32 : RegisterClass<"VideoCore4", [i32, f32], 32,

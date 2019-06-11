@@ -44,7 +44,10 @@ namespace llvm {
 
   class VideoCore4TargetLowering : public TargetLowering {
   public:
-    explicit VideoCore4TargetLowering(VideoCore4TargetMachine &TM);
+    explicit VideoCore4TargetLowering(const VideoCore4TargetMachine &TM);
+
+    static VideoCore4TargetLowering*
+    create(const VideoCore4TargetMachine &TM);
 
     /// LowerOperation - Provide custom lowering hooks for some operations.
     virtual SDValue LowerOperation(SDValue Op, SelectionDAG &DAG) const;

@@ -28,14 +28,22 @@
 
 using namespace llvm;
 
-VideoCore4InstrInfo::VideoCore4InstrInfo(VideoCore4TargetMachine &tm)
+VideoCore4InstrInfo::VideoCore4InstrInfo(const VideoCore4Subtarget &STI)
   : VideoCore4GenInstrInfo(VideoCore4::ADJCALLSTACKDOWN, VideoCore4::ADJCALLSTACKUP),
-    RI(tm, *this) {}
+    RI(),
+    Subtarget(STI) {}
+
+VideoCore4InstrInfo*
+VideoCore4InstrInfo::create(VideoCore4Subtarget &STI) {
+  return new llvm::VideoCore4InstrInfo(STI);
+}
+
 
 void VideoCore4InstrInfo::copyPhysReg(MachineBasicBlock &MBB,
-                                    MachineBasicBlock::iterator I, DebugLoc DL,
-                                    unsigned DestReg, unsigned SrcReg,
-                                    bool KillSrc) const {
+				      MachineBasicBlock::iterator I,
+				      DebugLoc DL,
+				      unsigned DestReg, unsigned SrcReg,
+				      bool KillSrc) const {
 	if (VideoCore4::FR32RegClass.contains(DestReg, SrcReg))
 	{
 		BuildMI(MBB, I, DL, get(VideoCore4::MOV_F), DestReg)

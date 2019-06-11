@@ -14,6 +14,8 @@
 #ifndef LLVM_TARGET_VIDEOCORE4INSTRINFO_H
 #define LLVM_TARGET_VIDEOCORE4INSTRINFO_H
 
+#include "llvm/CodeGen/TargetInstrInfo.h"
+#include "llvm/CodeGen/MachineInstrBuilder.h"
 #include "VideoCore4RegisterInfo.h"
 #include "llvm/CodeGen/TargetInstrInfo.h"
 
@@ -23,17 +25,23 @@
 namespace llvm {
 
 class VideoCore4TargetMachine;
-
+class VideoCore4Subtarget;
+struct VideoCore4RegisterInfo;
+  
 class VideoCore4InstrInfo : public VideoCore4GenInstrInfo {
   const VideoCore4RegisterInfo RI;
+protected:
+  const VideoCore4Subtarget &Subtarget;
 public:
-  explicit VideoCore4InstrInfo(VideoCore4TargetMachine &TM);
+  explicit VideoCore4InstrInfo(const VideoCore4Subtarget &STI);
 
+  static VideoCore4InstrInfo *create(VideoCore4Subtarget &STI);
+  
   /// getRegisterInfo - TargetInstrInfo is a superset of MRegister info.  As
   /// such, whenever a client has an instance of instruction info, it should
   /// always be able to get register info as well (through this method).
   ///
-  virtual const TargetRegisterInfo &getRegisterInfo() const { return RI; }
+  virtual const VideoCore4RegisterInfo& getRegisterInfo() const { return RI; }
 
   void copyPhysReg(MachineBasicBlock &MBB,
                    MachineBasicBlock::iterator I, DebugLoc DL,
@@ -64,8 +72,8 @@ public:
 
   virtual unsigned RemoveBranch(MachineBasicBlock &MBB) const;
 
-	void adjustStackPtr(int64_t amount, MachineBasicBlock& MBB,
-				MachineBasicBlock::iterator I) const;
+  void adjustStackPtr(int64_t amount, MachineBasicBlock& MBB,
+		      MachineBasicBlock::iterator I) const;
 };
 
 }

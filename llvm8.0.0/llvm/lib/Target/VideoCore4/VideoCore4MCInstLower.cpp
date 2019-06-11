@@ -15,6 +15,7 @@
 #include "VideoCore4.h"
 #include "VideoCore4AsmPrinter.h"
 #include "VideoCore4MCInstLower.h"
+#include "VideoCore4FrameLowering.h"
 #include "llvm/CodeGen/AsmPrinter.h"
 #include "llvm/CodeGen/MachineBasicBlock.h"
 #include "llvm/CodeGen/MachineInstr.h"

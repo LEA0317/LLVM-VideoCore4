@@ -787,7 +787,7 @@ public:
       return false;
     }
     const TargetLowering* TL =
-        TPC->getTM<TargetMachine>().getSubtargetImpl(F)->getTargetLowering();
+      TPC->getTM<TargetMachine>().getSubtargetImpl(F)->getTargetLowering();
 
     const TargetLibraryInfo *TLI =
         &getAnalysis<TargetLibraryInfoWrapperPass>().getTLI();

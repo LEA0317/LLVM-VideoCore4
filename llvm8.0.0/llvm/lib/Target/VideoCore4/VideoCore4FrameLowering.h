@@ -15,7 +15,6 @@
 #define VIDEOCORE4_FRAMEINFO_H
 
 #include "VideoCore4.h"
-#include "VideoCore4Subtarget.h"
 #include "llvm/CodeGen/TargetFrameLowering.h"
 
 namespace llvm {
@@ -24,12 +23,13 @@ namespace llvm {
 class VideoCore4FrameLowering : public TargetFrameLowering {
 protected:
   const VideoCore4Subtarget &STI;
-	void determineFrameLayout(MachineFunction& MF) const;
+  void determineFrameLayout(MachineFunction& MF) const;
 
 public:
   explicit VideoCore4FrameLowering(const VideoCore4Subtarget &sti)
-    : TargetFrameLowering(TargetFrameLowering::StackGrowsDown, 4, 0), STI(sti) {
-  }
+    : TargetFrameLowering(TargetFrameLowering::StackGrowsDown, 4, 0), STI(sti) {}
+
+  static VideoCore4FrameLowering *create(const VideoCore4Subtarget &ST);
 
   /// emitProlog/emitEpilog - These methods insert prolog and epilog code into
   /// the function.
@@ -38,7 +38,7 @@ public:
   void emitEpilogue(MachineFunction &MF,
 		    MachineBasicBlock &MBB) const override;
 
-	int getFrameIndexOffset(const MachineFunction& MF, int FI) const;
+  int getFrameIndexOffset(const MachineFunction& MF, int FI) const;
   bool hasFP(const MachineFunction &MF) const;
 
   MachineBasicBlock::iterator
