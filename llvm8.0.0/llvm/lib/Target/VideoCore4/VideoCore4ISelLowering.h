@@ -26,31 +26,32 @@ namespace llvm {
 
       /// Return with a flag operand. Operand 0 is the chain operand.
       RET_FLAG,
-
+      
       /// CALL - These operations represent an abstract call instruction, which
       /// includes a bunch of information.
       CALL,
-
-			/// Contains a globaladdr. Used to stop the compiler getting confused by
-			/// recursive references.
-			GLOBAL,
-
+      
+      /// Contains a globaladdr. Used to stop the compiler getting confused by
+      /// recursive references.
+      GLOBAL,
+      
       BR_JT
     };
   }
-
+  
   class VideoCore4Subtarget;
   class VideoCore4TargetMachine;
-
+  
   class VideoCore4TargetLowering : public TargetLowering {
   public:
     explicit VideoCore4TargetLowering(const VideoCore4TargetMachine &TM);
-
+    
     static VideoCore4TargetLowering*
     create(const VideoCore4TargetMachine &TM);
-
+    
     /// LowerOperation - Provide custom lowering hooks for some operations.
-    virtual SDValue LowerOperation(SDValue Op, SelectionDAG &DAG) const;
+    virtual SDValue LowerOperation(SDValue Op,
+				   SelectionDAG &DAG) const;
 
     /// getTargetNodeName - This method returns the name of a target specific
     /// DAG node.
@@ -58,30 +59,37 @@ namespace llvm {
 
   private:
     const VideoCore4Subtarget &Subtarget;
-    const DataLayout *TD;
+    const DataLayout          *TD;
 
-    SDValue LowerVAARG(SDValue Op, SelectionDAG &DAG) const;
-    SDValue LowerVASTART(SDValue Op, SelectionDAG &DAG) const;
+    SDValue LowerVAARG(SDValue       Op,
+		       SelectionDAG &DAG) const;
+    SDValue LowerVASTART(SDValue       Op,
+			 SelectionDAG &DAG) const;
 
-    SDValue LowerBR_JT(SDValue Op, SelectionDAG &DAG) const;
-    SDValue LowerJumpTable(SDValue Op, SelectionDAG &DAG) const;
+    SDValue LowerBR_JT(SDValue       Op,
+		       SelectionDAG &DAG) const;
+    SDValue LowerJumpTable(SDValue       Op,
+			   SelectionDAG &DAG) const;
 
-    SDValue LowerCCCCallTo(SDValue Chain, SDValue Callee,
-                           CallingConv::ID CallConv, bool isVarArg,
-                           bool isTailCall,
+    SDValue LowerCCCCallTo(SDValue                                Chain,
+			   SDValue                                Callee,
+                           CallingConv::ID                        CallConv,
+			   bool                                   isVarArg,
+                           bool                                   isTailCall,
                            const SmallVectorImpl<ISD::OutputArg> &Outs,
-                           const SmallVectorImpl<SDValue> &OutVals,
-                           const SmallVectorImpl<ISD::InputArg> &Ins,
-                           const SDLoc &dl, SelectionDAG &DAG,
-                           SmallVectorImpl<SDValue> &InVals) const;
+                           const SmallVectorImpl<SDValue>        &OutVals,
+                           const SmallVectorImpl<ISD::InputArg>  &Ins,
+                           const SDLoc                           &dl,
+			   SelectionDAG                          &DAG,
+                           SmallVectorImpl<SDValue>              &InVals) const;
 
-    SDValue LowerCCCArguments(SDValue Chain,
-                              CallingConv::ID CallConv,
-                              bool isVarArg,
+    SDValue LowerCCCArguments(SDValue                               Chain,
+                              CallingConv::ID                       CallConv,
+                              bool                                  isVarArg,
                               const SmallVectorImpl<ISD::InputArg> &Ins,
-                              const SDLoc &dl,
-                              SelectionDAG &DAG,
-                              SmallVectorImpl<SDValue> &InVals) const;
+                              const SDLoc                          &dl,
+                              SelectionDAG                         &DAG,
+                              SmallVectorImpl<SDValue>             &InVals) const;
 
     /*SDValue LowerCallResult(SDValue Chain, SDValue InFlag,
                             CallingConv::ID CallConv, bool isVarArg,
@@ -90,19 +98,23 @@ namespace llvm {
                             SmallVectorImpl<SDValue> &InVals) const;*/
 
     SDValue LowerCall(TargetLowering::CallLoweringInfo &CLI,
-                      SmallVectorImpl<SDValue> &InVals) const;
+                      SmallVectorImpl<SDValue>         &InVals) const;
 
-    SDValue LowerFormalArguments(SDValue Chain, CallingConv::ID CallConv,
-				 bool IsVarArg,
+    SDValue LowerFormalArguments(SDValue                               Chain,
+				 CallingConv::ID                       CallConv,
+				 bool                                  IsVarArg,
 				 const SmallVectorImpl<ISD::InputArg> &Ins,
-				 const SDLoc &DL, SelectionDAG &DAG,
-				 SmallVectorImpl<SDValue> &InVals) const override;
+				 const SDLoc                          &DL,
+				 SelectionDAG                         &DAG,
+				 SmallVectorImpl<SDValue>             &InVals) const override;
 
-    SDValue LowerReturn(SDValue Chain,
-                        CallingConv::ID CallConv, bool isVarArg,
+    SDValue LowerReturn(SDValue                                Chain,
+                        CallingConv::ID                        CallConv,
+			bool                                   isVarArg,
                         const SmallVectorImpl<ISD::OutputArg> &Outs,
-                        const SmallVectorImpl<SDValue> &OutVals,
-                        const SDLoc &dl, SelectionDAG &DAG) const override;
+                        const SmallVectorImpl<SDValue>        &OutVals,
+                        const SDLoc                           &dl,
+			SelectionDAG                          &DAG) const override;
   };
 } // namespace llvm
 

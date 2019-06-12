@@ -40,15 +40,17 @@ void VideoCore4InstPrinter::printOperand(const MCInst *MI, unsigned OpNo,
   const MCOperand &Op = MI->getOperand(OpNo);
   
   if (Op.isReg()) {
+#if DEBUG_REGISTER // ToDo (konda)
+    O << '%';
+#endif
     O << getRegisterName(Op.getReg());
-  }
-  else if (Op.isImm()) {
+  } else if (Op.isImm()) {
     O << Op.getImm();
-	}
-  else if (Op.isExpr()) {
-		O << *Op.getExpr();
-  } else
+  } else if (Op.isExpr()) {
+    O << *Op.getExpr();
+  } else {
     assert(0 && "Unknown operand in printOperand");
+  }
 }
 
 void VideoCore4InstPrinter::printStacked(const MCInst *MI, unsigned OpNo,

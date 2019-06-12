@@ -20,12 +20,13 @@
 
 namespace llvm {
   class VideoCore4TargetMachine;
-	class VideoCore4AsmPrinter;
+  class VideoCore4AsmPrinter;
   class FunctionPass;
   class formatted_raw_ostream;
 
-  FunctionPass *createVideoCore4ISelDag(VideoCore4TargetMachine &TM,
-                                      CodeGenOpt::Level OptLevel);
+  FunctionPass*
+  createVideoCore4ISelDag(VideoCore4TargetMachine &TM,
+			  CodeGenOpt::Level        OptLevel);
 
 } // end namespace llvm;
 

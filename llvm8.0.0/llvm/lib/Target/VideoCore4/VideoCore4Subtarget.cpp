@@ -33,9 +33,9 @@
 
 using namespace llvm;
 
-VideoCore4Subtarget::VideoCore4Subtarget(const Triple &TT,
-					 StringRef CPU,
-					 StringRef FS,
+VideoCore4Subtarget::VideoCore4Subtarget(const Triple                  &TT,
+					 StringRef                      CPU,
+					 StringRef                      FS,
 					 const VideoCore4TargetMachine &_TM) :
   VideoCore4GenSubtargetInfo(TT, CPU, FS), TM(_TM), TSInfo(),
   InstrInfo(VideoCore4InstrInfo::create(initializeSubtargetDependencies(CPU,
@@ -43,17 +43,6 @@ VideoCore4Subtarget::VideoCore4Subtarget(const Triple &TT,
 									TM))),
   FrameLowering(VideoCore4FrameLowering::create(*this)),
   TLInfo(VideoCore4TargetLowering::create(TM)) {
-
-  std::string CPUName = CPU;
-
-  if (CPUName.empty()) {
-    CPUName = "generic";
-  } else {
-    CPUName = "vc4";
-  }
-
-  // Parse features string.
-  ParseSubtargetFeatures(CPUName, FS);
 }
 
 VideoCore4Subtarget&

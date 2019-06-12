@@ -24,29 +24,35 @@
 namespace llvm {
   class VideoCore4AsmPrinter : public AsmPrinter {
     const VideoCore4Subtarget *Subtarget;
-
+    
   public:
-  explicit VideoCore4AsmPrinter(TargetMachine              &TM,
-				std::unique_ptr<MCStreamer> Streamer)
-    : AsmPrinter(TM, std::move(Streamer)) {
-    Subtarget = static_cast<VideoCore4TargetMachine &>(TM).getSubtargetImpl();
-  }
-
+    explicit VideoCore4AsmPrinter(TargetMachine              &TM,
+				  std::unique_ptr<MCStreamer> Streamer)
+      : AsmPrinter(TM, std::move(Streamer)) {
+      Subtarget = static_cast<VideoCore4TargetMachine &>(TM).getSubtargetImpl();
+    }
+    
     virtual StringRef getPassName() const {
       return "VideoCore4 Assembly Printer";
     }
-
+    
     bool isBlockOnlyReachableByFallthrough(const MachineBasicBlock *MBB) const;
-
+    
     virtual void EmitInstruction(const MachineInstr *MI);
 
-    void printOperand(const MachineInstr *MI, unsigned OpNo, raw_ostream &O);
-    bool PrintAsmOperand(const MachineInstr *MI, unsigned OpNo,
-                         unsigned AsmVariant, const char *ExtraCode,
-                         raw_ostream &OS);
-    bool PrintAsmMemoryOperand(const MachineInstr *MI, unsigned OpNo,
-                               unsigned AsmVariant, const char *ExtraCode,
-                               raw_ostream &OS);
+    void printOperand(const MachineInstr *MI,
+		      unsigned            OpNo,
+		      raw_ostream        &O);
+    bool PrintAsmOperand(const MachineInstr *MI,
+			 unsigned            OpNo,
+                         unsigned            AsmVariant,
+			 const char         *ExtraCode,
+                         raw_ostream        &OS);
+    bool PrintAsmMemoryOperand(const MachineInstr *MI,
+			       unsigned            OpNo,
+                               unsigned            AsmVariant,
+			       const char         *ExtraCode,
+                               raw_ostream        &OS);
 
     static const char *getRegisterName(unsigned RegNo);
   };

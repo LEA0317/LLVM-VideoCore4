@@ -32,11 +32,12 @@ public:
 
   BitVector getReservedRegs(const MachineFunction &MF) const;
   const TargetRegisterClass* getPointerRegClass(const MachineFunction &MF,
-						unsigned Kind = 0) const;
+						unsigned               Kind = 0) const;
 
   void eliminateFrameIndex(MachineBasicBlock::iterator II,
-                           int SPAdj, unsigned FIOperandNum,
-			   RegScavenger *RS = NULL) const;
+                           int                         SPAdj,
+			   unsigned                    FIOperandNum,
+			   RegScavenger               *RS = NULL) const;
 
   unsigned
   getRegPressureLimit(const TargetRegisterClass *RC,

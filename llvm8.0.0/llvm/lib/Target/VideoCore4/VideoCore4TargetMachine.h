@@ -30,20 +30,20 @@ namespace llvm {
 /// VideoCore4TargetMachine
 ///
 class VideoCore4TargetMachine : public LLVMTargetMachine {
-  VideoCore4Subtarget Subtarget;
-  const DataLayout    DL;       // Calculates type size & alignment
+  VideoCore4Subtarget                       Subtarget;
+  const DataLayout                          DL;       // Calculates type size & alignment
   std::unique_ptr<TargetLoweringObjectFile> TLOF;
 
 public:
-  VideoCore4TargetMachine(const Target &T,
-			  const Triple &TT,
-			  StringRef CPU,
-			  StringRef FS,
-			  const TargetOptions &Options,
-			  Optional<Reloc::Model> RM,
+  VideoCore4TargetMachine(const Target              &T,
+			  const Triple              &TT,
+			  StringRef                  CPU,
+			  StringRef                  FS,
+			  const TargetOptions       &Options,
+			  Optional<Reloc::Model>     RM,
 			  Optional<CodeModel::Model> CM,
-			  CodeGenOpt::Level OL,
-			  bool JIT);
+			  CodeGenOpt::Level          OL,
+			  bool                       JIT);
 
   TargetLoweringObjectFile *getObjFileLowering() const override {
     return TLOF.get();
@@ -52,7 +52,7 @@ public:
   
   TargetTransformInfo getTargetTransformInfo(const Function &F) override;
 
-  const DataLayout *getDataLayout() const { return &DL;}
+  const DataLayout *getDataLayout() const { return &DL; }
   const VideoCore4Subtarget *getSubtargetImpl() const { return &Subtarget; }
   const VideoCore4Subtarget *getSubtargetImpl(const Function &) const override { return &Subtarget; }
   

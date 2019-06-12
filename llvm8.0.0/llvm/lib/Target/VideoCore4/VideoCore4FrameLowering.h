@@ -18,44 +18,45 @@
 #include "llvm/CodeGen/TargetFrameLowering.h"
 
 namespace llvm {
-  class VideoCore4Subtarget;
+class VideoCore4Subtarget;
 
 class VideoCore4FrameLowering : public TargetFrameLowering {
 protected:
   const VideoCore4Subtarget &STI;
   void determineFrameLayout(MachineFunction& MF) const;
-
+  
 public:
   explicit VideoCore4FrameLowering(const VideoCore4Subtarget &sti)
     : TargetFrameLowering(TargetFrameLowering::StackGrowsDown, 4, 0), STI(sti) {}
-
+  
   static VideoCore4FrameLowering *create(const VideoCore4Subtarget &ST);
-
+  
   /// emitProlog/emitEpilog - These methods insert prolog and epilog code into
   /// the function.
-  void emitPrologue(MachineFunction &MF,
+  void emitPrologue(MachineFunction   &MF,
 		    MachineBasicBlock &MBB) const override;
-  void emitEpilogue(MachineFunction &MF,
+  void emitEpilogue(MachineFunction   &MF,
 		    MachineBasicBlock &MBB) const override;
 
-  int getFrameIndexOffset(const MachineFunction& MF, int FI) const;
+  int getFrameIndexOffset(const MachineFunction &MF,
+			  int                    FI) const;
   bool hasFP(const MachineFunction &MF) const;
 
   MachineBasicBlock::iterator
-  eliminateCallFramePseudoInstr(MachineFunction &MF,
-				MachineBasicBlock &MBB,
+  eliminateCallFramePseudoInstr(MachineFunction            &MF,
+				MachineBasicBlock          &MBB,
 				MachineBasicBlock::iterator MI) const;
 
   bool
-  spillCalleeSavedRegisters(MachineBasicBlock &MBB,
-                            MachineBasicBlock::iterator MI,
+  spillCalleeSavedRegisters(MachineBasicBlock                  &MBB,
+                            MachineBasicBlock::iterator         MI,
                             const std::vector<CalleeSavedInfo> &CSI,
-                            const TargetRegisterInfo *TRI) const;
+                            const TargetRegisterInfo           *TRI) const;
   bool 
-  restoreCalleeSavedRegisters(MachineBasicBlock &MBB,
-                              MachineBasicBlock::iterator MI,
+  restoreCalleeSavedRegisters(MachineBasicBlock                  &MBB,
+                              MachineBasicBlock::iterator         MI,
                               const std::vector<CalleeSavedInfo> &CSI,
-                              const TargetRegisterInfo *TRI) const;
+                              const TargetRegisterInfo           *TRI) const;
 };
 
 } // End llvm namespace

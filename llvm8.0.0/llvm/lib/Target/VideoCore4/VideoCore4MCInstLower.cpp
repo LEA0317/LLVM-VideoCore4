@@ -29,59 +29,60 @@
 #include "llvm/ADT/SmallString.h"
 using namespace llvm;
 
-void VideoCore4MCInstLower::Lower(const MachineInstr *MI, MCInst &OutMI) const {
+void VideoCore4MCInstLower::Lower(const MachineInstr *MI,
+				  MCInst             &OutMI) const {
   OutMI.setOpcode(MI->getOpcode());
-	MCContext& MC = AP.OutContext;
+  MCContext& MC = AP.OutContext;
 
   for (unsigned i = 0, e = MI->getNumOperands(); i != e; ++i) {
     const MachineOperand &MO = MI->getOperand(i);
-
+    
     MCOperand MCOp;
     switch (MO.getType()) {
-			default:
-			  //MI->dump();
-				llvm_unreachable("unknown operand type");
+    default:
+      //MI->dump();
+      llvm_unreachable("unknown operand type");
+      
+    case MachineOperand::MO_Register:
+      // Ignore all implicit register operands.
+      if (MO.isImplicit()) continue;
+      MCOp = MCOperand::createReg(MO.getReg());
+      break;
+      
+    case MachineOperand::MO_Immediate:
+      MCOp = MCOperand::createImm(MO.getImm());
+      break;
 
-			case MachineOperand::MO_Register:
-				// Ignore all implicit register operands.
-				if (MO.isImplicit()) continue;
-				MCOp = MCOperand::createReg(MO.getReg());
-				break;
-
-			case MachineOperand::MO_Immediate:
-				MCOp = MCOperand::createImm(MO.getImm());
-				break;
-
-			case MachineOperand::MO_FPImmediate:
-			{
-				APFloat val = MO.getFPImm()->getValueAPF();
-				//MCOp = MCOperand::CreateFPImm(MO.getFPImm());
-				MCOp = MCOperand::createImm(*val.bitcastToAPInt().getRawData());
-				break;
-			}
-
-			case MachineOperand::MO_MachineBasicBlock:
-			{
-				const MCSymbol* symbol = MO.getMBB()->getSymbol();
-				const MCSymbolRefExpr* MCSym = MCSymbolRefExpr::create(symbol, MC);
-				//const MCExpr* ME = MCSymbolRefExpr::Create(symbol, MCSymbolRefExpr::VK_None, MC);
-				MCOp = MCOperand::createExpr(MCSym);
-				break;
-			}
-
-			case MachineOperand::MO_GlobalAddress:
-			{
-				const MCSymbol* symbol = AP.getSymbol(MO.getGlobal());
-				const MCSymbolRefExpr* MCSym = MCSymbolRefExpr::create(symbol, MC);
-				//const MCExpr* ME = MCSymbolRefExpr::Create(symbol, MCSymbolRefExpr::VK_None, MC);
-				MCOp = MCOperand::createExpr(MCSym);
-				break;
-			}
-
-			case MachineOperand::MO_RegisterMask:
-				continue;
+    case MachineOperand::MO_FPImmediate:
+      {
+	APFloat val = MO.getFPImm()->getValueAPF();
+	//MCOp = MCOperand::CreateFPImm(MO.getFPImm());
+	MCOp = MCOperand::createImm(*val.bitcastToAPInt().getRawData());
+	break;
+      }
+      
+    case MachineOperand::MO_MachineBasicBlock:
+      {
+	const MCSymbol* symbol = MO.getMBB()->getSymbol();
+	const MCSymbolRefExpr* MCSym = MCSymbolRefExpr::create(symbol, MC);
+	//const MCExpr* ME = MCSymbolRefExpr::Create(symbol, MCSymbolRefExpr::VK_None, MC);
+	MCOp = MCOperand::createExpr(MCSym);
+	break;
+      }
+      
+    case MachineOperand::MO_GlobalAddress:
+      {
+	const MCSymbol* symbol = AP.getSymbol(MO.getGlobal());
+	const MCSymbolRefExpr* MCSym = MCSymbolRefExpr::create(symbol, MC);
+	//const MCExpr* ME = MCSymbolRefExpr::Create(symbol, MCSymbolRefExpr::VK_None, MC);
+	MCOp = MCOperand::createExpr(MCSym);
+	break;
+      }
+      
+    case MachineOperand::MO_RegisterMask:
+      continue;
     }
-
+    
     OutMI.addOperand(MCOp);
   }
 }

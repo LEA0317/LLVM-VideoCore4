@@ -57,7 +57,7 @@ def VideoCore4InstrInfo : InstrInfo;
 
 def VideoCore4InstPrinter : AsmWriter {
   string AsmWriterClassName  = "InstPrinter";
-  bit isMCAsmWriter = 1;
+  bit isMCAsmWriter          = 1;
 }
 
 //===----------------------------------------------------------------------===//
@@ -65,7 +65,7 @@ def VideoCore4InstPrinter : AsmWriter {
 //===----------------------------------------------------------------------===//
 
 def VideoCore4 : Target {
-  let InstructionSet = VideoCore4InstrInfo;
+  let InstructionSet  = VideoCore4InstrInfo;
   let AssemblyWriters = [VideoCore4InstPrinter];
 }
 

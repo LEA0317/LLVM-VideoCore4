@@ -44,38 +44,44 @@ public:
   virtual const VideoCore4RegisterInfo& getRegisterInfo() const { return RI; }
 
   void
-  copyPhysReg(MachineBasicBlock &MBB,
+  copyPhysReg(MachineBasicBlock          &MBB,
 	      MachineBasicBlock::iterator I,
-	      const DebugLoc &DL,
-	      unsigned DestReg,
-	      unsigned SrcReg,
-	      bool KillSrc) const override;
+	      const DebugLoc             &DL,
+	      unsigned                    DestReg,
+	      unsigned                    SrcReg,
+	      bool                        KillSrc) const override;
 
-  virtual void storeRegToStackSlot(MachineBasicBlock &MBB,
+  virtual void storeRegToStackSlot(MachineBasicBlock          &MBB,
                                    MachineBasicBlock::iterator MBBI,
-                                   unsigned SrcReg, bool isKill, int FrameIndex,
-                                   const TargetRegisterClass *RC,
-                                   const TargetRegisterInfo *TRI) const;
+                                   unsigned                    SrcReg,
+				   bool                        isKill,
+				   int                         FrameIndex,
+                                   const TargetRegisterClass  *RC,
+                                   const TargetRegisterInfo   *TRI) const;
 
-  virtual void loadRegFromStackSlot(MachineBasicBlock &MBB,
-                                   MachineBasicBlock::iterator MBBI,
-                                   unsigned DestReg, int FrameIndex,
-                                   const TargetRegisterClass *RC,
-                                   const TargetRegisterInfo *TRI) const;
+  virtual void loadRegFromStackSlot(MachineBasicBlock          &MBB,
+				    MachineBasicBlock::iterator MBBI,
+				    unsigned                    DestReg,
+				    int                         FrameIndex,
+				    const TargetRegisterClass  *RC,
+				    const TargetRegisterInfo   *TRI) const;
 
-  virtual bool AnalyzeBranch(MachineBasicBlock &MBB, MachineBasicBlock *&TBB,
-                              MachineBasicBlock *&FBB,
-                              SmallVectorImpl<MachineOperand> &Cond,
-                              bool AllowModify = false) const;
+  virtual bool AnalyzeBranch(MachineBasicBlock               &MBB,
+			     MachineBasicBlock              *&TBB,
+			     MachineBasicBlock              *&FBB,
+			     SmallVectorImpl<MachineOperand> &Cond,
+			     bool                             AllowModify = false) const;
 
-  virtual unsigned InsertBranch(MachineBasicBlock &MBB, MachineBasicBlock *TBB,
-                                 MachineBasicBlock *FBB,
+  virtual unsigned InsertBranch(MachineBasicBlock        &MBB,
+				MachineBasicBlock        *TBB,
+                                 MachineBasicBlock       *FBB,
                                  ArrayRef<MachineOperand> Cond,
-                                 DebugLoc DL) const;
+                                 DebugLoc                 DL) const;
 
   virtual unsigned RemoveBranch(MachineBasicBlock &MBB) const;
 
-  void adjustStackPtr(int64_t amount, MachineBasicBlock& MBB,
+  void adjustStackPtr(int64_t                     amount,
+		      MachineBasicBlock          &MBB,
 		      MachineBasicBlock::iterator I) const;
 };
 

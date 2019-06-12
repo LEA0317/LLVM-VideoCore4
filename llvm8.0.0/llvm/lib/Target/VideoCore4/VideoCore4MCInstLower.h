@@ -13,21 +13,21 @@
 #include "llvm/Support/Compiler.h"
 
 namespace llvm {
-  class AsmPrinter;
-  class MCContext;
-  class MCInst;
-  class MCOperand;
-  class MCSymbol;
-  class MachineInstr;
-  class MachineModuleInfoMachO;
-  class MachineOperand;
-  class Mangler;
+class AsmPrinter;
+class MCContext;
+class MCInst;
+class MCOperand;
+class MCSymbol;
+class MachineInstr;
+class MachineModuleInfoMachO;
+class MachineOperand;
+class Mangler;
 
   /// VideoCore4MCInstLower - This class is used to lower an MachineInstr
   /// into an MCInst.
-class LLVM_LIBRARY_VISIBILITY VideoCore4MCInstLower {
-  MCContext &Ctx;
-	AsmPrinter &AP;
+  class LLVM_LIBRARY_VISIBILITY VideoCore4MCInstLower {
+    MCContext  &Ctx;
+    AsmPrinter &AP;
 
 public:
   VideoCore4MCInstLower(MCContext &ctx, AsmPrinter &printer)

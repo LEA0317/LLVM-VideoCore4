@@ -40,12 +40,12 @@ VideoCore4InstrInfo::create(VideoCore4Subtarget &STI) {
 
 
 void
-VideoCore4InstrInfo::copyPhysReg(MachineBasicBlock &MBB,
+VideoCore4InstrInfo::copyPhysReg(MachineBasicBlock          &MBB,
 				 MachineBasicBlock::iterator I,
-				 const DebugLoc &DL,
-				 unsigned DestReg,
-				 unsigned SrcReg,
-				 bool KillSrc) const {
+				 const DebugLoc             &DL,
+				 unsigned                    DestReg,
+				 unsigned                    SrcReg,
+				 bool                        KillSrc) const {
   if (VideoCore4::FR32RegClass.contains(DestReg, SrcReg)) {
     BuildMI(MBB, I, DL, get(VideoCore4::MOV_F), DestReg)
       .addReg(SrcReg, getKillRegState(KillSrc));
@@ -58,117 +58,106 @@ VideoCore4InstrInfo::copyPhysReg(MachineBasicBlock &MBB,
   llvm_unreachable("Cannot emit physreg copy instruction");
 }
 
-void VideoCore4InstrInfo::storeRegToStackSlot(MachineBasicBlock &MBB, MachineBasicBlock::iterator I,
-                    unsigned SrcReg, bool isKill, int FI,
-                    const TargetRegisterClass *RC,
-                    const TargetRegisterInfo *TRI) const {
-
+void
+VideoCore4InstrInfo::storeRegToStackSlot(MachineBasicBlock          &MBB,
+					 MachineBasicBlock::iterator I,
+					 unsigned                    SrcReg,
+					 bool                        isKill,
+					 int                         FI,
+					 const TargetRegisterClass  *RC,
+					 const TargetRegisterInfo   *TRI) const {
+  
   DebugLoc DL;
   if (I != MBB.end())
-	  DL = I->getDebugLoc();
+    DL = I->getDebugLoc();
 
-  MachineFunction &MF = *MBB.getParent();
+  MachineFunction        &MF  = *MBB.getParent();
   const MachineFrameInfo &MFI = MF.getFrameInfo();
-  MachineMemOperand *MMO =
-    MF.getMachineMemOperand(MachinePointerInfo::getFixedStack(MF,
-							      FI),
-                             MachineMemOperand::MOStore,
-                             MFI.getObjectSize(FI),
-                             MFI.getObjectAlignment(FI));
+  MachineMemOperand      *MMO = MF.getMachineMemOperand(MachinePointerInfo::getFixedStack(MF,
+											  FI),
+							MachineMemOperand::MOStore,
+							MFI.getObjectSize(FI),
+							MFI.getObjectAlignment(FI));
 
-	BuildMI(MBB, I, DL, get(VideoCore4::MEM32_ST_LI))
-		.addReg(SrcReg, getKillRegState(isKill))
-		.addFrameIndex(FI).addImm(0)
-		.addMemOperand(MMO);
+  BuildMI(MBB, I, DL, get(VideoCore4::MEM32_ST_LI))
+    .addReg(SrcReg, getKillRegState(isKill))
+    .addFrameIndex(FI)
+    .addImm(0)
+    .addMemOperand(MMO);
 }
 
-void VideoCore4InstrInfo::loadRegFromStackSlot(MachineBasicBlock &MBB, MachineBasicBlock::iterator I,
-                    unsigned DestReg, int FI,
-                    const TargetRegisterClass *RC,
-                    const TargetRegisterInfo *TRI) const {
-
+void
+VideoCore4InstrInfo::loadRegFromStackSlot(MachineBasicBlock          &MBB,
+					  MachineBasicBlock::iterator I,
+					  unsigned                    DestReg,
+					  int                         FI,
+					  const TargetRegisterClass  *RC,
+					  const TargetRegisterInfo   *TRI) const {
+  
   DebugLoc DL;
   if (I != MBB.end())
-	  DL = I->getDebugLoc();
-
-  MachineFunction &MF = *MBB.getParent();
+    DL = I->getDebugLoc();
+  
+  MachineFunction        &MF  = *MBB.getParent();
   const MachineFrameInfo &MFI = MF.getFrameInfo();
-  MachineMemOperand *MMO =
-    MF.getMachineMemOperand(MachinePointerInfo::getFixedStack(MF,
-							      FI),
-                             MachineMemOperand::MOStore,
-                             MFI.getObjectSize(FI),
-                             MFI.getObjectAlignment(FI));
-
-	BuildMI(MBB, I, DL, get(VideoCore4::MEM32_LD_LI), DestReg)
-		.addFrameIndex(FI).addImm(0)
-		.addMemOperand(MMO);
+  MachineMemOperand      *MMO = MF.getMachineMemOperand(MachinePointerInfo::getFixedStack(MF,
+											  FI),
+							MachineMemOperand::MOStore,
+							MFI.getObjectSize(FI),
+							MFI.getObjectAlignment(FI));
+  
+  BuildMI(MBB, I, DL, get(VideoCore4::MEM32_LD_LI), DestReg)
+    .addFrameIndex(FI)
+    .addImm(0)
+    .addMemOperand(MMO);
 }
 
-void VideoCore4InstrInfo::adjustStackPtr(int64_t amount, MachineBasicBlock& MBB,
-			MachineBasicBlock::iterator I) const {
-	DebugLoc DL = I != MBB.end() ? I->getDebugLoc() : DebugLoc();
-
-	if (amount < 0) {
-#if defined(USING_VASM)
-		BuildMI(MBB, I, DL, get(VideoCore4::MOV_LI), VideoCore4::R15)
-			.addImm(-amount);
-		BuildMI(MBB, I, DL, get(VideoCore4::SUB_F_RR), VideoCore4::SP)
-			.addReg(VideoCore4::SP)
-			.addReg(VideoCore4::R15);
-#else
-		BuildMI(MBB, I, DL, get(VideoCore4::SUB_F_RI), VideoCore4::SP)
-			.addReg(VideoCore4::SP)
-			.addImm(-amount);
-#endif
-	}
-	else if (amount > 0) {
-#if defined(USING_VASM)
-		BuildMI(MBB, I, DL, get(VideoCore4::MOV_LI), VideoCore4::R15)
-			.addImm(amount);
-		BuildMI(MBB, I, DL, get(VideoCore4::ADD_F_RR), VideoCore4::SP)
-			.addReg(VideoCore4::SP)
-			.addReg(VideoCore4::R15);
-#else
-		BuildMI(MBB, I, DL, get(VideoCore4::ADD_F_RI), VideoCore4::SP)
-			.addReg(VideoCore4::SP)
-			.addImm(amount);
-#endif
-	}
-	else
-	{
-		/* Do nothing if we're adjusting the stack by zero */
-	}
+void
+VideoCore4InstrInfo::adjustStackPtr(int64_t                     amount,
+				    MachineBasicBlock          &MBB,
+				    MachineBasicBlock::iterator I) const {
+  DebugLoc DL = I != MBB.end() ? I->getDebugLoc() : DebugLoc();
+  
+  if (amount < 0) {
+    BuildMI(MBB, I, DL, get(VideoCore4::SUB_F_RI), VideoCore4::SP)
+      .addReg(VideoCore4::SP)
+      .addImm(-amount);
+  } else if (amount > 0) {
+    BuildMI(MBB, I, DL, get(VideoCore4::ADD_F_RI), VideoCore4::SP)
+      .addReg(VideoCore4::SP)
+      .addImm(amount);
+  } else {
+    /* Do nothing if we're adjusting the stack by zero */
+  }
 }
 
-bool VideoCore4InstrInfo::AnalyzeBranch(MachineBasicBlock &MBB, MachineBasicBlock *&TBB,
-                          MachineBasicBlock *&FBB,
-                          SmallVectorImpl<MachineOperand> &Cond,
-                          bool AllowModify) const
-{
-	MachineBasicBlock::iterator I = MBB.end();
-	MachineInstr *LastInst = &(*I);
+bool
+VideoCore4InstrInfo::AnalyzeBranch(MachineBasicBlock               &MBB,
+				   MachineBasicBlock              *&TBB,
+				   MachineBasicBlock              *&FBB,
+				   SmallVectorImpl<MachineOperand> &Cond,
+				   bool AllowModify) const {
+  MachineBasicBlock::iterator I        = MBB.end();
+  MachineInstr               *LastInst = &(*I);
 
-	//LastInst->getOpcode()
+  //LastInst->getOpcode()
+  //errs() << "AnalyzeBranch: AllowModify = " << AllowModify << "\n";
+  //MBB.dump();
 
-	//errs() << "AnalyzeBranch: AllowModify = " << AllowModify << "\n";
-	//MBB.dump();
-
-
-
-	return true;
+  return true;
 }
 
-unsigned VideoCore4InstrInfo::InsertBranch(MachineBasicBlock &MBB, MachineBasicBlock *TBB,
-                             MachineBasicBlock *FBB,
-                             ArrayRef<MachineOperand> Cond,
-                             DebugLoc DL) const
-{
-	llvm_unreachable("InsertBranch");
+unsigned
+VideoCore4InstrInfo::InsertBranch(MachineBasicBlock       &MBB,
+				  MachineBasicBlock       *TBB,
+				  MachineBasicBlock       *FBB,
+				  ArrayRef<MachineOperand> Cond,
+				  DebugLoc                 DL) const {
+  llvm_unreachable("InsertBranch");
 }
 
-unsigned VideoCore4InstrInfo::RemoveBranch(MachineBasicBlock &MBB) const
-{
-	llvm_unreachable("RemoveBranch");
+unsigned
+VideoCore4InstrInfo::RemoveBranch(MachineBasicBlock &MBB) const {
+  llvm_unreachable("RemoveBranch");
 }
 

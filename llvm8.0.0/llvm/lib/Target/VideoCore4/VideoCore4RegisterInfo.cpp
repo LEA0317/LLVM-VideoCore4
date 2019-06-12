@@ -38,7 +38,7 @@ VideoCore4RegisterInfo::VideoCore4RegisterInfo()
   : VideoCore4GenRegisterInfo(VideoCore4::PC) {
 }
 
-const uint16_t *
+const uint16_t*
 VideoCore4RegisterInfo::getCalleeSavedRegs(const MachineFunction *MF) const {
   return CSR_SaveList;
 }
@@ -58,8 +58,8 @@ VideoCore4RegisterInfo::getReservedRegs(const MachineFunction &MF) const {
 }
 
 const TargetRegisterClass*
-VideoCore4RegisterInfo::getPointerRegClass(const MachineFunction& MF,
-					   unsigned Kind) const {
+VideoCore4RegisterInfo::getPointerRegClass(const MachineFunction &MF,
+					   unsigned               Kind) const {
   assert(0 && "Unimplemented");
   return nullptr;
 }
@@ -67,22 +67,25 @@ VideoCore4RegisterInfo::getPointerRegClass(const MachineFunction& MF,
 
 void
 VideoCore4RegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator II,
-					    int SPAdj, unsigned FIOperandNum,
-					    RegScavenger *RS) const {
+					    int                         SPAdj,
+					    unsigned                    FIOperandNum,
+					    RegScavenger               *RS) const {
   assert(SPAdj == 0 && "Unexpected");
 
-  MachineInstr &MI = *II;
+  MachineInstr    &MI = *II;
   MachineFunction &MF = *MI.getParent()->getParent();
 
-  int frameIndex = MI.getOperand(FIOperandNum).getIndex();
-	uint64_t stackSize = MF.getFrameInfo().getStackSize();
-	int64_t spOffset = MF.getFrameInfo().getObjectOffset(frameIndex);
+  int      frameIndex = MI.getOperand(FIOperandNum).getIndex();
+  uint64_t stackSize  = MF.getFrameInfo().getStackSize();
+  int64_t  spOffset   = MF.getFrameInfo().getObjectOffset(frameIndex);
+  unsigned reg        = getFrameRegister(MF);
+  int64_t  offset     = spOffset + (int64_t)stackSize;
 
-	unsigned reg = getFrameRegister(MF);
-	int64_t offset = spOffset + (int64_t)stackSize;
-
-	MI.getOperand(FIOperandNum).ChangeToRegister(reg, false, false, true);
-	MI.getOperand(FIOperandNum + 1).ChangeToImmediate(offset);
+  MI.getOperand(FIOperandNum).ChangeToRegister(reg,
+					       false,
+					       false,
+					       true);
+  MI.getOperand(FIOperandNum + 1).ChangeToImmediate(offset);
 }
 
 unsigned
@@ -119,4 +122,5 @@ VideoCore4RegisterInfo::getRegPressureLimit(const TargetRegisterClass *RC,
       return 4;
     }
   }
+
 }

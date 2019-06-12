@@ -9,7 +9,7 @@
 
 // Generic VideoCore4 instruction
 class VideoCore4Inst<dag outs, dag ins,
-				 string asmstr, list<dag> pattern> : Instruction
+   		     string asmstr, list<dag> pattern> : Instruction
 {
 	field bits<80> Inst;
 

@@ -37,56 +37,66 @@
 using namespace llvm;
 
 namespace llvm {
-	class VideoCore4AsmPrinter : public AsmPrinter {
-	public:
-	  explicit VideoCore4AsmPrinter(TargetMachine              &TM,
-					std::unique_ptr<MCStreamer> Streamer)
-	    : AsmPrinter(TM, std::move(Streamer)) {}
-
-		virtual StringRef getPassName() const {
-			return "VideoCore4 Assembly Printer";
-		}
-
-		void EmitInstruction(const MachineInstr *MI);
-	};
-
-
-	//===----------------------------------------------------------------------===//
-	void VideoCore4AsmPrinter::EmitInstruction(const MachineInstr *MI) {
-	  VideoCore4MCInstLower MCInstLowering(OutContext, *this);
-
-		SmallString<256> Str;
-		raw_svector_ostream O(Str);
-
-		switch (MI->getOpcode()) {
-			case VideoCore4::BR_JT: {
-				auto regName = VideoCore4InstPrinter::getRegisterName(MI->getOperand(1).getReg());
-
-				unsigned JTI = MI->getOperand(0).getIndex();
-				const MachineFunction *MF = MI->getParent()->getParent();
-				const MachineJumpTableInfo *MJTI = MF->getJumpTableInfo();
-				const std::vector<MachineJumpTableEntry> &JT = MJTI->getJumpTables();
-				const std::vector<MachineBasicBlock*> &JTBBs = JT[JTI].MBBs;
-
-				O << "\t# Inline jumptable on " << regName << "\n";
-
-				for (unsigned i = 0, e = JTBBs.size(); i != e; ++i) {
-					MachineBasicBlock *MBB = JTBBs[i];
-					O << "\t# Jumptable entry " << i << "\n";
-
-					O << "\tcmp " << regName << ", " << i << "\n";
-					O << "\tbeq " << *MBB->getSymbol() << "\n";
-				}
-
-  				OutStreamer->EmitRawText(O.str());
-				return;
-			}	
-		}
-
-		MCInst TmpInst;
-		MCInstLowering.Lower(MI, TmpInst);
-		EmitToStreamer((*OutStreamer), TmpInst);
+  class VideoCore4AsmPrinter : public AsmPrinter {
+  public:
+    explicit VideoCore4AsmPrinter(TargetMachine              &TM,
+				  std::unique_ptr<MCStreamer> Streamer)
+      : AsmPrinter(TM, std::move(Streamer)) {}
+    
+    virtual StringRef getPassName() const {
+      return "VideoCore4 Assembly Printer";
+    }
+    
+    void EmitInstruction(const MachineInstr *MI);
+  };
+  
+  
+  //===----------------------------------------------------------------------===//
+  void VideoCore4AsmPrinter::EmitInstruction(const MachineInstr *MI) {
+    VideoCore4MCInstLower MCInstLowering(OutContext,
+					 *this);
+    SmallString<256>    Str;
+    raw_svector_ostream O(Str);
+    
+    switch (MI->getOpcode()) {
+    case VideoCore4::BR_JT:
+      {
+	auto regName = VideoCore4InstPrinter::getRegisterName(MI->getOperand(1).getReg());
+	
+	unsigned                                  JTI   = MI->getOperand(0).getIndex();
+	const MachineFunction                    *MF    = MI->getParent()->getParent();
+	const MachineJumpTableInfo               *MJTI  = MF->getJumpTableInfo();
+	const std::vector<MachineJumpTableEntry> &JT    = MJTI->getJumpTables();
+	const std::vector<MachineBasicBlock*>    &JTBBs = JT[JTI].MBBs;
+      
+	O << "\t# Inline jumptable on "
+	  << regName
+	  << "\n";
+	
+	for (unsigned i = 0, e = JTBBs.size(); i != e; ++i) {
+	  MachineBasicBlock *MBB = JTBBs[i];
+	  O << "\t# Jumptable entry "
+	    << i
+	    << "\n"	
+	    << "\tcmp "
+	    << regName
+	    << ", "
+	    << i
+	    << "\n"
+	    << "\tbeq "
+	    << *MBB->getSymbol()
+	    << "\n";
 	}
+	
+	OutStreamer->EmitRawText(O.str());
+	return;
+      }	
+    }
+    
+    MCInst TmpInst;
+    MCInstLowering.Lower(MI, TmpInst);
+    EmitToStreamer((*OutStreamer), TmpInst);
+  }
 }
 
 // Force static initialization.

@@ -70,15 +70,15 @@ computeDataLayout(const Triple        &TT,
   return Ret;
 }
 
-VideoCore4TargetMachine::VideoCore4TargetMachine(const Target &T,
-						 const Triple &TT,
-						 StringRef CPU,
-						 StringRef FS,
-						 const TargetOptions &Options,
-						 Optional<Reloc::Model> RM,
+VideoCore4TargetMachine::VideoCore4TargetMachine(const Target              &T,
+						 const Triple              &TT,
+						 StringRef                  CPU,
+						 StringRef                  FS,
+						 const TargetOptions       &Options,
+						 Optional<Reloc::Model>     RM,
 						 Optional<CodeModel::Model> CM,
-						 CodeGenOpt::Level OL,
-						 bool JIT)
+						 CodeGenOpt::Level          OL,
+						 bool                       JIT)
   : LLVMTargetMachine(T, computeDataLayout(TT,
 					   CPU,
 					   Options,
@@ -89,7 +89,7 @@ VideoCore4TargetMachine::VideoCore4TargetMachine(const Target &T,
     Subtarget(TT, CPU, FS, *this),
     DL("e-p:32:32:32-i8:8:8-i16:16:16-i32:32:32-f32:32:32-n32-S32"),
     TLOF(make_unique<VideoCore4ELFTargetObjectFile>()) {
-	initAsmInfo();
+  initAsmInfo();
 }
 
 namespace {
