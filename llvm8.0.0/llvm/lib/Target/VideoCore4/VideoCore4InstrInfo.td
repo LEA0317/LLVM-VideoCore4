@@ -782,7 +782,7 @@ let isTerminator = 1, isBranch = 1 in {
 
 	def BCMP_GEN : S32<
 				(outs), (ins FR32:$A, brtarget:$dst),
-				"# if ($A) then $dst()\n\tcmp $A, 0\n\tbne $dst",
+				"# if ($A) then $dst()\n\tcmp\t$A, 0\n\tbne\t$dst",
 				[(brcond FR32:$A, bb:$dst)]
 			>;
  
@@ -790,7 +790,7 @@ let isTerminator = 1, isBranch = 1 in {
 	multiclass BCMPF<string cond, PatFrag node> {
 		def _RR : S32<
 					(outs), (ins GR32:$A, GR32:$B, brtarget:$dst),
-					"fcmp\t$A, $B\n\tb"#cond#" $dst",
+					"fcmp\t$A, $B\n\tb"#cond#"\t$dst",
 					[(brcond (node (f32 GR32:$A), (f32 GR32:$B)), bb:$dst)]
 				>;
 	}
@@ -816,14 +816,14 @@ multiclass CONDCC<string cond, PatFrag node> {
 	let Constraints = "$D = $F" in {
 		def _SELECT_RR : S32<
 					(outs FR32:$D), (ins FR32:$A, FR32:$B, FR32:$T, FR32:$F),
-					"cmp\t$A, $B\n\tmov"#cond#" $D, $T",
+					"cmp\t$A, $B\n\tmov"#cond#" \t$D, $T",
 					[(set FR32:$D,
 						(select (node (i32 FR32:$A), (i32 FR32:$B)), (i32 FR32:$T), (i32 FR32:$F)))]
 				>;
 
 		def _SELECT_RR_2 : S32<
 					(outs FR32:$D), (ins FR32:$A, FR32:$B, FR32:$T, FR32:$F),
-					"cmp\t$A, $B\n\tmov"#cond#" $D, $T",
+					"cmp\t$A, $B\n\tmov"#cond#"\t$D, $T",
 					[(set FR32:$D,
 						(select (node (i32 FR32:$A), (i32 FR32:$B)), (f32 FR32:$T), (f32 FR32:$F)))]
 				>;
@@ -831,13 +831,13 @@ multiclass CONDCC<string cond, PatFrag node> {
 
 	def _SET_RI : S16<
 				(outs FR32:$D), (ins FR32:$A, i32imm:$B),
-				"cmp\t$A, $B\n\tmov $D, 0\n\tmov"#cond#" $D, 1",
+				"cmp\t$A, $B\n\tmov\t$D, 0\n\tmov"#cond#"\t$D, 1",
 				[(set FR32:$D, (node (i32 FR32:$A), immU5:$B))]
 			>;
 
 	def _SET_RR : S16<
 				(outs FR32:$D), (ins FR32:$A, FR32:$B),
-				"cmp\t$A, $B\n\tmov $D, 0\n\tmov"#cond#" $D, 1",
+				"cmp\t$A, $B\n\tmov\t$D, 0\n\tmov"#cond#"\t$D, 1",
 				[(set FR32:$D, (node (i32 FR32:$A), (i32 FR32:$B)))]
 			>;
 }
@@ -855,7 +855,7 @@ defm CONDLS : CONDCC<"ls", setule>;
 
 def SELECT_GEN : S32<
 			(outs FR32:$D), (ins FR32:$A, FR32:$B, FR32:$T),
-			"# $D = if ($A) then $T else $B \n\tcmp $A, 0\n\tmovne $D, $T\n\tmoveq $D, $B",
+			"# $D = if ($A) then $T else $B \n\tcmp\t$A, 0\n\tmovne\t$D, $T\n\tmoveq\t$D, $B",
 			[(set FR32:$D, (select (i32 FR32:$A), (i32 FR32:$B), (i32 FR32:$T)))]
 		>;
 
@@ -865,14 +865,14 @@ multiclass FCONDCC<string cond, PatFrag node> {
 	let Constraints = "$D = $F" in {
 		def _SELECT_RR : S16<
 					(outs GR32:$D), (ins GR32:$A, GR32:$B, GR32:$T, GR32:$F),
-					"fcmp\t$A, $B\n\tmov"#cond#" $D, $T",
+					"fcmp\t$A, $B\n\tmov"#cond#"\t$D, $T",
 					[(set GR32:$D,
 						(select (node (f32 GR32:$A), (f32 GR32:$B)), (i32 GR32:$T), (i32 GR32:$F)))]
 				>;
 
 		def _SELECT_RR_F : S16<
 					(outs GR32:$D), (ins GR32:$A, GR32:$B, GR32:$T, GR32:$F),
-					"fcmp\t$A, $B\n\tmov"#cond#" $D, $T",
+					"fcmp\t$A, $B\n\tmov"#cond#"\t$D, $T",
 					[(set GR32:$D,
 						(select (node (f32 GR32:$A), (f32 GR32:$B)), (f32 GR32:$T), (f32 GR32:$F)))]
 				>;
@@ -880,7 +880,7 @@ multiclass FCONDCC<string cond, PatFrag node> {
 
 	def _SET_RR : S16<
 				(outs GR32:$D), (ins GR32:$A, GR32:$B),
-				"fcmp\t$A, $B\n\tmov $D, #0\n\tmov"#cond#" $D, #1",
+				"fcmp\t$A, $B\n\tmov\t$D, #0\n\tmov"#cond#"\t$D, #1",
 				[(set GR32:$D, (node (f32 GR32:$A), (f32 GR32:$B)))]
 			>;
 }
