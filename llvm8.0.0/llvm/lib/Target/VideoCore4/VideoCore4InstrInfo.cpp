@@ -39,25 +39,23 @@ VideoCore4InstrInfo::create(VideoCore4Subtarget &STI) {
 }
 
 
-void VideoCore4InstrInfo::copyPhysReg(MachineBasicBlock &MBB,
-				      MachineBasicBlock::iterator I,
-				      DebugLoc DL,
-				      unsigned DestReg, unsigned SrcReg,
-				      bool KillSrc) const {
-	if (VideoCore4::FR32RegClass.contains(DestReg, SrcReg))
-	{
-		BuildMI(MBB, I, DL, get(VideoCore4::MOV_F), DestReg)
-			.addReg(SrcReg, getKillRegState(KillSrc));
-		return;
-	}
-	else if (VideoCore4::GR32RegClass.contains(DestReg, SrcReg))
-	{
-		BuildMI(MBB, I, DL, get(VideoCore4::MOV_R), DestReg)
-			.addReg(SrcReg, getKillRegState(KillSrc));
-		return;
-	}
-
-	llvm_unreachable("Cannot emit physreg copy instruction");
+void
+VideoCore4InstrInfo::copyPhysReg(MachineBasicBlock &MBB,
+				 MachineBasicBlock::iterator I,
+				 const DebugLoc &DL,
+				 unsigned DestReg,
+				 unsigned SrcReg,
+				 bool KillSrc) const {
+  if (VideoCore4::FR32RegClass.contains(DestReg, SrcReg)) {
+    BuildMI(MBB, I, DL, get(VideoCore4::MOV_F), DestReg)
+      .addReg(SrcReg, getKillRegState(KillSrc));
+    return;
+  } else if (VideoCore4::GR32RegClass.contains(DestReg, SrcReg)) {
+    BuildMI(MBB, I, DL, get(VideoCore4::MOV_R), DestReg)
+      .addReg(SrcReg, getKillRegState(KillSrc));
+    return;
+  }
+  llvm_unreachable("Cannot emit physreg copy instruction");
 }
 
 void VideoCore4InstrInfo::storeRegToStackSlot(MachineBasicBlock &MBB, MachineBasicBlock::iterator I,

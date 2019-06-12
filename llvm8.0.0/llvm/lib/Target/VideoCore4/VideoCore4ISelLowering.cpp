@@ -99,14 +99,13 @@ VideoCore4TargetLowering::VideoCore4TargetLowering(const VideoCore4TargetMachine
   
   setOperationAction(ISD::STACKSAVE, MVT::Other, Expand);
   setOperationAction(ISD::STACKRESTORE, MVT::Other, Expand);
-  
+
   setMinFunctionAlignment(1);
   setPrefFunctionAlignment(1);
 }
 
-SDValue VideoCore4TargetLowering::
-LowerVAARG(SDValue Op, SelectionDAG &DAG) const
-{
+SDValue
+VideoCore4TargetLowering::LowerVAARG(SDValue Op, SelectionDAG &DAG) const {
 	// Whist llvm does not support aggregate varargs we can ignore
 	// the possibility of the ValueType being an implicit byVal vararg.
 	SDNode *Node = Op.getNode();
@@ -128,8 +127,8 @@ LowerVAARG(SDValue Op, SelectionDAG &DAG) const
 	return DAG.getLoad(VT, dl, InChain, VAList, MachinePointerInfo());
 }
 
-SDValue VideoCore4TargetLowering::
-LowerVASTART(SDValue Op, SelectionDAG &DAG) const
+SDValue
+VideoCore4TargetLowering::LowerVASTART(SDValue Op, SelectionDAG &DAG) const
 {
 	SDLoc dl(Op);
 	// vastart stores the address of the VarArgsFrameIndex slot into the
@@ -145,8 +144,9 @@ LowerVASTART(SDValue Op, SelectionDAG &DAG) const
 			    MachinePointerInfo());
 }
 
-SDValue VideoCore4TargetLowering::
-LowerBR_JT(SDValue Op, SelectionDAG &DAG) const
+SDValue
+VideoCore4TargetLowering::LowerBR_JT(SDValue Op,
+				     SelectionDAG &DAG) const
 {
 	MachineFunction &MF = DAG.getMachineFunction();
 	const MachineJumpTableInfo *MJTI = MF.getJumpTableInfo();
@@ -163,7 +163,9 @@ LowerBR_JT(SDValue Op, SelectionDAG &DAG) const
 	return DAG.getNode(VideoCore4ISD::BR_JT, dl, MVT::Other, Chain, TargetJT, Index);
 }
 
-SDValue VideoCore4TargetLowering::LowerOperation(SDValue Op, SelectionDAG &DAG) const {
+SDValue
+VideoCore4TargetLowering::LowerOperation(SDValue Op,
+					 SelectionDAG &DAG) const {
         EVT PtrVT = getPointerTy(DAG.getDataLayout());
 	SDLoc dl(Op);
 	
@@ -197,27 +199,31 @@ namespace {
 
 SDValue
 VideoCore4TargetLowering::LowerFormalArguments(SDValue Chain,
-																					 CallingConv::ID CallConv,
-																					 bool isVarArg,
-																					 const SmallVectorImpl<ISD::InputArg>
-																						 &Ins,
-																					 SDLoc dl,
-																					 SelectionDAG &DAG,
-																					 SmallVectorImpl<SDValue> &InVals)
-																						 const {
-
-	switch (CallConv) {
-	default:
-		llvm_unreachable("Unsupported calling convention");
-	case CallingConv::C:
-	case CallingConv::Fast:
-		return LowerCCCArguments(Chain, CallConv, isVarArg, Ins, dl, DAG, InVals);
-	}
+					       CallingConv::ID CallConv,
+					       bool IsVarArg,
+					       const SmallVectorImpl<ISD::InputArg> &Ins,
+					       const SDLoc &DL, SelectionDAG &DAG,
+					       SmallVectorImpl<SDValue> &InVals) const {
+  switch (CallConv) {
+  default:
+    llvm_unreachable("Unsupported calling convention");
+  case CallingConv::C:
+  case CallingConv::Fast:
+    {
+      return LowerCCCArguments(Chain,
+			       CallConv,
+			       IsVarArg,
+			       Ins,
+			       DL,
+			       DAG,
+			       InVals);
+    }
+  }
 }
 
 SDValue
 VideoCore4TargetLowering::LowerCall(TargetLowering::CallLoweringInfo &CLI,
-																SmallVectorImpl<SDValue> &InVals) const {
+				    SmallVectorImpl<SDValue> &InVals) const {
 	SelectionDAG &DAG                     = CLI.DAG;
 	SDLoc &dl                             = CLI.DL;
 	SmallVectorImpl<ISD::OutputArg> &Outs = CLI.Outs;
@@ -237,8 +243,17 @@ VideoCore4TargetLowering::LowerCall(TargetLowering::CallLoweringInfo &CLI,
 		llvm_unreachable("Unsupported calling convention");
 	case CallingConv::Fast:
 	case CallingConv::C:
-		return LowerCCCCallTo(Chain, Callee, CallConv, isVarArg, isTailCall,
-													Outs, OutVals, Ins, dl, DAG, InVals);
+		return LowerCCCCallTo(Chain,
+				      Callee,
+				      CallConv,
+				      isVarArg,
+				      isTailCall,
+				      Outs,
+				      OutVals,
+				      Ins,
+				      dl,
+				      DAG,
+				      InVals);
 	}
 }
 
@@ -246,14 +261,12 @@ VideoCore4TargetLowering::LowerCall(TargetLowering::CallLoweringInfo &CLI,
 /// generate load operations for arguments places on the stack.
 SDValue
 VideoCore4TargetLowering::LowerCCCArguments(SDValue Chain,
-																					CallingConv::ID CallConv,
-																					bool isVarArg,
-																					const SmallVectorImpl<ISD::InputArg>
-																					&Ins,
-																					SDLoc dl,
-																					SelectionDAG &DAG,
-																					SmallVectorImpl<SDValue> &InVals)
-																					const {
+					    CallingConv::ID CallConv,
+					    bool isVarArg,
+					    const SmallVectorImpl<ISD::InputArg> &Ins,
+					    const SDLoc &dl,
+					    SelectionDAG &DAG,
+					    SmallVectorImpl<SDValue> &InVals) const {
 	MachineFunction &MF = DAG.getMachineFunction();
 	MachineFrameInfo &MFI = MF.getFrameInfo();
 	MachineRegisterInfo &RegInfo = MF.getRegInfo();
@@ -406,12 +419,12 @@ VideoCore4TargetLowering::LowerCCCArguments(SDValue Chain,
 
 SDValue
 VideoCore4TargetLowering::LowerReturn(SDValue Chain,
-																		CallingConv::ID CallConv, bool isVarArg,
-																		const SmallVectorImpl<ISD::OutputArg> &Outs,
-																		const SmallVectorImpl<SDValue> &OutVals,
-																		SDLoc dl, SelectionDAG &DAG) const {
-
-	// CCValAssign - represent the assignment of the return value to a location
+				      CallingConv::ID CallConv, bool isVarArg,
+				      const SmallVectorImpl<ISD::OutputArg> &Outs,
+				      const SmallVectorImpl<SDValue> &OutVals,
+				      const SDLoc &dl,
+				      SelectionDAG &DAG) const {
+  // CCValAssign - represent the assignment of the return value to a location
 	SmallVector<CCValAssign, 16> RVLocs;
 
 	// CCState - Info about the registers and stack slot.
@@ -454,9 +467,9 @@ VideoCore4TargetLowering::LowerReturn(SDValue Chain,
 ///
 static SDValue
 __LowerCallResult(SDValue Chain, SDValue InFlag,
-                const SmallVectorImpl<CCValAssign> &RVLocs,
-                SDLoc dl, SelectionDAG &DAG,
-                SmallVectorImpl<SDValue> &InVals)
+		  const SmallVectorImpl<CCValAssign> &RVLocs,
+		  const SDLoc &dl, SelectionDAG &DAG,
+		  SmallVectorImpl<SDValue> &InVals)
 {
   SmallVector<std::pair<int, unsigned>, 5> ResultMemLocs;
 
@@ -507,16 +520,17 @@ __LowerCallResult(SDValue Chain, SDValue InFlag,
 /// (physical regs)/(stack frame), CALLSEQ_START and CALLSEQ_END are emitted.
 /// TODO: sret.
 SDValue
-VideoCore4TargetLowering::LowerCCCCallTo(SDValue Chain, SDValue Callee,
-																			 CallingConv::ID CallConv, bool isVarArg,
-																			 bool isTailCall,
-																			 const SmallVectorImpl<ISD::OutputArg>
-																			 &Outs,
-																			 const SmallVectorImpl<SDValue> &OutVals,
-																			 const SmallVectorImpl<ISD::InputArg> &Ins,
-																			 SDLoc dl, SelectionDAG &DAG,
-																			 SmallVectorImpl<SDValue> &InVals) const
-{
+VideoCore4TargetLowering::LowerCCCCallTo(SDValue Chain,
+					 SDValue Callee,
+					 CallingConv::ID CallConv,
+					 bool isVarArg,
+					 bool isTailCall,
+					 const SmallVectorImpl<ISD::OutputArg> &Outs,
+					 const SmallVectorImpl<SDValue> &OutVals,
+					 const SmallVectorImpl<ISD::InputArg> &Ins,
+					 const SDLoc &dl,
+					 SelectionDAG &DAG,
+					 SmallVectorImpl<SDValue> &InVals) const {
   // Analyze operands of the call, assigning locations to each operand.
   SmallVector<CCValAssign, 16> ArgLocs;
   CCState CCInfo(CallConv, isVarArg, DAG.getMachineFunction(),
@@ -658,3 +672,147 @@ const char *VideoCore4TargetLowering::getTargetNodeName(unsigned Opcode) const {
 	case VideoCore4ISD::BR_JT:              return "VideoCore4ISD::BR_JT";
 	}
 }
+
+/* konda
+SDValue
+VideoCore4TargetLowering::LowerFormalArguments(SDValue Chain, CallingConv::ID CallConv,
+					       bool IsVarArg,
+					       const SmallVectorImpl<ISD::InputArg> &Ins,
+					       const SDLoc &DL, SelectionDAG &DAG,
+					       SmallVectorImpl<SDValue> &InVals) const {
+  MachineFunction       &MF          = DAG.getMachineFunction();
+  MachineFrameInfo      &MFI         = MF.getFrameInfo();
+  VideoCore4FunctionInfo *VideoCore4FI = MF.getInfo<VideoCore4FunctionInfo>();
+
+  VideoCore4FI->setVarArgsFrameIndex(0);
+
+  // Used with vargs to acumulate store chains.
+  std::vector<SDValue> OutChains;
+  
+  // Assign locations to all of the incoming arguments.
+  SmallVector<CCValAssign, 16> ArgLocs;
+  CCState CCInfo(CallConv,
+		 IsVarArg,
+		 DAG.getMachineFunction(),
+                 ArgLocs,
+		 *DAG.getContext());
+  CCInfo.AllocateStack(ABI.GetCalleeAllocdArgSizeInBytes(CallConv),
+		       1);
+  const Function              &Func    = DAG.getMachineFunction().getFunction();
+  Function::const_arg_iterator FuncArg = Func.arg_begin();
+
+  if (Func.hasFnAttribute("interrupt") && !Func.arg_empty())
+    report_fatal_error("Functions with the interrupt attribute cannot have arguments!");
+
+  CCInfo.AnalyzeFormalArguments(Ins,
+				CC_VideoCore4);
+  
+  VideoCore4FI->setFormalArgInfo(CCInfo.getNextStackOffset(),
+				CCInfo.getInRegsParamsCount() > 0);
+
+  unsigned CurArgIdx = 0;
+  CCInfo.rewindByValRegsInfo();
+
+  for (unsigned i = 0, e = ArgLocs.size(); i != e; ++i) {
+    CCValAssign &VA = ArgLocs[i];
+    if (Ins[i].isOrigArg()) {
+      std::advance(FuncArg, Ins[i].getOrigArgIndex() - CurArgIdx);
+      CurArgIdx = Ins[i].getOrigArgIndex();
+    }
+    //EVT ValVT = VA.getValVT();
+    //ISD::ArgFlagsTy Flags    = Ins[i].Flags;
+    bool IsRegLoc = VA.isRegLoc();
+
+    // Arguments stored on registers
+    if (IsRegLoc) {
+      MVT                        RegVT  = VA.getLocVT();
+      unsigned                   ArgReg = VA.getLocReg();
+      const TargetRegisterClass *RC     = getRegClassFor(RegVT);
+      
+      // Transform the arguments stored on
+      // physical registers into virtual ones
+      unsigned Reg = addLiveIn(DAG.getMachineFunction(),
+			       ArgReg,
+			       RC);
+      SDValue ArgValue = DAG.getCopyFromReg(Chain,
+					    DL,
+					    Reg,
+					    RegVT);
+      ArgValue = UnpackFromArgumentSlot(ArgValue,
+					VA,
+					Ins[i].ArgVT,
+					DL,
+					DAG);
+      InVals.push_back(ArgValue);
+    } else { // VA.isRegLoc()
+      MVT LocVT = VA.getLocVT();
+      
+      assert(VA.isMemLoc());
+      // The stack pointer offset is relative to the caller stack frame.
+      int FI = MFI.CreateFixedObject(LocVT.getSizeInBits() / 8,
+				     VA.getLocMemOffset(),
+				     true);
+      
+      // Create load nodes to retrieve arguments from the stack
+      SDValue FIN      = DAG.getFrameIndex(FI, getPointerTy(DAG.getDataLayout()));
+      SDValue ArgValue = DAG.getLoad(LocVT,
+				     DL,
+				     Chain,
+				     FIN,
+				     MachinePointerInfo::getFixedStack(DAG.getMachineFunction(),
+								       FI));
+      OutChains.push_back(ArgValue.getValue(1));
+
+      ArgValue = UnpackFromArgumentSlot(ArgValue,
+					VA,
+					Ins[i].ArgVT,
+					DL,
+					DAG);
+      InVals.push_back(ArgValue);
+    }
+  }
+
+  for (unsigned i = 0, e = ArgLocs.size(); i != e; ++i) {
+    // The mips ABIs for returning structs by value requires that we copy
+    // the sret argument into $v0 for the return. Save the argument into
+    // a virtual register so that we can access it from the return points.
+    if (Ins[i].Flags.isSRet()) {
+      unsigned Reg = VideoCore4FI->getSRetReturnReg();
+      if (!Reg) {
+	Reg = MF.getRegInfo().createVirtualRegister(getRegClassFor(MVT::i32));
+	VideoCore4FI->setSRetReturnReg(Reg);
+      }
+      SDValue Copy = DAG.getCopyToReg(DAG.getEntryNode(),
+				      DL,
+				      Reg,
+				      InVals[i]);
+      Chain = DAG.getNode(ISD::TokenFactor,
+			  DL,
+			  MVT::Other,
+			  Copy,
+			  Chain);
+      break;
+    }
+  }
+  
+  if (IsVarArg) {
+    writeVarArgRegs(OutChains,
+		    Chain,
+		    DL,
+		    DAG,
+		    CCInfo);
+  }
+    
+  // All stores are grouped in one node to allow the matching between
+  // the size of Ins and InVals. This only happens when on varg functions
+  if (!OutChains.empty()) {
+    OutChains.push_back(Chain);
+    Chain = DAG.getNode(ISD::TokenFactor,
+			DL,
+			MVT::Other,
+			OutChains);
+  }
+
+  return Chain;
+}
+*/

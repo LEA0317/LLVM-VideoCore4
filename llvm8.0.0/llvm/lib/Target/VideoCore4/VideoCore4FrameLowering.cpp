@@ -100,10 +100,10 @@ VideoCore4FrameLowering::emitPrologue(MachineFunction &MF,
 
 	if (hasFP(MF))
 	{
-		unsigned FP = RI.getFrameRegister(MF);
+	  unsigned FP = VideoCore4::SP; //RI.getFrameRegister(MF);
 
-		//BuildMI(MBB, MI, dl, TII.get(VideoCore4::MOV_R), FP)
-		//	.addReg(VideoCore4::SP);
+	  //BuildMI(MBB, MI, dl, TII.get(VideoCore4::MOV_R), FP)
+	  //	.addReg(VideoCore4::SP);
 	}
 }
 
@@ -160,8 +160,8 @@ int VideoCore4FrameLowering::getFrameIndexOffset(const MachineFunction& MF, int 
 }
 
 MachineBasicBlock::iterator
-VideoCore4FrameLowering::eliminateCallFramePseudoInstr(MachineFunction            &MF,
-						       MachineBasicBlock          &MBB,
+VideoCore4FrameLowering::eliminateCallFramePseudoInstr(MachineFunction &MF,
+						       MachineBasicBlock &MBB,
 						       MachineBasicBlock::iterator I) const {
   MachineInstr &MI = *I;
 

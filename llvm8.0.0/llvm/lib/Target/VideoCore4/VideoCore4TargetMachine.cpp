@@ -12,6 +12,7 @@
 //===----------------------------------------------------------------------===//
 
 #include "VideoCore4TargetMachine.h"
+#include "VideoCore4TargetObjectFile.h"
 #include "VideoCore4TargetTransformInfo.h"
 #include "VideoCore4.h"
 #include "llvm/CodeGen/Passes.h"
@@ -86,9 +87,10 @@ VideoCore4TargetMachine::VideoCore4TargetMachine(const Target &T,
 		      getEffectiveRelocModel(JIT, RM),
 		      getVideoCore4EffectiveCodeModel(CM), OL),
     Subtarget(TT, CPU, FS, *this),
-    DL("e-p:32:32:32-i8:8:8-i16:16:16-i32:32:32-f32:32:32-n32-S32") {
+    DL("e-p:32:32:32-i8:8:8-i16:16:16-i32:32:32-f32:32:32-n32-S32"),
+    TLOF(make_unique<VideoCore4ELFTargetObjectFile>()) {
 	initAsmInfo();
-    }
+}
 
 namespace {
 /// VideoCore4 Code Generator Pass Configuration Options.
@@ -102,7 +104,6 @@ public:
   }
 
   bool addInstSelector()           override;
-  /*
   bool addILPOpts()                override;
   void addIRPasses()               override;
   void addMachineSSAOptimization() override;
@@ -110,7 +111,6 @@ public:
   bool addPreISel()                override;
   void addPreRegAlloc()            override;
   void addPreSched2()              override;
-  */
 };
 } // namespace
 
@@ -124,7 +124,6 @@ TargetPassConfig *VideoCore4TargetMachine::createPassConfig(PassManagerBase &PM)
   return new VideoCore4PassConfig(*this, PM);
 }
 
-/*
 bool
 VideoCore4PassConfig::addILPOpts() {
   addPass(&MachineCombinerID);
@@ -177,7 +176,6 @@ void
 VideoCore4PassConfig::addPreSched2() {
   addPass(&IfConverterID);
 }
-*/
   
 bool
 VideoCore4PassConfig::addInstSelector() {
@@ -185,7 +183,6 @@ VideoCore4PassConfig::addInstSelector() {
   return false;
 }
 
-/*
 void
 VideoCore4PassConfig::addPreRegAlloc() {
   addPass(&PeepholeOptimizerID);
@@ -197,4 +194,3 @@ void
 VideoCore4PassConfig::addPreEmitPass() {
   return;
 }
-*/

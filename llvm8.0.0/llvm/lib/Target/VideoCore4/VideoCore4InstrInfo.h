@@ -43,10 +43,13 @@ public:
   ///
   virtual const VideoCore4RegisterInfo& getRegisterInfo() const { return RI; }
 
-  void copyPhysReg(MachineBasicBlock &MBB,
-                   MachineBasicBlock::iterator I, DebugLoc DL,
-                   unsigned DestReg, unsigned SrcReg,
-                   bool KillSrc) const;
+  void
+  copyPhysReg(MachineBasicBlock &MBB,
+	      MachineBasicBlock::iterator I,
+	      const DebugLoc &DL,
+	      unsigned DestReg,
+	      unsigned SrcReg,
+	      bool KillSrc) const override;
 
   virtual void storeRegToStackSlot(MachineBasicBlock &MBB,
                                    MachineBasicBlock::iterator MBBI,

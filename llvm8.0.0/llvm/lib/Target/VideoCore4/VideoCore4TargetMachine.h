@@ -30,8 +30,9 @@ namespace llvm {
 /// VideoCore4TargetMachine
 ///
 class VideoCore4TargetMachine : public LLVMTargetMachine {
-  VideoCore4Subtarget        Subtarget;
-  const DataLayout           DL;       // Calculates type size & alignment
+  VideoCore4Subtarget Subtarget;
+  const DataLayout    DL;       // Calculates type size & alignment
+  std::unique_ptr<TargetLoweringObjectFile> TLOF;
 
 public:
   VideoCore4TargetMachine(const Target &T,
@@ -44,11 +45,17 @@ public:
 			  CodeGenOpt::Level OL,
 			  bool JIT);
 
+  TargetLoweringObjectFile *getObjFileLowering() const override {
+    return TLOF.get();
+  }
+
+  
   TargetTransformInfo getTargetTransformInfo(const Function &F) override;
 
-  virtual const DataLayout *getDataLayout() const     { return &DL;}
-  virtual const VideoCore4Subtarget *getSubtargetImpl() const { return &Subtarget; }
-
+  const DataLayout *getDataLayout() const { return &DL;}
+  const VideoCore4Subtarget *getSubtargetImpl() const { return &Subtarget; }
+  const VideoCore4Subtarget *getSubtargetImpl(const Function &) const override { return &Subtarget; }
+  
   virtual TargetPassConfig *createPassConfig(PassManagerBase &PM);
 }; // VideoCore4TargetMachine.
 
