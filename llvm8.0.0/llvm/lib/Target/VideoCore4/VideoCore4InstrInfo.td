@@ -146,7 +146,7 @@ let hasSideEffects = 0 in
 let isReturn = 1, isTerminator = 1, isBarrier = 1 in {
   def RET : S32<
 				(outs), (ins variable_ops),
-				"b\tlr",
+				"b\t%lr",
 				[(retflag)]
 			>;
 }
@@ -646,7 +646,7 @@ def PUSH : S32<
 
 def PUSH_LR : S32<
 			(outs), (ins PUSHPOP_START_REGS:$StartReg, GR32:$EndReg),
-			"push\t$StartReg-$EndReg, lr",
+			"push\t$StartReg-$EndReg, %lr",
 			[]
 		>;
 
