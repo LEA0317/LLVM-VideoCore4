@@ -658,7 +658,7 @@ def POP : S32<
 
 def POP_PC : S32<
 			(outs), (ins PUSHPOP_START_REGS:$StartReg, GR32:$EndReg),
-			"push\t$StartReg-$EndReg, pc",
+			"push\t$StartReg-$EndReg, %pc",
 			[]
 		>;
 
@@ -706,7 +706,7 @@ let isAsCheapAsAMove = 1 in
 
 def LEA_PC_LI : S48<
 				(outs GR32:$D), (ins i32imm:$A),
-				"lea\t$D, $A(pc) # PCrel load",
+				"lea\t$D, $A(%pc) # PCrel load",
 				[(set GR32:$D, imm:$A)]
 			>
 {
