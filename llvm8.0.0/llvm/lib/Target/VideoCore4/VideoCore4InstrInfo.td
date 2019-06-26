@@ -780,12 +780,42 @@ let isTerminator = 1, isBranch = 1 in {
 		def JMP_CC_LS : JMP_CC<"ls">;
 	}
 
-	def BCMP_GEN : S32<
-				(outs), (ins FR32:$A, brtarget:$dst),
-				"# if ($A) then $dst()\n\tcmp\t$A, 0\n\tbne\t$dst",
-				[(brcond FR32:$A, bb:$dst)]
-			>;
- 
+	let Defs = [SR], isCodeGenOnly = 1 in {
+	    def CMP_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb),
+	    	                          "cmp\t$ra, $rb",
+		  		          []>;
+	    def JMP_COMP_EQ_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	                                          "cmpeq and jmp",
+			  			  []>;
+  	    def JMP_COMP_NE_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	                                          "cmpne and jmp",
+				 		  []>;
+	    def JMP_COMP_GT_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	                                          "cmpgt and jmp",
+						  []>;
+	    def JMP_COMP_GE_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	                                          "cmpge and jmp",
+						  []>;
+	    def JMP_COMP_LT_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	                                          "cmplt and jmp",
+						  []>;
+	    def JMP_COMP_LE_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	                                          "cmple and jmp",
+					  	  []>;
+	    def JMP_COMP_HI_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	                                          "cmpugt and jmp",
+						  []>;
+	    def JMP_COMP_HS_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	                                          "cmpuge and jmp",
+					  	  []>;
+	    def JMP_COMP_LO_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	                                          "cmpult and jmp",
+					  	  []>;
+	    def JMP_COMP_LS_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	                                          "cmpule and jmp",
+						  []>;
+        }
+
 	/* Likewise, for floats. */
 	multiclass BCMPF<string cond, PatFrag node> {
 		def _RR : S32<
@@ -852,6 +882,28 @@ defm CONDHI : CONDCC<"hi", setugt>;
 defm CONDHS : CONDCC<"cc", setuge>;
 defm CONDLO : CONDCC<"cs", setult>;
 defm CONDLS : CONDCC<"ls", setule>;
+
+// branch patterns
+def : Pat<(brcond (i32 (seteq (i32 GR32:$lhs), (i32 GR32:$rhs))), bb:$dst),
+          (JMP_COMP_EQ_P (i32 GR32:$lhs), (i32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setne (i32 GR32:$lhs), (i32 GR32:$rhs))), bb:$dst),
+          (JMP_COMP_NE_P (i32 GR32:$lhs), (i32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setgt (i32 GR32:$lhs), (i32 GR32:$rhs))), bb:$dst),
+          (JMP_COMP_GT_P (i32 GR32:$lhs), (i32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setge (i32 GR32:$lhs), (i32 GR32:$rhs))), bb:$dst),
+          (JMP_COMP_GE_P (i32 GR32:$lhs), (i32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setlt (i32 GR32:$lhs), (i32 GR32:$rhs))), bb:$dst),
+          (JMP_COMP_LT_P (i32 GR32:$lhs), (i32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setle (i32 GR32:$lhs), (i32 GR32:$rhs))), bb:$dst),
+          (JMP_COMP_LE_P (i32 GR32:$lhs), (i32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setugt (i32 GR32:$lhs), (i32 GR32:$rhs))), bb:$dst),
+          (JMP_COMP_HI_P (i32 GR32:$lhs), (i32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setuge (i32 GR32:$lhs), (i32 GR32:$rhs))), bb:$dst),
+          (JMP_COMP_HS_P (i32 GR32:$lhs), (i32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setult (i32 GR32:$lhs), (i32 GR32:$rhs))), bb:$dst),
+          (JMP_COMP_LO_P (i32 GR32:$lhs), (i32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setule (i32 GR32:$lhs), (i32 GR32:$rhs))), bb:$dst),
+          (JMP_COMP_LS_P (i32 GR32:$lhs), (i32 GR32:$rhs), bb:$dst)>;
 
 def SELECT_GEN : S32<
 			(outs FR32:$D), (ins FR32:$A, FR32:$B, FR32:$T),
