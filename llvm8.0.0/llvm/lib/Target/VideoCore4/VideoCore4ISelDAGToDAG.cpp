@@ -196,7 +196,7 @@ VideoCore4DAGToDAGISel::SelectStacked(SDValue  addr,
   FrameIndexSDNode* FIN = dyn_cast<FrameIndexSDNode>(addr);
   if (FIN) {
     base   = CurDAG->getTargetFrameIndex(FIN->getIndex(), MVT::i32);
-    offset = CurDAG->getTargetConstant(0, SDLoc(offset), MVT::i32);
+    offset = CurDAG->getTargetConstant(0, SDLoc(addr), MVT::i32);
     return true;
   }
   
