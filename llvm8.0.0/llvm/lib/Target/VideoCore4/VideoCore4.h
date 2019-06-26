@@ -27,7 +27,10 @@ namespace llvm {
   FunctionPass*
   createVideoCore4ISelDag(VideoCore4TargetMachine &TM,
 			  CodeGenOpt::Level        OptLevel);
+  FunctionPass*
+  createVideoCore4PseudoFixupPass(void);
 
+  void initializeVideoCore4PseudoFixupPass(PassRegistry&);
 } // end namespace llvm;
 
 #endif

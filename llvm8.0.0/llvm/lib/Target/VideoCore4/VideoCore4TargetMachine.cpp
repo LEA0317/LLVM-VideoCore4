@@ -33,6 +33,9 @@ using namespace llvm;
 extern "C" void LLVMInitializeVideoCore4Target() {
   // Register the target.
   RegisterTargetMachine<VideoCore4TargetMachine> X(TheVideoCore4Target);
+
+  auto PR = PassRegistry::getPassRegistry();
+  initializeVideoCore4PseudoFixupPass(*PR);
 }
 
 static Reloc::Model
@@ -174,6 +177,7 @@ VideoCore4PassConfig::addIRPasses() {
 
 void
 VideoCore4PassConfig::addPreSched2() {
+  addPass(createVideoCore4PseudoFixupPass());
   addPass(&IfConverterID);
 }
   

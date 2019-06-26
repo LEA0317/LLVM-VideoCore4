@@ -11,17 +11,18 @@ add_public_tablegen_target(VideoCore4CommonTableGen)
 
 add_llvm_target(VideoCore4CodeGen
   VideoCore4AsmPrinter.cpp
-  VideoCore4MCInstLower.cpp
   VideoCore4FrameLowering.cpp
-  VideoCore4RegisterInfo.cpp
   VideoCore4InstrInfo.cpp
-  VideoCore4SelectionDAGInfo.cpp
   VideoCore4ISelDAGToDAG.cpp
-  VideoCore4Subtarget.cpp
   VideoCore4ISelLowering.cpp
-  VideoCore4TargetObjectFile.cpp
-  VideoCore4TargetMachine.cpp
   VideoCore4MachineFunctionInfo.cpp
+  VideoCore4MCInstLower.cpp
+  VideoCore4RegisterInfo.cpp
+  VideoCore4PseudoFixup.cpp
+  VideoCore4SelectionDAGInfo.cpp
+  VideoCore4Subtarget.cpp
+  VideoCore4TargetMachine.cpp
+  VideoCore4TargetObjectFile.cpp
 )
 
 add_subdirectory(TargetInfo)
