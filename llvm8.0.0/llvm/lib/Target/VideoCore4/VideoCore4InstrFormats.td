@@ -42,3 +42,15 @@ class S16<dag outs, dag ins, string asmstr, list<dag> pattern> :
 	let Size = 2;
 }
 
+// Pseudo VC4 instructions
+class VideoCore4Pseudo<dag       outs,
+                       dag       ins,
+                       string    asmstr,
+                       list<dag> pattern> :
+      VideoCore4Inst<outs, ins,
+                     asmstr,
+                     pattern>
+{
+  let isCodeGenOnly = 1;
+  let isPseudo      = 1;
+}

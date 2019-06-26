@@ -781,37 +781,37 @@ let isTerminator = 1, isBranch = 1 in {
 	}
 
 	let Defs = [SR], isCodeGenOnly = 1 in {
-	    def CMP_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb),
+	    def CMP_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb),
 	    	                          "cmp\t$ra, $rb",
 		  		          []>;
-	    def JMP_COMP_EQ_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	    def JMP_COMP_EQ_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
 	                                          "cmpeq and jmp",
 			  			  []>;
-  	    def JMP_COMP_NE_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+  	    def JMP_COMP_NE_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
 	                                          "cmpne and jmp",
 				 		  []>;
-	    def JMP_COMP_GT_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	    def JMP_COMP_GT_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
 	                                          "cmpgt and jmp",
 						  []>;
-	    def JMP_COMP_GE_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	    def JMP_COMP_GE_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
 	                                          "cmpge and jmp",
 						  []>;
-	    def JMP_COMP_LT_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	    def JMP_COMP_LT_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
 	                                          "cmplt and jmp",
 						  []>;
-	    def JMP_COMP_LE_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	    def JMP_COMP_LE_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
 	                                          "cmple and jmp",
 					  	  []>;
-	    def JMP_COMP_HI_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	    def JMP_COMP_HI_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
 	                                          "cmpugt and jmp",
 						  []>;
-	    def JMP_COMP_HS_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	    def JMP_COMP_HS_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
 	                                          "cmpuge and jmp",
 					  	  []>;
-	    def JMP_COMP_LO_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	    def JMP_COMP_LO_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
 	                                          "cmpult and jmp",
 					  	  []>;
-	    def JMP_COMP_LS_P : VideoCore4Pseudo<(outs), (ins GR32:$ra, GR32:$rb, brtarget:$dst),
+	    def JMP_COMP_LS_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
 	                                          "cmpule and jmp",
 						  []>;
         }
