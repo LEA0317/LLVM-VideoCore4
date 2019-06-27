@@ -27,14 +27,14 @@ namespace llvm {
   FunctionPass*
   createVideoCore4ISelDag(VideoCore4TargetMachine &TM,
 			  CodeGenOpt::Level        OptLevel);
-  FunctionPass*
-  createVideoCore4PseudoFixupPass(void);
+  FunctionPass *createVideoCore4PseudoFixupPass(void);
+  FunctionPass *createVideoCore4DelJmpPass(void);
+  FunctionPass *createVideoCore4CFGOptPass(void);
 
-  FunctionPass*
-  createVideoCore4DelJmpPass(void);
-  
+
   void initializeVideoCore4PseudoFixupPass(PassRegistry&);
   void initializeVideoCore4DelJmpPass(PassRegistry&);
+  void initializeVideoCore4CFGOptimizerPass(PassRegistry&);
 } // end namespace llvm;
 
 #endif

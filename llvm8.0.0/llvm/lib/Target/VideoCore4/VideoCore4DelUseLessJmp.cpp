@@ -12,6 +12,7 @@
 //===----------------------------------------------------------------------===//
 
 #include "VideoCore4.h"
+#include "VideoCore4Util.h"
 
 #include "VideoCore4TargetMachine.h"
 #include "llvm/CodeGen/MachineFunctionPass.h"
@@ -24,8 +25,6 @@
 using namespace llvm;
 
 #define DEBUG_TYPE "del-jmp"
-
-#define BRANCH_KIND_NUM 10
 
 namespace llvm {
   FunctionPass *createVideoCore4DelJmpPass(void);
@@ -100,31 +99,6 @@ VideoCore4DelJmp::runOnMachineBasicBlock(MachineBasicBlock &MBB,
     MBB.erase(I);
     Changed = true;
   } else {
-    unsigned BranchTakenOpcode[BRANCH_KIND_NUM] = {
-      VideoCore4::JMP_COMP_EQ_P,
-      VideoCore4::JMP_COMP_NE_P,
-      VideoCore4::JMP_COMP_GT_P,
-      VideoCore4::JMP_COMP_GE_P,
-      VideoCore4::JMP_COMP_LT_P,
-      VideoCore4::JMP_COMP_LE_P,
-      VideoCore4::JMP_COMP_HI_P,
-      VideoCore4::JMP_COMP_HS_P,
-      VideoCore4::JMP_COMP_LO_P,
-      VideoCore4::JMP_COMP_LS_P
-    };
-    unsigned BranchNotTakenOpcode[BRANCH_KIND_NUM] = {
-      VideoCore4::JMP_COMP_EQ_F_P,
-      VideoCore4::JMP_COMP_NE_F_P,
-      VideoCore4::JMP_COMP_GT_F_P,
-      VideoCore4::JMP_COMP_GE_F_P,
-      VideoCore4::JMP_COMP_LT_F_P,
-      VideoCore4::JMP_COMP_LE_F_P,
-      VideoCore4::JMP_COMP_HI_F_P,
-      VideoCore4::JMP_COMP_HS_F_P,
-      VideoCore4::JMP_COMP_LO_F_P,
-      VideoCore4::JMP_COMP_LS_F_P
-    };
-
     for (int i=0; i < BRANCH_KIND_NUM; i++) {
       if (I->getOpcode()               == BranchTakenOpcode[i]
 	  && I->getOperand(2).getMBB() == &MBBN) {

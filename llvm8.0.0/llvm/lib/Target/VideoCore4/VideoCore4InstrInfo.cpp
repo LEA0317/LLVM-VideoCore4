@@ -13,6 +13,7 @@
 
 #include "VideoCore4InstrInfo.h"
 #include "VideoCore4.h"
+#include "VideoCore4Util.h"
 #include "VideoCore4MachineFunctionInfo.h"
 #include "VideoCore4TargetMachine.h"
 #include "llvm/IR/Function.h"
@@ -27,61 +28,6 @@
 #include "VideoCore4GenInstrInfo.inc"
 
 using namespace llvm;
-
-#define BRANCH_KIND_NUM 10
-static unsigned BranchTakenOpcode[BRANCH_KIND_NUM] = {
-  VideoCore4::JMP_COMP_EQ_P,
-  VideoCore4::JMP_COMP_NE_P,
-  VideoCore4::JMP_COMP_GT_P,
-  VideoCore4::JMP_COMP_GE_P,
-  VideoCore4::JMP_COMP_LT_P,
-  VideoCore4::JMP_COMP_LE_P,
-  VideoCore4::JMP_COMP_HI_P,
-  VideoCore4::JMP_COMP_HS_P,
-  VideoCore4::JMP_COMP_LO_P,
-  VideoCore4::JMP_COMP_LS_P
-};
-static unsigned BranchNotTakenOpcode[BRANCH_KIND_NUM] = {
-  VideoCore4::JMP_COMP_EQ_F_P,
-  VideoCore4::JMP_COMP_NE_F_P,
-  VideoCore4::JMP_COMP_GT_F_P,
-  VideoCore4::JMP_COMP_GE_F_P,
-  VideoCore4::JMP_COMP_LT_F_P,
-  VideoCore4::JMP_COMP_LE_F_P,
-  VideoCore4::JMP_COMP_HI_F_P,
-  VideoCore4::JMP_COMP_HS_F_P,
-  VideoCore4::JMP_COMP_LO_F_P,
-  VideoCore4::JMP_COMP_LS_F_P
-};
-
-static bool isCondTrueBranch(unsigned opc) {
-  for (int i=0; i<BRANCH_KIND_NUM; i++) {
-    if (BranchTakenOpcode[i] == opc) return true;
-  }
-  return false;
-}
-static bool isCondFalseBranch(unsigned opc) {
-  for (int i=0; i<BRANCH_KIND_NUM; i++) {
-    if (BranchNotTakenOpcode[i] == opc) return true;
-  }
-  return false;
-}
-static bool isCondBranch(unsigned opc) {
-  if (isCondTrueBranch(opc) || isCondFalseBranch(opc)) return true;
-  return false;
-}
-
-namespace CC {
-  const int DUMMY = 0;
-}
-static void
-parseCondBranch(MachineInstr                    *LastInst,
-                MachineBasicBlock              *&Target,
-                SmallVectorImpl<MachineOperand> &Cond) {
-  Cond.push_back(MachineOperand::CreateImm(CC::DUMMY));
-  Target = LastInst->getOperand(2).getMBB();
-}
-
 
 VideoCore4InstrInfo::VideoCore4InstrInfo(const VideoCore4Subtarget &STI)
   : VideoCore4GenInstrInfo(VideoCore4::ADJCALLSTACKDOWN, VideoCore4::ADJCALLSTACKUP),
