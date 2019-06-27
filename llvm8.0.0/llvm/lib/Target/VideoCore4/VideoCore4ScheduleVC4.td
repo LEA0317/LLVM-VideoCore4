@@ -17,10 +17,9 @@ def VC4Itineraries : ProcessorItineraries<[ALU, LSU, FPU], [], [
 // FIX ME
 def VC4Model : SchedMachineModel {
   let IssueWidth        = 1;  // Max micro-ops that may be scheduled per cycle.
-  let MicroOpBufferSize = 0; 
   let LoadLatency       = 20; // Cycles for loads to access the cache.
   let HighLatency       = 38; // Approximation of cycles for "high latency" ops.
-  let MicroOpBufferSize = 0; //	in-order
+  let MicroOpBufferSize = 0; // in-order
   let MispredictPenalty = 10; // Extra cycles for a mispredicted branch.
 
   // Per-cycle resources tables.
