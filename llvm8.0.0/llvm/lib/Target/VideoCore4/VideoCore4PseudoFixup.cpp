@@ -244,6 +244,67 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
 	Changed = true;
 	break;
       }
+    case VideoCore4::FSELECT_EQ_P:
+      {
+	SELECT_CC(VideoCore4::CMOV_EQ_P, VideoCore4::CMOV_NE_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::FSELECT_NE_P:
+      {
+	SELECT_CC(VideoCore4::CMOV_NE_P, VideoCore4::CMOV_EQ_P);
+	Changed = true;
+	break;
+      }
+
+    case VideoCore4::FSELECT_GT_P:
+      {
+	SELECT_CC(VideoCore4::CMOV_GT_P, VideoCore4::CMOV_LE_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::FSELECT_GE_P:
+      {
+	SELECT_CC(VideoCore4::CMOV_GE_P, VideoCore4::CMOV_LT_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::FSELECT_LT_P:
+      {
+	SELECT_CC(VideoCore4::CMOV_LT_P, VideoCore4::CMOV_GE_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::FSELECT_LE_P:
+      {
+	SELECT_CC(VideoCore4::CMOV_LE_P, VideoCore4::CMOV_GT_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::FSELECT_HI_P:
+      {
+	SELECT_CC(VideoCore4::CMOV_HI_P, VideoCore4::CMOV_LS_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::FSELECT_HS_P:
+      {
+	SELECT_CC(VideoCore4::CMOV_HS_P, VideoCore4::CMOV_LO_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::FSELECT_LO_P:
+      {
+	SELECT_CC(VideoCore4::CMOV_LO_P, VideoCore4::CMOV_HS_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::FSELECT_LS_P:
+      {
+	SELECT_CC(VideoCore4::CMOV_LS_P, VideoCore4::CMOV_HI_P);
+	Changed = true;
+	break;
+      }
     default:
       {
 	break;

@@ -724,11 +724,11 @@ def : Pat<
 		(LEA_PC_LI tglobaladdr:$addr)
 	>;
 
-let isBranch=1, isIndirectBranch=1, isTerminator=1, isBarrier = 1 in
-def BR_JT : S48<(outs), (ins InlineJT:$t, GR32:$i),
-                            "# BR_JT Pseudo Instruction $i\n$t",
-                            [(VideoCoreBR_JT tjumptable:$t, GR32:$i)]>;
-
+let isBranch=1, isIndirectBranch=1, isTerminator=1, isBarrier = 1 in {
+    def BR_JT : S48<(outs), (ins InlineJT:$t, GR32:$i),
+                     "# BR_JT Pseudo Instruction $i\n$t",
+                     [(VideoCoreBR_JT tjumptable:$t, GR32:$i)]>;
+}
 
 // --- Branch instructions -------------------------------------------------- 
 
@@ -842,6 +842,7 @@ let isTerminator = 1, isBranch = 1 in {
 
 let isCodeGenOnly = 1 in {
     let Constraints = "$d = $f" in {
+        // select
     	def SELECT_EQ_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
                                                 "selectcc eq($lhs comp $rhs) if true $t else $f",
 	                                        []>;
@@ -872,6 +873,38 @@ let isCodeGenOnly = 1 in {
 	def SELECT_LS_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
 	                                        "selectcc ule($lhs comp $rhs) if true $t else $f",
 			                        []>;
+
+	// fp select
+    	def FSELECT_EQ_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
+                                             "fselectcc eq($lhs comp $rhs) if true $t else $f",
+	                                     []>;
+	def FSELECT_NE_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
+	                                     "fselectcc ne($lhs comp $rhs) if true $t else $f",
+			   	 	     []>;
+	def FSELECT_GT_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
+	                                     "fselectcc gt($lhs comp $rhs) if true $t else $f",
+					     []>;
+	def FSELECT_GE_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
+	                                     "fselectcc ge($lhs comp $rhs) if true $t else $f",
+					     []>;
+	def FSELECT_LT_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
+	                                     "fselectcc lt($lhs comp $rhs) if true $t else $f",
+					     []>;
+	def FSELECT_LE_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
+	                                     "fselectcc le($lhs comp $rhs) if true $t else $f",
+					     []>;
+	def FSELECT_HI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
+	                                     "fselectcc ugt($lhs comp $rhs) if true $t else $f",
+					     []>;
+	def FSELECT_HS_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
+	                                     "fselectcc uge($lhs comp $rhs) if true $t else $f",
+					     []>;
+	def FSELECT_LO_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
+	                                     "fselectcc ult($lhs comp $rhs) if true $t else $f",
+				             []>;
+	def FSELECT_LS_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
+	                                     "fselectcc ule($lhs comp $rhs) if true $t else $f",
+			                     []>;
     }
     def CMOV_EQ_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
                                       "moveq\t$d, $t",
@@ -907,15 +940,6 @@ let isCodeGenOnly = 1 in {
 
 // SetCC
 multiclass CONDCC<string cond, PatFrag node> {
-	let Constraints = "$D = $F" in {
-		def _SELECT_RR_2 : S32<
-					(outs FR32:$D), (ins FR32:$A, FR32:$B, FR32:$T, FR32:$F),
-					"cmp\t$A, $B\n\tmov"#cond#"\t$D, $T",
-					[(set FR32:$D,
-						(select (node (i32 FR32:$A), (i32 FR32:$B)), (f32 FR32:$T), (f32 FR32:$F)))]
-				>;
-	}
-
 	def _SET_RI : S16<
 				(outs FR32:$D), (ins FR32:$A, i32imm:$B),
 				"cmp\t$A, $B\n\tmov\t$D, 0\n\tmov"#cond#"\t$D, 1",
@@ -983,6 +1007,27 @@ def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (i32 FR32:$T), (i32 FR32:$
           (SELECT_LO_P (i32 FR32:$T), (i32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
 def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (i32 FR32:$T), (i32 FR32:$F), SETULE),
           (SELECT_LS_P (i32 FR32:$T), (i32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
+
+def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (f32 FR32:$T), (f32 FR32:$F), SETEQ),
+          (FSELECT_EQ_P (f32 FR32:$T), (f32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
+def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (f32 FR32:$T), (f32 FR32:$F), SETNE),
+          (FSELECT_NE_P (f32 FR32:$T), (f32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
+def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (f32 FR32:$T), (f32 FR32:$F), SETGT),
+          (FSELECT_GT_P (f32 FR32:$T), (f32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
+def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (f32 FR32:$T), (f32 FR32:$F), SETGE),
+          (FSELECT_GE_P (f32 FR32:$T), (f32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
+def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (f32 FR32:$T), (f32 FR32:$F), SETLT),
+          (FSELECT_LT_P (f32 FR32:$T), (f32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
+def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (f32 FR32:$T), (f32 FR32:$F), SETLE),
+          (FSELECT_LE_P (f32 FR32:$T), (f32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
+def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (f32 FR32:$T), (f32 FR32:$F), SETUGT),
+          (FSELECT_HI_P (f32 FR32:$T), (f32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
+def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (f32 FR32:$T), (f32 FR32:$F), SETUGE),
+          (FSELECT_HS_P (f32 FR32:$T), (f32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
+def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (f32 FR32:$T), (f32 FR32:$F), SETULT),
+          (FSELECT_LO_P (f32 FR32:$T), (f32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
+def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (f32 FR32:$T), (f32 FR32:$F), SETULE),
+          (FSELECT_LS_P (f32 FR32:$T), (f32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
 	  
 def SELECT_GEN : S32<
 			(outs FR32:$D), (ins FR32:$A, FR32:$B, FR32:$T),
