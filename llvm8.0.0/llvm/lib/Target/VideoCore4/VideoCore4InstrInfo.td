@@ -784,7 +784,9 @@ let isTerminator = 1, isBranch = 1 in {
 	    def CMP_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb),
 	    	                          "cmp\t$ra, $rb",
 		  		          []>;
-	    def JMP_COMP_EQ_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+
+            // True
+            def JMP_COMP_EQ_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
 	                                          "cmpeq and jmp",
 			  			  []>;
   	    def JMP_COMP_NE_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
@@ -814,6 +816,38 @@ let isTerminator = 1, isBranch = 1 in {
 	    def JMP_COMP_LS_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
 	                                          "cmpule and jmp",
 						  []>;
+
+	    // False
+	    def JMP_COMP_EQ_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "cmpeq and jmp",
+			  			    []>;
+  	    def JMP_COMP_NE_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "cmpne and jmp",
+				 		    []>;
+	    def JMP_COMP_GT_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "cmpgt and jmp",
+						    []>;
+	    def JMP_COMP_GE_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "cmpge and jmp",
+						    []>;
+	    def JMP_COMP_LT_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "cmplt and jmp",
+						    []>;
+	    def JMP_COMP_LE_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "cmple and jmp",
+					  	    []>;
+	    def JMP_COMP_HI_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "cmpugt and jmp",
+						    []>;
+	    def JMP_COMP_HS_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "cmpuge and jmp",
+					  	    []>;
+	    def JMP_COMP_LO_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "cmpult and jmp",
+					  	    []>;
+	    def JMP_COMP_LS_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "cmpule and jmp",
+				  		    []>;
         }
 
 	/* Likewise, for floats. */

@@ -30,7 +30,11 @@ namespace llvm {
   FunctionPass*
   createVideoCore4PseudoFixupPass(void);
 
+  FunctionPass*
+  createVideoCore4DelJmpPass(void);
+  
   void initializeVideoCore4PseudoFixupPass(PassRegistry&);
+  void initializeVideoCore4DelJmpPass(PassRegistry&);
 } // end namespace llvm;
 
 #endif

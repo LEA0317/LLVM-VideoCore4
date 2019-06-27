@@ -28,6 +28,61 @@
 
 using namespace llvm;
 
+#define BRANCH_KIND_NUM 10
+static unsigned BranchTakenOpcode[BRANCH_KIND_NUM] = {
+  VideoCore4::JMP_COMP_EQ_P,
+  VideoCore4::JMP_COMP_NE_P,
+  VideoCore4::JMP_COMP_GT_P,
+  VideoCore4::JMP_COMP_GE_P,
+  VideoCore4::JMP_COMP_LT_P,
+  VideoCore4::JMP_COMP_LE_P,
+  VideoCore4::JMP_COMP_HI_P,
+  VideoCore4::JMP_COMP_HS_P,
+  VideoCore4::JMP_COMP_LO_P,
+  VideoCore4::JMP_COMP_LS_P
+};
+static unsigned BranchNotTakenOpcode[BRANCH_KIND_NUM] = {
+  VideoCore4::JMP_COMP_EQ_F_P,
+  VideoCore4::JMP_COMP_NE_F_P,
+  VideoCore4::JMP_COMP_GT_F_P,
+  VideoCore4::JMP_COMP_GE_F_P,
+  VideoCore4::JMP_COMP_LT_F_P,
+  VideoCore4::JMP_COMP_LE_F_P,
+  VideoCore4::JMP_COMP_HI_F_P,
+  VideoCore4::JMP_COMP_HS_F_P,
+  VideoCore4::JMP_COMP_LO_F_P,
+  VideoCore4::JMP_COMP_LS_F_P
+};
+
+static bool isCondTrueBranch(unsigned opc) {
+  for (int i=0; i<BRANCH_KIND_NUM; i++) {
+    if (BranchTakenOpcode[i] == opc) return true;
+  }
+  return false;
+}
+static bool isCondFalseBranch(unsigned opc) {
+  for (int i=0; i<BRANCH_KIND_NUM; i++) {
+    if (BranchNotTakenOpcode[i] == opc) return true;
+  }
+  return false;
+}
+static bool isCondBranch(unsigned opc) {
+  if (isCondTrueBranch(opc) || isCondFalseBranch(opc)) return true;
+  return false;
+}
+
+namespace CC {
+  const int DUMMY = 0;
+}
+static void
+parseCondBranch(MachineInstr                    *LastInst,
+                MachineBasicBlock              *&Target,
+                SmallVectorImpl<MachineOperand> &Cond) {
+  Cond.push_back(MachineOperand::CreateImm(CC::DUMMY));
+  Target = LastInst->getOperand(2).getMBB();
+}
+
+
 VideoCore4InstrInfo::VideoCore4InstrInfo(const VideoCore4Subtarget &STI)
   : VideoCore4GenInstrInfo(VideoCore4::ADJCALLSTACKDOWN, VideoCore4::ADJCALLSTACKUP),
     RI(),
@@ -137,13 +192,105 @@ VideoCore4InstrInfo::AnalyzeBranch(MachineBasicBlock               &MBB,
 				   MachineBasicBlock              *&FBB,
 				   SmallVectorImpl<MachineOperand> &Cond,
 				   bool AllowModify) const {
-  MachineBasicBlock::iterator I        = MBB.end();
-  MachineInstr               *LastInst = &(*I);
+  MachineBasicBlock::iterator I = MBB.getLastNonDebugInstr();
+  if (I == MBB.end()) {
+    return false;
+  }
 
-  //LastInst->getOpcode()
-  //errs() << "AnalyzeBranch: AllowModify = " << AllowModify << "\n";
-  //MBB.dump();
+  if (!isUnpredicatedTerminator(*I)) {
+    return false;
+  }
 
+  // Get the last instruction in the block.
+  MachineInstr               *LastInst = &*I;
+  MachineBasicBlock::iterator LastMBBI = I;
+  unsigned                    LastOpc  = LastInst->getOpcode();
+
+  // If there is only one terminator instruction, process it.
+  if (I == MBB.begin() || !isUnpredicatedTerminator(*--I)) {
+    if (LastOpc == VideoCore4::JMP) {
+      TBB = LastInst->getOperand(0).getMBB();
+      return false;
+    }
+    if (isCondTrueBranch(LastOpc)) {
+      // Block ends with fall-through condbranch.
+      parseCondBranch(LastInst, TBB, Cond);
+      return false;
+    }
+    return true; // Can't handle indirect branch.
+  }
+  
+  // Get the instruction before it if it is a terminator.
+  MachineInstr *SecondLastInst = &*I;
+  unsigned      SecondLastOpc  = SecondLastInst->getOpcode();
+
+  // If AllowModify is true and the block ends with two or more unconditional
+  // branches, delete all but the first unconditional branch.
+  if (AllowModify && LastOpc == VideoCore4::JMP) {
+    while (SecondLastOpc == VideoCore4::JMP) {
+      LastInst->eraseFromParent();
+      LastInst = SecondLastInst;
+      LastOpc  = LastInst->getOpcode();
+      if (I == MBB.begin() || !isUnpredicatedTerminator(*--I)) {
+        // Return now the only terminator is an unconditional branch.
+        TBB = LastInst->getOperand(0).getMBB();
+        return false;
+      } else {
+        SecondLastInst = &*I;
+        SecondLastOpc  = SecondLastInst->getOpcode();
+      }
+    }
+  }
+
+  // If the block ends with a B and a Bcc, handle it.
+  if (isCondBranch(SecondLastOpc) && LastOpc == VideoCore4::JMP) {
+    for (int i=0; i<BRANCH_KIND_NUM; i++) {
+      if (SecondLastOpc == BranchTakenOpcode[i]) {
+	// Transform the code
+	//
+	// L2:
+	//    bt L1
+	//    ba L2
+	// L1:
+	//    ..
+	//
+	// into
+	//
+	// L2:
+	//   bf L2                                                                                                                                                                                         
+	// L1: 
+	//   ...
+	//
+	MachineBasicBlock *TargetBB = SecondLastInst->getOperand(2).getMBB();
+	if (AllowModify
+	    && LastMBBI != MBB.end()
+	    && MBB.isLayoutSuccessor(TargetBB)) {
+	  MachineBasicBlock *BNcondMBB = LastInst->getOperand(0).getMBB();
+	  
+	  BuildMI(&MBB, MBB.findDebugLoc(SecondLastInst), get(BranchNotTakenOpcode[i]))
+	    .addReg(SecondLastInst->getOperand(0).getReg())
+	    .addReg(SecondLastInst->getOperand(1).getReg())
+	    .addMBB(BNcondMBB);
+
+	  LastMBBI->eraseFromParent();
+
+	  TBB = FBB = nullptr;
+	  return true;
+	}
+      }
+    }
+    TBB = FBB = nullptr;
+    return true;
+  }
+
+  // If the block ends with two unconditional branches, handle it.  The second 
+  // one is not executed.
+  if (SecondLastOpc == VideoCore4::JMP && LastOpc == VideoCore4::JMP) {
+    TBB = SecondLastInst->getOperand(0).getMBB();
+    return false;
+  }
+
+  // Otherwise, can't handle this.   
   return true;
 }
 

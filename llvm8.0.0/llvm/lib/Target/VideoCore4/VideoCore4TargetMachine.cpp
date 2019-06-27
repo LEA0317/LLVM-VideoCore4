@@ -36,6 +36,7 @@ extern "C" void LLVMInitializeVideoCore4Target() {
 
   auto PR = PassRegistry::getPassRegistry();
   initializeVideoCore4PseudoFixupPass(*PR);
+  initializeVideoCore4DelJmpPass(*PR);
 }
 
 static Reloc::Model
@@ -177,6 +178,7 @@ VideoCore4PassConfig::addIRPasses() {
 
 void
 VideoCore4PassConfig::addPreSched2() {
+  addPass(createVideoCore4DelJmpPass());
   addPass(createVideoCore4PseudoFixupPass());
   addPass(&IfConverterID);
 }
