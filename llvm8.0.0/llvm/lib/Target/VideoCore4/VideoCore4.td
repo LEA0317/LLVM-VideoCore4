@@ -14,6 +14,7 @@
 //===----------------------------------------------------------------------===//
 
 include "llvm/Target/Target.td"
+include "VideoCore4Schedule.td"
 
 //===----------------------------------------------------------------------===//
 // Subtarget Features. 
@@ -28,12 +29,18 @@ def FeatureVideoCore4 : SubtargetFeature<"vc4",
 //===----------------------------------------------------------------------===//
 // VideoCore4 supported processors.
 //===----------------------------------------------------------------------===//
-class Proc<string Name, list<SubtargetFeature> Features>
- : Processor<Name, NoItineraries, Features>;
 
 // FIX ME (konda)
-def : Proc<"generic", [FeatureVideoCore4]>;
-def : Proc<"vc4",     [FeatureVideoCore4]>;
+class Proc<string Name, list<SubtargetFeature> Features>
+  : Processor<Name, NoItineraries, Features>;
+  //: ProcessorModel<Name, VC4GenericModel, Features>;
+class ProcVc4<string Name, list<SubtargetFeature> Features>
+  : Processor<Name, NoItineraries, Features>;
+  //: ProcessorModel<Name, VC4Model, Features>;
+
+// FIX ME (konda)
+def : Proc   <"generic", [FeatureVideoCore4]>;
+def : ProcVc4<"vc4",     [FeatureVideoCore4]>;
 
 //===----------------------------------------------------------------------===//
 // Register File Description
