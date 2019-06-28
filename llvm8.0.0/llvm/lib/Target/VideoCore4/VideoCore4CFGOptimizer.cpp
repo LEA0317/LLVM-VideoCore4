@@ -74,7 +74,7 @@ void
 VideoCore4CFGOptimizer::InvertAndChangeJumpTarget(MachineInstr      &MI,
 						  MachineBasicBlock *NewTarget) {
   const TargetInstrInfo *TII = MI.getParent()->getParent()->getSubtarget().getInstrInfo();
-  int NewOpcode = 0;
+  unsigned NewOpcode = UINT_MAX;
 
   unsigned opc = MI.getOpcode();
   for (int i=0; i<BRANCH_KIND_NUM; i++) {
@@ -84,12 +84,15 @@ VideoCore4CFGOptimizer::InvertAndChangeJumpTarget(MachineInstr      &MI,
     } else if (opc == BranchNotTakenOpcode[i]) {
       NewOpcode = BranchTakenOpcode[i];
       break;
-    } else {
-      MI.dump();
-      llvm_unreachable("cannot handle this branch");
     }
   }
-  
+
+  // error handling
+  if (NewOpcode == UINT_MAX) {
+      MI.dump();
+      llvm_unreachable("cannot handle this branch");
+  }
+      
   MI.setDesc(TII->get(NewOpcode));
   MI.getOperand(2).setMBB(NewTarget);
 }
