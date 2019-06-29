@@ -255,7 +255,6 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
 	Changed = true;
 	break;
       }
-
     case VideoCore4::SELECT_GT_P:
       {
 	SELECT_CC(VideoCore4::CMOV_GT_P, VideoCore4::CMOV_LE_P);
@@ -316,7 +315,6 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
 	Changed = true;
 	break;
       }
-
     case VideoCore4::FSELECT_GT_P:
       {
 	SELECT_CC(VideoCore4::CMOV_GT_P, VideoCore4::CMOV_LE_P);

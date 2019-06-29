@@ -86,13 +86,13 @@ VideoCore4CFGOptimizer::InvertAndChangeJumpTarget(MachineInstr      &MI,
       break;
     }
   }
-
+  
   // error handling
   if (NewOpcode == UINT_MAX) {
-      MI.dump();
-      llvm_unreachable("cannot handle this branch");
+    MI.dump();
+    llvm_unreachable("cannot handle this branch");
   }
-      
+  
   MI.setDesc(TII->get(NewOpcode));
   MI.getOperand(2).setMBB(NewTarget);
 }
