@@ -1,3 +1,4 @@
+
 //===-- VideoCore4InstrInfo.td - VideoCore4 Instruction defs ---*- tablegen -*-===//
 //
 //                     The LLVM Compiler Infrastructure
@@ -781,10 +782,6 @@ let isTerminator = 1, isBranch = 1 in {
 	}
 
 	let Defs = [SR], isCodeGenOnly = 1 in {
-	    def CMP_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb),
-	    	                          "cmp\t$ra, $rb",
-		  		          []>;
-
             // True
             def JMP_COMP_EQ_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
 	                                          "cmpeq and jmp",
@@ -872,6 +869,12 @@ let isTerminator = 1, isBranch = 1 in {
 	defm FCMPUHS : BCMPF<"cc", setuge>;
 	defm FCMPULO : BCMPF<"cs", setult>;
 	defm FCMPULS : BCMPF<"ls", setule>;
+}
+
+let Defs = [SR], isCodeGenOnly = 1 in {
+	    def CMP_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb),
+	    	                          "cmp\t$ra, $rb",
+					  []>;
 }
 
 let isCodeGenOnly = 1 in {
