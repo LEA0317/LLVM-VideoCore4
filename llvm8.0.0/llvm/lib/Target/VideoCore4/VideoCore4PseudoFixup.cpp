@@ -39,6 +39,19 @@
 	BuildMI(MBB, I, dl, TII->get(opcode))  \
 	  .addMBB(BB);
 
+#define JUMP_FCOMP_CC(opcode) \
+        unsigned           Reg1 = MI->getOperand(0).getReg(); \
+        unsigned           Reg2 = MI->getOperand(1).getReg(); \
+        MachineBasicBlock *BB   = MI->getOperand(2).getMBB(); \
+							      \
+	MBB.erase(MI);					      \
+							      \
+	BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))     \
+	  .addReg(Reg1)					      \
+	  .addReg(Reg2);				      \
+	BuildMI(MBB, I, dl, TII->get(opcode))		      \
+	  .addMBB(BB);
+
 #define	SELECT_CC(opcode) \
         unsigned Reg1 = MI->getOperand(0).getReg();		     \
         unsigned Reg2 = MI->getOperand(1).getReg();		     \
@@ -220,61 +233,61 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       }
     case VideoCore4::JMP_COMP_EQ_F_P:
       {
-	JUMP_COMP_CC(VideoCore4::JMP_CC_NE);
+	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_EQ));
 	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_NE_F_P:
       {
-	JUMP_COMP_CC(VideoCore4::JMP_CC_EQ);
+	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_NE));
 	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_GT_F_P:
       {
-	JUMP_COMP_CC(VideoCore4::JMP_CC_LE);
+	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_GT));
 	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_GE_F_P:
       {
-	JUMP_COMP_CC(VideoCore4::JMP_CC_LT);
+	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_GE));
 	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_LT_F_P:
       {
-	JUMP_COMP_CC(VideoCore4::JMP_CC_GE);
+	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_LT));
 	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_LE_F_P:
       {
-	JUMP_COMP_CC(VideoCore4::JMP_CC_GT);
+	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_LE));
 	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_HI_F_P:
       {
-	JUMP_COMP_CC(VideoCore4::JMP_CC_LS);
+	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_HI));
 	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_HS_F_P:
       {
-	JUMP_COMP_CC(VideoCore4::JMP_CC_LO);
+	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_HS));
 	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_LO_F_P:
       {
-	JUMP_COMP_CC(VideoCore4::JMP_CC_HS);
+	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_LO));
 	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_LS_F_P:
       {
-	JUMP_COMP_CC(VideoCore4::JMP_CC_HI);
+	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_LS));
 	Changed = true;
 	break;
       }
@@ -515,6 +528,150 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
     case VideoCore4::SETCC_LS_RR_P:
       {
 	SETCC_RR(VideoCore4::CMOV_LS_RR_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_OEQ_P:
+      {
+	JUMP_FCOMP_CC(VideoCore4::JMP_CC_EQ);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_ONE_P:
+      {
+	JUMP_FCOMP_CC(VideoCore4::JMP_CC_NE);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_OGT_P:
+      {
+	JUMP_FCOMP_CC(VideoCore4::JMP_CC_GT);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_OGE_P:
+      {
+	JUMP_FCOMP_CC(VideoCore4::JMP_CC_GE);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_OLT_P:
+      {
+	JUMP_FCOMP_CC(VideoCore4::JMP_CC_LT);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_OLE_P:
+      {
+	JUMP_FCOMP_CC(VideoCore4::JMP_CC_LE);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_UEQ_P:
+      {
+	JUMP_FCOMP_CC(VideoCore4::JMP_CC_EQ);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_UNE_P:
+      {
+	JUMP_FCOMP_CC(VideoCore4::JMP_CC_NE);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_UHI_P:
+      {
+	JUMP_FCOMP_CC(VideoCore4::JMP_CC_HI);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_UHS_P:
+      {
+	JUMP_FCOMP_CC(VideoCore4::JMP_CC_HS);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_ULO_P:
+      {
+	JUMP_FCOMP_CC(VideoCore4::JMP_CC_LO);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_ULS_P:
+      {
+	JUMP_FCOMP_CC(VideoCore4::JMP_CC_LS);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_OEQ_F_P:
+      {
+	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_EQ));
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_ONE_F_P:
+      {
+	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_NE));
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_OGT_F_P:
+      {
+	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_GT));
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_OGE_F_P:
+      {
+	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_GE));
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_OLT_F_P:
+      {
+	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_LT));
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_OLE_F_P:
+      {
+	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_LE));
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_UEQ_F_P:
+      {
+	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_EQ));
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_UNE_F_P:
+      {
+	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_NE));
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_UHI_F_P:
+      {
+	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_HI));
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_UHS_F_P:
+      {
+	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_HS));
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_ULO_F_P:
+      {
+	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_LO));
+	Changed = true;
+	break;
+      }
+    case VideoCore4::JMP_FCOMP_ULS_F_P:
+      {
+	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_LS));
 	Changed = true;
 	break;
       }

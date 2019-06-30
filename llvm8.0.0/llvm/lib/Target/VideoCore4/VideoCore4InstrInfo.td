@@ -847,27 +847,86 @@ let isTerminator = 1, isBranch = 1 in {
         }
 
 	/* Likewise, for floats. */
-	multiclass BCMPF<string cond, PatFrag node> {
-		def _RR : S32<
-					(outs), (ins GR32:$A, GR32:$B, brtarget:$dst),
-					"fcmp\t$A, $B\n\tb"#cond#"\t$dst",
-					[(brcond (node (f32 GR32:$A), (f32 GR32:$B)), bb:$dst)]
-				>;
-	}
+	let Defs = [SR], isCodeGenOnly = 1 in {
+	    def FCMP_P : VideoCore4Pseudo<(outs), (ins FR32:$A, FR32:$B),
+				           "fcmp\t$A, $B",
+				           []>;
+            // True
+            def JMP_FCOMP_OEQ_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "fcmpoeq and jmp",
+			  			    []>;
+  	    def JMP_FCOMP_ONE_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "fcmpone and jmp",
+				   	 	    []>;
+	    def JMP_FCOMP_OGT_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "fcmpogt and jmp",
+						    []>;
+	    def JMP_FCOMP_OGE_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "fcmpoge and jmp",
+						    []>;
+	    def JMP_FCOMP_OLT_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "fcmpolt and jmp",
+						    []>;
+	    def JMP_FCOMP_OLE_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "fcmpole and jmp",
+		 			  	    []>;
+            def JMP_FCOMP_UEQ_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "fcmpueq and jmp",
+			  			    []>;
+  	    def JMP_FCOMP_UNE_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "fcmpune and jmp",
+				   	 	    []>;
+	    def JMP_FCOMP_UHI_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "fcmpugt and jmp",
+						    []>;
+	    def JMP_FCOMP_UHS_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "fcmpuge and jmp",
+						    []>;
+	    def JMP_FCOMP_ULO_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "fcmpult and jmp",
+						    []>;
+	    def JMP_FCOMP_ULS_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                            "fcmpule and jmp",
+		 			  	    []>;
 
-	defm FCMPOEQ : BCMPF<"eq", setoeq>;
-	defm FCMPONE : BCMPF<"ne", setone>;
-	defm FCMPOGT : BCMPF<"gt", setogt>;
-	defm FCMPOGE : BCMPF<"ge", setoge>;
-	defm FCMPOLT : BCMPF<"lt", setolt>;
-	defm FCMPOLE : BCMPF<"le", setole>;
-
-	defm FCMPUEQ : BCMPF<"eq", setueq>;
-	defm FCMPUNE : BCMPF<"ne", setune>;
-	defm FCMPUHI : BCMPF<"hi", setugt>;
-	defm FCMPUHS : BCMPF<"cc", setuge>;
-	defm FCMPULO : BCMPF<"cs", setult>;
-	defm FCMPULS : BCMPF<"ls", setule>;
+	    // False
+            def JMP_FCOMP_OEQ_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                              "!fcmpoeq and jmp",
+			  			      []>;
+  	    def JMP_FCOMP_ONE_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                              "!fcmpone and jmp",
+				   	 	      []>;
+	    def JMP_FCOMP_OGT_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                              "!fcmpogt and jmp",
+						      []>;
+	    def JMP_FCOMP_OGE_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                              "!fcmpoge and jmp",
+						      []>;
+	    def JMP_FCOMP_OLT_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                              "!fcmpolt and jmp",
+						      []>;
+	    def JMP_FCOMP_OLE_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                              "!fcmpole and jmp",
+		 			  	      []>;
+            def JMP_FCOMP_UEQ_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                              "!fcmpueq and jmp",
+			  			      []>;
+  	    def JMP_FCOMP_UNE_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                              "!fcmpune and jmp",
+				   	 	      []>;
+	    def JMP_FCOMP_UHI_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                              "!fcmpugt and jmp",
+						      []>;
+	    def JMP_FCOMP_UHS_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                              "!fcmpuge and jmp",
+						      []>;
+	    def JMP_FCOMP_ULO_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                              "!fcmpult and jmp",
+						      []>;
+	    def JMP_FCOMP_ULS_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	                                              "!fcmpule and jmp",
+		 			  	      []>;
+        }
 }
 
 let isCodeGenOnly = 1 in {
@@ -1061,7 +1120,7 @@ def SETCC_LS_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
                                       "",
 				      []>;
 
-// setcc ri pattern
+// setcc ri patterns
 def : Pat<(seteq (i32 FR32:$A), (i32 immU5:$B)),
           (SETCC_EQ_RI_P (i32 FR32:$A), (immU5:$B))>;
 def : Pat<(setne (i32 FR32:$A), (i32 immU5:$B)),
@@ -1083,7 +1142,7 @@ def : Pat<(setult (i32 FR32:$A), (i32 immU5:$B)),
 def : Pat<(setule (i32 FR32:$A), (i32 immU5:$B)),
           (SETCC_LS_RI_P (i32 FR32:$A), (immU5:$B))>;
 
-// setcc rr pattern
+// setcc rr patterns
 def : Pat<(seteq (i32 FR32:$A), (i32 FR32:$B)),
           (SETCC_EQ_RR_P (i32 FR32:$A), (i32 FR32:$B))>;
 def : Pat<(setne (i32 FR32:$A), (i32 FR32:$B)),
@@ -1105,7 +1164,7 @@ def : Pat<(setult (i32 FR32:$A), (i32 FR32:$B)),
 def : Pat<(setule (i32 FR32:$A), (i32 FR32:$B)),
           (SETCC_LS_RR_P (i32 FR32:$A), (i32 FR32:$B))>;
 
-// branch patterns
+// int branch patterns
 def : Pat<(brcond (i32 (seteq (i32 GR32:$lhs), (i32 GR32:$rhs))), bb:$dst),
           (JMP_COMP_EQ_P (i32 GR32:$lhs), (i32 GR32:$rhs), bb:$dst)>;
 def : Pat<(brcond (i32 (setne (i32 GR32:$lhs), (i32 GR32:$rhs))), bb:$dst),
@@ -1126,6 +1185,33 @@ def : Pat<(brcond (i32 (setult (i32 GR32:$lhs), (i32 GR32:$rhs))), bb:$dst),
           (JMP_COMP_LO_P (i32 GR32:$lhs), (i32 GR32:$rhs), bb:$dst)>;
 def : Pat<(brcond (i32 (setule (i32 GR32:$lhs), (i32 GR32:$rhs))), bb:$dst),
           (JMP_COMP_LS_P (i32 GR32:$lhs), (i32 GR32:$rhs), bb:$dst)>;
+
+// float branch patterns
+def : Pat<(brcond (i32 (setoeq (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
+          (JMP_FCOMP_OEQ_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setone (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
+          (JMP_FCOMP_ONE_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setogt (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
+          (JMP_FCOMP_OGT_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setoge (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
+          (JMP_FCOMP_OGE_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setolt (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
+          (JMP_FCOMP_OLT_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setole (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
+          (JMP_FCOMP_OLE_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setueq (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
+          (JMP_FCOMP_UEQ_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setune (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
+          (JMP_FCOMP_UNE_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setugt (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
+          (JMP_FCOMP_UHI_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setuge (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
+          (JMP_FCOMP_UHS_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setult (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
+          (JMP_FCOMP_ULO_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
+def : Pat<(brcond (i32 (setule (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
+          (JMP_FCOMP_ULS_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
+
 
 // selectcc patterns
 def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (i32 FR32:$T), (i32 FR32:$F), SETEQ),

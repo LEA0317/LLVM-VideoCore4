@@ -7,9 +7,39 @@
 #include "llvm/PassAnalysisSupport.h"
 #include "llvm/CodeGen/MachineInstrBuilder.h"
 
-#define BRANCH_KIND_NUM 10
+#define BRANCH_KIND_NUM 22
 
+inline unsigned
+reverseBranch(unsigned Opcode) {
+  switch (Opcode) {
+  case llvm::VideoCore4::JMP_CC_EQ:
+    return llvm::VideoCore4::JMP_CC_NE;
+  case llvm::VideoCore4::JMP_CC_NE:
+    return llvm::VideoCore4::JMP_CC_EQ;
+  case llvm::VideoCore4::JMP_CC_GT:
+    return llvm::VideoCore4::JMP_CC_LE;
+  case llvm::VideoCore4::JMP_CC_GE:
+    return llvm::VideoCore4::JMP_CC_LT;
+  case llvm::VideoCore4::JMP_CC_LT:
+    return llvm::VideoCore4::JMP_CC_GE;
+  case llvm::VideoCore4::JMP_CC_LE:
+    return llvm::VideoCore4::JMP_CC_GT;
+  case llvm::VideoCore4::JMP_CC_HI:
+    return llvm::VideoCore4::JMP_CC_LS;
+  case llvm::VideoCore4::JMP_CC_HS:
+    return llvm::VideoCore4::JMP_CC_LO;
+  case llvm::VideoCore4::JMP_CC_LO:
+    return llvm::VideoCore4::JMP_CC_HS;
+  case llvm::VideoCore4::JMP_CC_LS:
+    return llvm::VideoCore4::JMP_CC_HI;
+  default:
+    llvm_unreachable("cannot handle this branch");
+  }
 
+  // error
+  return UINT_MAX;
+}
+  
 inline unsigned
 reverseCmovConditon(unsigned Opcode) {
   switch (Opcode) {
@@ -41,7 +71,6 @@ reverseCmovConditon(unsigned Opcode) {
   return UINT_MAX;
 }
 
-
 static unsigned BranchTakenOpcode[BRANCH_KIND_NUM] = {
   llvm::VideoCore4::JMP_COMP_EQ_P,
   llvm::VideoCore4::JMP_COMP_NE_P,
@@ -52,7 +81,19 @@ static unsigned BranchTakenOpcode[BRANCH_KIND_NUM] = {
   llvm::VideoCore4::JMP_COMP_HI_P,
   llvm::VideoCore4::JMP_COMP_HS_P,
   llvm::VideoCore4::JMP_COMP_LO_P,
-  llvm::VideoCore4::JMP_COMP_LS_P
+  llvm::VideoCore4::JMP_COMP_LS_P,
+  llvm::VideoCore4::JMP_FCOMP_OEQ_P,
+  llvm::VideoCore4::JMP_FCOMP_ONE_P,
+  llvm::VideoCore4::JMP_FCOMP_OGT_P,
+  llvm::VideoCore4::JMP_FCOMP_OGE_P,
+  llvm::VideoCore4::JMP_FCOMP_OLT_P,
+  llvm::VideoCore4::JMP_FCOMP_OLE_P,
+  llvm::VideoCore4::JMP_FCOMP_UEQ_P,
+  llvm::VideoCore4::JMP_FCOMP_UNE_P,
+  llvm::VideoCore4::JMP_FCOMP_UHI_P,
+  llvm::VideoCore4::JMP_FCOMP_UHS_P,
+  llvm::VideoCore4::JMP_FCOMP_ULO_P,
+  llvm::VideoCore4::JMP_FCOMP_ULS_P
 };
 static unsigned BranchNotTakenOpcode[BRANCH_KIND_NUM] = {
   llvm::VideoCore4::JMP_COMP_EQ_F_P,
@@ -64,7 +105,19 @@ static unsigned BranchNotTakenOpcode[BRANCH_KIND_NUM] = {
   llvm::VideoCore4::JMP_COMP_HI_F_P,
   llvm::VideoCore4::JMP_COMP_HS_F_P,
   llvm::VideoCore4::JMP_COMP_LO_F_P,
-  llvm::VideoCore4::JMP_COMP_LS_F_P
+  llvm::VideoCore4::JMP_COMP_LS_F_P,
+  llvm::VideoCore4::JMP_FCOMP_OEQ_F_P,
+  llvm::VideoCore4::JMP_FCOMP_ONE_F_P,
+  llvm::VideoCore4::JMP_FCOMP_OGT_F_P,
+  llvm::VideoCore4::JMP_FCOMP_OGE_F_P,
+  llvm::VideoCore4::JMP_FCOMP_OLT_F_P,
+  llvm::VideoCore4::JMP_FCOMP_OLE_F_P,
+  llvm::VideoCore4::JMP_FCOMP_UEQ_F_P,
+  llvm::VideoCore4::JMP_FCOMP_UNE_F_P,
+  llvm::VideoCore4::JMP_FCOMP_UHI_F_P,
+  llvm::VideoCore4::JMP_FCOMP_UHS_F_P,
+  llvm::VideoCore4::JMP_FCOMP_ULO_F_P,
+  llvm::VideoCore4::JMP_FCOMP_ULS_F_P
 };
 
 inline bool isCondTrueBranch(unsigned opc) {
