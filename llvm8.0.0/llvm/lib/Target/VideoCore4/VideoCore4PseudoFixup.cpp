@@ -33,7 +33,7 @@
 							      \
 	MBB.erase(MI);					      \
 							      \
-	BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_P))      \
+	BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))      \
 	  .addReg(Reg1)					      \
 	  .addReg(Reg2);				      \
 	BuildMI(MBB, I, dl, TII->get(opcode))  \
@@ -49,21 +49,21 @@
         MBB.erase(MI);						     \
 								     \
 	if (Reg1 == Reg3) {					     \
-	  BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_P))	     \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))	     \
 	    .addReg(Reg4)					     \
 	    .addReg(Reg5);					     \
 	  BuildMI(MBB, I, dl, TII->get(opcode))			     \
 	    .addReg(Reg1)					     \
 	    .addReg(Reg2);					     \
 	} else if (Reg1 == Reg2) {				     \
-	  BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_P))	     \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))	     \
 	    .addReg(Reg4)					     \
 	    .addReg(Reg5);					     \
 	  BuildMI(MBB, I, dl, TII->get(reverseCmovConditon(opcode))) \
 	    .addReg(Reg1)					     \
 	    .addReg(Reg3);					     \
 	} else {						     \
-	  BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_P))	     \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))	     \
 	    .addReg(Reg4)					     \
 	    .addReg(Reg5);					     \
 	  BuildMI(MBB, I, dl, TII->get(opcode))			     \
@@ -73,6 +73,40 @@
 	    .addReg(Reg1)					     \
 	    .addReg(Reg3);					     \
 	}
+
+#define SETCC_RI(opcode) \
+        unsigned Reg1 = MI->getOperand(0).getReg();		\
+        unsigned Reg2 = MI->getOperand(1).getReg();		\
+	int      Imm  = MI->getOperand(2).getImm();		\
+								\
+        MBB.erase(MI);						\
+								\
+	BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_LI))	\
+	    .addReg(Reg2)					\
+	    .addImm(Imm);					\
+	BuildMI(MBB, I, dl, TII->get(VideoCore4::MOV_FI))	\
+   	    .addReg(Reg1)					\
+	    .addImm(0);						\
+	BuildMI(MBB, I, dl, TII->get(opcode))			\
+	  .addReg(Reg1)						\
+	  .addImm(1);
+
+#define SETCC_RR(opcode) \
+        unsigned Reg1 = MI->getOperand(0).getReg();		\
+        unsigned Reg2 = MI->getOperand(1).getReg();		\
+	unsigned Reg3 = MI->getOperand(2).getReg();		\
+								\
+        MBB.erase(MI);						\
+								\
+	BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))	\
+	    .addReg(Reg2)					\
+	    .addReg(Reg3);					\
+	BuildMI(MBB, I, dl, TII->get(VideoCore4::MOV_FI))	\
+   	    .addReg(Reg1)					\
+	    .addImm(0);						\
+	BuildMI(MBB, I, dl, TII->get(opcode))			\
+	  .addReg(Reg1)						\
+	  .addImm(1);
 
 
 using namespace llvm;
@@ -246,121 +280,241 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       }
     case VideoCore4::SELECT_EQ_P:
       {
-	SELECT_CC(VideoCore4::CMOV_EQ_P);
+	SELECT_CC(VideoCore4::CMOV_EQ_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_NE_P:
       {
-	SELECT_CC(VideoCore4::CMOV_NE_P);
+	SELECT_CC(VideoCore4::CMOV_NE_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_GT_P:
       {
-	SELECT_CC(VideoCore4::CMOV_GT_P);
+	SELECT_CC(VideoCore4::CMOV_GT_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_GE_P:
       {
-	SELECT_CC(VideoCore4::CMOV_GE_P);
+	SELECT_CC(VideoCore4::CMOV_GE_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_LT_P:
       {
-	SELECT_CC(VideoCore4::CMOV_LT_P);
+	SELECT_CC(VideoCore4::CMOV_LT_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_LE_P:
       {
-	SELECT_CC(VideoCore4::CMOV_LE_P);
+	SELECT_CC(VideoCore4::CMOV_LE_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_HI_P:
       {
-	SELECT_CC(VideoCore4::CMOV_HI_P);
+	SELECT_CC(VideoCore4::CMOV_HI_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_HS_P:
       {
-	SELECT_CC(VideoCore4::CMOV_HS_P);
+	SELECT_CC(VideoCore4::CMOV_HS_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_LO_P:
       {
-	SELECT_CC(VideoCore4::CMOV_LO_P);
+	SELECT_CC(VideoCore4::CMOV_LO_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_LS_P:
       {
-	SELECT_CC(VideoCore4::CMOV_LS_P);
+	SELECT_CC(VideoCore4::CMOV_LS_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_EQ_P:
       {
-	SELECT_CC(VideoCore4::CMOV_EQ_P);
+	SELECT_CC(VideoCore4::CMOV_EQ_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_NE_P:
       {
-	SELECT_CC(VideoCore4::CMOV_NE_P);
+	SELECT_CC(VideoCore4::CMOV_NE_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_GT_P:
       {
-	SELECT_CC(VideoCore4::CMOV_GT_P);
+	SELECT_CC(VideoCore4::CMOV_GT_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_GE_P:
       {
-	SELECT_CC(VideoCore4::CMOV_GE_P);
+	SELECT_CC(VideoCore4::CMOV_GE_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_LT_P:
       {
-	SELECT_CC(VideoCore4::CMOV_LT_P);
+	SELECT_CC(VideoCore4::CMOV_LT_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_LE_P:
       {
-	SELECT_CC(VideoCore4::CMOV_LE_P);
+	SELECT_CC(VideoCore4::CMOV_LE_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_HI_P:
       {
-	SELECT_CC(VideoCore4::CMOV_HI_P);
+	SELECT_CC(VideoCore4::CMOV_HI_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_HS_P:
       {
-	SELECT_CC(VideoCore4::CMOV_HS_P);
+	SELECT_CC(VideoCore4::CMOV_HS_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_LO_P:
       {
-	SELECT_CC(VideoCore4::CMOV_LO_P);
+	SELECT_CC(VideoCore4::CMOV_LO_RR_P);
 	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_LS_P:
       {
-	SELECT_CC(VideoCore4::CMOV_LS_P);
+	SELECT_CC(VideoCore4::CMOV_LS_RR_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_EQ_RI_P:
+      {
+	SETCC_RI(VideoCore4::CMOV_EQ_RI_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_NE_RI_P:
+      {
+	SETCC_RI(VideoCore4::CMOV_NE_RI_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_GT_RI_P:
+      {
+	SETCC_RI(VideoCore4::CMOV_GT_RI_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_GE_RI_P:
+      {
+	SETCC_RI(VideoCore4::CMOV_GE_RI_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_LT_RI_P:
+      {
+	SETCC_RI(VideoCore4::CMOV_LT_RI_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_LE_RI_P:
+      {
+	SETCC_RI(VideoCore4::CMOV_LE_RI_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_HI_RI_P:
+      {
+	SETCC_RI(VideoCore4::CMOV_HI_RI_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_HS_RI_P:
+      {
+	SETCC_RI(VideoCore4::CMOV_HS_RI_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_LO_RI_P:
+      {
+	SETCC_RI(VideoCore4::CMOV_LO_RI_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_LS_RI_P:
+      {
+	SETCC_RI(VideoCore4::CMOV_LS_RI_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_EQ_RR_P:
+      {
+	SETCC_RR(VideoCore4::CMOV_EQ_RR_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_NE_RR_P:
+      {
+	SETCC_RR(VideoCore4::CMOV_NE_RR_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_GT_RR_P:
+      {
+	SETCC_RR(VideoCore4::CMOV_GT_RR_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_GE_RR_P:
+      {
+	SETCC_RR(VideoCore4::CMOV_GE_RR_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_LT_RR_P:
+      {
+	SETCC_RR(VideoCore4::CMOV_LT_RR_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_LE_RR_P:
+      {
+	SETCC_RR(VideoCore4::CMOV_LE_RR_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_HI_RR_P:
+      {
+	SETCC_RR(VideoCore4::CMOV_HI_RR_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_HS_RR_P:
+      {
+	SETCC_RR(VideoCore4::CMOV_HS_RR_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_LO_RR_P:
+      {
+	SETCC_RR(VideoCore4::CMOV_LO_RR_P);
+	Changed = true;
+	break;
+      }
+    case VideoCore4::SETCC_LS_RR_P:
+      {
+	SETCC_RR(VideoCore4::CMOV_LS_RR_P);
 	Changed = true;
 	break;
       }

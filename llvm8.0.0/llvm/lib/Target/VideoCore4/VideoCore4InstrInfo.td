@@ -1,4 +1,3 @@
-
 //===-- VideoCore4InstrInfo.td - VideoCore4 Instruction defs ---*- tablegen -*-===//
 //
 //                     The LLVM Compiler Infrastructure
@@ -871,12 +870,6 @@ let isTerminator = 1, isBranch = 1 in {
 	defm FCMPULS : BCMPF<"ls", setule>;
 }
 
-let Defs = [SR], isCodeGenOnly = 1 in {
-	    def CMP_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb),
-	    	                          "cmp\t$ra, $rb",
-					  []>;
-}
-
 let isCodeGenOnly = 1 in {
     let Constraints = "$d = $f" in {
         // select
@@ -943,63 +936,174 @@ let isCodeGenOnly = 1 in {
 	                                     "fselectcc ule($lhs comp $rhs) if true $t else $f",
 			                     []>;
     }
-    def CMOV_EQ_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                      "moveq\t$d, $t",
-                                      []>;
-    def CMOV_NE_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                      "movne\t$d, $t",
-    			              []>;
-    def CMOV_GT_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                      "movgt\t$d, $t",
-    			              []>;
-    def CMOV_GE_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                      "movge\t$d, $t",
-    				      []>;
-    def CMOV_LT_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                      "movlt\t$d, $t",
-    				      []>;
-    def CMOV_LE_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                      "movle\t$d, $t",
-    				      []>;
-    def CMOV_HI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                      "movhi\t$d, $t",
-    				      []>;
-    def CMOV_HS_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                      "movcc\t$d, $t",
-    				      []>;
-    def CMOV_LO_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                      "movcs\t$d, $t",
-    			              []>;
-    def CMOV_LS_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                      "movls\t$d, $t",
-    		                      []>;
+    def CMOV_EQ_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
+                                         "moveq\t$d, $t",
+                                         []>;
+    def CMOV_NE_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
+                                         "movne\t$d, $t",
+    			                 []>;
+    def CMOV_GT_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
+                                         "movgt\t$d, $t",
+    			                 []>;
+    def CMOV_GE_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
+                                         "movge\t$d, $t",
+    				         []>;
+    def CMOV_LT_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
+                                         "movlt\t$d, $t",
+    				         []>;
+    def CMOV_LE_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
+                                         "movle\t$d, $t",
+    				         []>;
+    def CMOV_HI_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
+                                         "movhi\t$d, $t",
+    				          []>;
+    def CMOV_HS_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
+                                         "movcc\t$d, $t",
+    				          []>;
+    def CMOV_LO_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
+                                          "movcs\t$d, $t",
+    			                  []>;
+    def CMOV_LS_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
+                                         "movls\t$d, $t",
+    		                          []>;
+
+    def CMOV_EQ_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
+                                         "moveq\t$d, $t",
+                                         []>;
+    def CMOV_NE_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
+                                         "movne\t$d, $t",
+    			                 []>;
+    def CMOV_GT_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
+                                         "movgt\t$d, $t",
+    			                 []>;
+    def CMOV_GE_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
+                                         "movge\t$d, $t",
+    				         []>;
+    def CMOV_LT_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
+                                         "movlt\t$d, $t",
+    				         []>;
+    def CMOV_LE_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
+                                         "movle\t$d, $t",
+    				         []>;
+    def CMOV_HI_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
+                                         "movhi\t$d, $t",
+    				          []>;
+    def CMOV_HS_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
+                                         "movcc\t$d, $t",
+    				          []>;
+    def CMOV_LO_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
+                                          "movcs\t$d, $t",
+    			                  []>;
+    def CMOV_LS_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
+                                         "movls\t$d, $t",
+    		                          []>;
 }
 
-// SetCC
-multiclass CONDCC<string cond, PatFrag node> {
-	def _SET_RI : S16<
-				(outs FR32:$D), (ins FR32:$A, i32imm:$B),
-				"cmp\t$A, $B\n\tmov\t$D, 0\n\tmov"#cond#"\t$D, 1",
-				[(set FR32:$D, (node (i32 FR32:$A), immU5:$B))]
-			>;
+def SETCC_EQ_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
+                                      "",
+		  		      []>;
+def SETCC_NE_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
+                                      "",
+				      []>;
+def SETCC_GT_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
+                                      "",
+				      []>;
+def SETCC_GE_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
+                                      "",
+				      []>;
+def SETCC_LT_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
+                                      "",
+				      []>;
+def SETCC_LE_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
+                                      "",
+				      []>;
+def SETCC_HI_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
+                                      "",
+				      []>;
+def SETCC_HS_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
+                                      "",
+				      []>;
+def SETCC_LO_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
+                                      "",
+				      []>;
+def SETCC_LS_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
+                                      "",
+				      []>;
 
-	def _SET_RR : S16<
-				(outs FR32:$D), (ins FR32:$A, FR32:$B),
-				"cmp\t$A, $B\n\tmov\t$D, 0\n\tmov"#cond#"\t$D, 1",
-				[(set FR32:$D, (node (i32 FR32:$A), (i32 FR32:$B)))]
-			>;
-}
+def SETCC_EQ_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
+                                      "",
+		  		      []>;
+def SETCC_NE_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
+                                      "",
+				      []>;
+def SETCC_GT_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
+                                      "",
+				      []>;
+def SETCC_GE_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
+                                      "",
+				      []>;
+def SETCC_LT_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
+                                      "",
+				      []>;
+def SETCC_LE_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
+                                      "",
+				      []>;
+def SETCC_HI_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
+                                      "",
+				      []>;
+def SETCC_HS_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
+                                      "",
+				      []>;
+def SETCC_LO_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
+                                      "",
+				      []>;
+def SETCC_LS_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
+                                      "",
+				      []>;
 
-defm CONDEQ : CONDCC<"eq", seteq>;
-defm CONDNE : CONDCC<"ne", setne>;
-defm CONDGT : CONDCC<"gt", setgt>;
-defm CONDGE : CONDCC<"ge", setge>;
-defm CONDLT : CONDCC<"lt", setlt>;
-defm CONDLE : CONDCC<"le", setle>;
-defm CONDHI : CONDCC<"hi", setugt>;
-defm CONDHS : CONDCC<"cc", setuge>;
-defm CONDLO : CONDCC<"cs", setult>;
-defm CONDLS : CONDCC<"ls", setule>;
+// setcc ri pattern
+def : Pat<(seteq (i32 FR32:$A), (i32 immU5:$B)),
+          (SETCC_EQ_RI_P (i32 FR32:$A), (immU5:$B))>;
+def : Pat<(setne (i32 FR32:$A), (i32 immU5:$B)),
+          (SETCC_NE_RI_P (i32 FR32:$A), (immU5:$B))>;
+def : Pat<(setgt (i32 FR32:$A), (i32 immU5:$B)),
+          (SETCC_GT_RI_P (i32 FR32:$A), (immU5:$B))>;
+def : Pat<(setge (i32 FR32:$A), (i32 immU5:$B)),
+          (SETCC_GE_RI_P (i32 FR32:$A), (immU5:$B))>;
+def : Pat<(setlt (i32 FR32:$A), (i32 immU5:$B)),
+          (SETCC_LT_RI_P (i32 FR32:$A), (immU5:$B))>;
+def : Pat<(setle (i32 FR32:$A), (i32 immU5:$B)),
+          (SETCC_LE_RI_P (i32 FR32:$A), (immU5:$B))>;
+def : Pat<(setugt (i32 FR32:$A), (i32 immU5:$B)),
+          (SETCC_HI_RI_P (i32 FR32:$A), (immU5:$B))>;
+def : Pat<(setuge (i32 FR32:$A), (i32 immU5:$B)),
+          (SETCC_HS_RI_P (i32 FR32:$A), (immU5:$B))>;
+def : Pat<(setult (i32 FR32:$A), (i32 immU5:$B)),
+          (SETCC_LO_RI_P (i32 FR32:$A), (immU5:$B))>;
+def : Pat<(setule (i32 FR32:$A), (i32 immU5:$B)),
+          (SETCC_LS_RI_P (i32 FR32:$A), (immU5:$B))>;
+
+// setcc rr pattern
+def : Pat<(seteq (i32 FR32:$A), (i32 FR32:$B)),
+          (SETCC_EQ_RR_P (i32 FR32:$A), (i32 FR32:$B))>;
+def : Pat<(setne (i32 FR32:$A), (i32 FR32:$B)),
+          (SETCC_NE_RR_P (i32 FR32:$A), (i32 FR32:$B))>;
+def : Pat<(setgt (i32 FR32:$A), (i32 FR32:$B)),
+          (SETCC_GT_RR_P (i32 FR32:$A), (i32 FR32:$B))>;
+def : Pat<(setge (i32 FR32:$A), (i32 FR32:$B)),
+          (SETCC_GE_RR_P (i32 FR32:$A), (i32 FR32:$B))>;
+def : Pat<(setlt (i32 FR32:$A), (i32 FR32:$B)),
+          (SETCC_LT_RR_P (i32 FR32:$A), (i32 FR32:$B))>;
+def : Pat<(setle (i32 FR32:$A), (i32 FR32:$B)),
+          (SETCC_LE_RR_P (i32 FR32:$A), (i32 FR32:$B))>;
+def : Pat<(setugt (i32 FR32:$A), (i32 FR32:$B)),
+          (SETCC_HI_RR_P (i32 FR32:$A), (i32 FR32:$B))>;
+def : Pat<(setuge (i32 FR32:$A), (i32 FR32:$B)),
+          (SETCC_HS_RR_P (i32 FR32:$A), (i32 FR32:$B))>;
+def : Pat<(setult (i32 FR32:$A), (i32 FR32:$B)),
+          (SETCC_LO_RR_P (i32 FR32:$A), (i32 FR32:$B))>;
+def : Pat<(setule (i32 FR32:$A), (i32 FR32:$B)),
+          (SETCC_LS_RR_P (i32 FR32:$A), (i32 FR32:$B))>;
 
 // branch patterns
 def : Pat<(brcond (i32 (seteq (i32 GR32:$lhs), (i32 GR32:$rhs))), bb:$dst),
