@@ -8,6 +8,40 @@
 #include "llvm/CodeGen/MachineInstrBuilder.h"
 
 #define BRANCH_KIND_NUM 10
+
+
+inline unsigned
+reverseCmovConditon(unsigned Opcode) {
+  switch (Opcode) {
+  case llvm::VideoCore4::CMOV_EQ_P:
+    return llvm::VideoCore4::CMOV_NE_P;
+  case llvm::VideoCore4::CMOV_NE_P:
+    return llvm::VideoCore4::CMOV_EQ_P;
+  case llvm::VideoCore4::CMOV_GT_P:
+    return llvm::VideoCore4::CMOV_LE_P;
+  case llvm::VideoCore4::CMOV_GE_P:
+    return llvm::VideoCore4::CMOV_LT_P;
+  case llvm::VideoCore4::CMOV_LT_P:
+    return llvm::VideoCore4::CMOV_GE_P;
+  case llvm::VideoCore4::CMOV_LE_P:
+    return llvm::VideoCore4::CMOV_GT_P;
+  case llvm::VideoCore4::CMOV_HI_P:
+    return llvm::VideoCore4::CMOV_LS_P;
+  case llvm::VideoCore4::CMOV_HS_P:
+    return llvm::VideoCore4::CMOV_LO_P;
+  case llvm::VideoCore4::CMOV_LO_P:
+    return llvm::VideoCore4::CMOV_HS_P;
+  case llvm::VideoCore4::CMOV_LS_P:
+    return llvm::VideoCore4::CMOV_HI_P;
+  default:
+    llvm_unreachable("cannot handle this conditional mov");
+  }
+
+  // error
+  return UINT_MAX;
+}
+
+
 static unsigned BranchTakenOpcode[BRANCH_KIND_NUM] = {
   llvm::VideoCore4::JMP_COMP_EQ_P,
   llvm::VideoCore4::JMP_COMP_NE_P,
@@ -50,6 +84,35 @@ inline bool isCondFalseBranch(unsigned opc) {
 inline bool isCondBranch(unsigned opc) {
   if (isCondTrueBranch(opc) || isCondFalseBranch(opc)) return true;
   return false;
+}
+
+inline bool
+IsUnconditionalJump(int Opc) {
+  return (Opc    == llvm::VideoCore4::JMP
+	  || Opc == llvm::VideoCore4::JMP_R);
+}
+
+inline unsigned
+reverseBranchCondition(llvm::MachineInstr *mi) {
+  unsigned reverseOpc = UINT_MAX;
+  unsigned opc = mi->getOpcode();
+
+  for (int i=0; i<BRANCH_KIND_NUM; i++) {
+    if (opc == BranchTakenOpcode[i]) {
+      reverseOpc = BranchNotTakenOpcode[i];
+      break;
+    } else if (opc == BranchNotTakenOpcode[i]) {
+      reverseOpc  = BranchTakenOpcode[i];
+      break;
+    }
+  }
+
+  if (reverseOpc == UINT_MAX) {
+    mi->dump();
+    llvm_unreachable("cannot handle this branch");
+  }
+
+  return reverseOpc;
 }
 
 namespace CC {

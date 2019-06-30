@@ -94,7 +94,7 @@ VideoCore4DelJmp::runOnMachineBasicBlock(MachineBasicBlock &MBB,
     return Changed;
   }
   
-  if (I->getOpcode()               == VideoCore4::JMP
+  if (IsUnconditionalJump(I->getOpcode())
       && I->getOperand(0).getMBB() == &MBBN) {
     MBB.erase(I);
     Changed = true;

@@ -66,33 +66,12 @@ INITIALIZE_PASS(VideoCore4CFGOptimizer,
                 false,
                 false)
 
-static bool IsUnconditionalJump(int Opc) {
-  return (Opc == VideoCore4::JMP);
-}
-
 void
 VideoCore4CFGOptimizer::InvertAndChangeJumpTarget(MachineInstr      &MI,
 						  MachineBasicBlock *NewTarget) {
   const TargetInstrInfo *TII = MI.getParent()->getParent()->getSubtarget().getInstrInfo();
-  unsigned NewOpcode = UINT_MAX;
+  unsigned NewOpcode = reverseBranchCondition(&MI);
 
-  unsigned opc = MI.getOpcode();
-  for (int i=0; i<BRANCH_KIND_NUM; i++) {
-    if (opc == BranchTakenOpcode[i]) {
-      NewOpcode = BranchNotTakenOpcode[i];
-      break;
-    } else if (opc == BranchNotTakenOpcode[i]) {
-      NewOpcode = BranchTakenOpcode[i];
-      break;
-    }
-  }
-  
-  // error handling
-  if (NewOpcode == UINT_MAX) {
-    MI.dump();
-    llvm_unreachable("cannot handle this branch");
-  }
-  
   MI.setDesc(TII->get(NewOpcode));
   MI.getOperand(2).setMBB(NewTarget);
 }
