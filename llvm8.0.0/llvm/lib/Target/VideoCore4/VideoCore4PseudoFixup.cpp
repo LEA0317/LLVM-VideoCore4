@@ -93,6 +93,43 @@
 								     \
         Changed = true;
 
+#define	F_SELECT_CC(opcode) \
+        unsigned Reg1 = MI->getOperand(0).getReg();		     \
+        unsigned Reg2 = MI->getOperand(1).getReg();		     \
+        unsigned Reg3 = MI->getOperand(2).getReg();		     \
+        unsigned Reg4 = MI->getOperand(3).getReg();		     \
+        unsigned Reg5 = MI->getOperand(4).getReg();		     \
+								     \
+        MBB.erase(MI);						     \
+								     \
+	if (Reg1 == Reg3) {					     \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))	     \
+	    .addReg(Reg4)					     \
+	    .addReg(Reg5);					     \
+	  BuildMI(MBB, I, dl, TII->get(opcode))			     \
+	    .addReg(Reg1)					     \
+	    .addReg(Reg2);					     \
+	} else if (Reg1 == Reg2) {				     \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))	     \
+	    .addReg(Reg4)					     \
+	    .addReg(Reg5);					     \
+	  BuildMI(MBB, I, dl, TII->get(reverseCmovConditon(opcode))) \
+	    .addReg(Reg1)					     \
+	    .addReg(Reg3);					     \
+	} else {						     \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))	     \
+	    .addReg(Reg4)					     \
+	    .addReg(Reg5);					     \
+	  BuildMI(MBB, I, dl, TII->get(opcode))			     \
+	    .addReg(Reg1)					     \
+	    .addReg(Reg2);					     \
+ 	  BuildMI(MBB, I, dl, TII->get(reverseCmovConditon(opcode))) \
+	    .addReg(Reg1)					     \
+	    .addReg(Reg3);					     \
+	}							     \
+								     \
+        Changed = true;
+
 #define SETCC_RI(opcode) \
         unsigned Reg1 = MI->getOperand(0).getReg();		\
         unsigned Reg2 = MI->getOperand(1).getReg();		\
@@ -598,6 +635,126 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
     case VideoCore4::JMP_FCOMP_ULS_F_P:
       {
 	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_LS));
+	break;
+      }
+    case VideoCore4::F_SELECT_OEQ_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_EQ_RR_P);
+	break;
+      }
+    case VideoCore4::F_SELECT_ONE_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_NE_RR_P);
+	break;
+      }
+    case VideoCore4::F_SELECT_OGT_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_GT_RR_P);
+	break;
+      }
+    case VideoCore4::F_SELECT_OGE_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_GE_RR_P);
+	break;
+      }
+    case VideoCore4::F_SELECT_OLT_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_LT_RR_P);
+	break;
+      }
+    case VideoCore4::F_SELECT_OLE_P:
+      {
+	SELECT_CC(VideoCore4::CMOV_LE_RR_P);
+	break;
+      }
+    case VideoCore4::F_SELECT_UEQ_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_EQ_RR_P);
+	break;
+      }
+    case VideoCore4::F_SELECT_UNE_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_NE_RR_P);
+	break;
+      }
+    case VideoCore4::F_SELECT_UGT_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_GT_RR_P);
+	break;
+      }
+    case VideoCore4::F_SELECT_UGE_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_GE_RR_P);
+	break;
+      }
+    case VideoCore4::F_SELECT_ULT_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_LT_RR_P);
+	break;
+      }
+    case VideoCore4::F_SELECT_ULE_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_LE_RR_P);
+	break;
+      }
+    case VideoCore4::F_FSELECT_OEQ_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_EQ_RR_P);
+	break;
+      }
+    case VideoCore4::F_FSELECT_ONE_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_NE_RR_P);
+	break;
+      }
+    case VideoCore4::F_FSELECT_OGT_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_GT_RR_P);
+	break;
+      }
+    case VideoCore4::F_FSELECT_OGE_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_GE_RR_P);
+	break;
+      }
+    case VideoCore4::F_FSELECT_OLT_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_LT_RR_P);
+	break;
+      }
+    case VideoCore4::F_FSELECT_OLE_P:
+      {
+	SELECT_CC(VideoCore4::CMOV_LE_RR_P);
+	break;
+      }
+    case VideoCore4::F_FSELECT_UEQ_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_EQ_RR_P);
+	break;
+      }
+    case VideoCore4::F_FSELECT_UNE_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_NE_RR_P);
+	break;
+      }
+    case VideoCore4::F_FSELECT_UGT_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_GT_RR_P);
+	break;
+      }
+    case VideoCore4::F_FSELECT_UGE_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_GE_RR_P);
+	break;
+      }
+    case VideoCore4::F_FSELECT_ULT_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_LT_RR_P);
+	break;
+      }
+    case VideoCore4::F_FSELECT_ULE_P:
+      {
+	F_SELECT_CC(VideoCore4::CMOV_LE_RR_P);
 	break;
       }
     default:

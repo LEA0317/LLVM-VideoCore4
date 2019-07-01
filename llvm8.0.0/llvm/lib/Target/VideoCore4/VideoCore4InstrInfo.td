@@ -931,7 +931,7 @@ let isTerminator = 1, isBranch = 1 in {
 
 let isCodeGenOnly = 1 in {
     let Constraints = "$d = $f" in {
-        // select
+        // int select
     	def SELECT_EQ_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
                                                 "selectcc eq($lhs comp $rhs) if true $t else $f",
 	                                        []>;
@@ -962,39 +962,112 @@ let isCodeGenOnly = 1 in {
 	def SELECT_LS_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
 	                                        "selectcc ule($lhs comp $rhs) if true $t else $f",
 			                        []>;
-
-	// fp select
     	def FSELECT_EQ_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-                                             "fselectcc eq($lhs comp $rhs) if true $t else $f",
+                                             "selectcc eq($lhs comp $rhs) if true $t else $f",
 	                                     []>;
 	def FSELECT_NE_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                     "fselectcc ne($lhs comp $rhs) if true $t else $f",
+	                                     "selectcc ne($lhs comp $rhs) if true $t else $f",
 			   	 	     []>;
 	def FSELECT_GT_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                     "fselectcc gt($lhs comp $rhs) if true $t else $f",
+	                                     "selectcc gt($lhs comp $rhs) if true $t else $f",
 					     []>;
 	def FSELECT_GE_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                     "fselectcc ge($lhs comp $rhs) if true $t else $f",
+	                                     "selectcc ge($lhs comp $rhs) if true $t else $f",
 					     []>;
 	def FSELECT_LT_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                     "fselectcc lt($lhs comp $rhs) if true $t else $f",
+	                                     "selectcc lt($lhs comp $rhs) if true $t else $f",
 					     []>;
 	def FSELECT_LE_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                     "fselectcc le($lhs comp $rhs) if true $t else $f",
+	                                     "selectcc le($lhs comp $rhs) if true $t else $f",
 					     []>;
 	def FSELECT_HI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                     "fselectcc ugt($lhs comp $rhs) if true $t else $f",
+	                                     "selectcc ugt($lhs comp $rhs) if true $t else $f",
 					     []>;
 	def FSELECT_HS_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                     "fselectcc uge($lhs comp $rhs) if true $t else $f",
+	                                     "selectcc uge($lhs comp $rhs) if true $t else $f",
 					     []>;
 	def FSELECT_LO_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                     "fselectcc ult($lhs comp $rhs) if true $t else $f",
+	                                     "selectcc ult($lhs comp $rhs) if true $t else $f",
 				             []>;
 	def FSELECT_LS_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                     "fselectcc ule($lhs comp $rhs) if true $t else $f",
+	                                     "selectcc ule($lhs comp $rhs) if true $t else $f",
 			                     []>;
+        // float select
+    	def F_SELECT_OEQ_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+                                               "fselectcc eq($lhs comp $rhs) if true $t else $f",
+	                                       []>;
+	def F_SELECT_ONE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                       "fselectcc ne($lhs comp $rhs) if true $t else $f",
+			   	 	       []>;
+	def F_SELECT_OGT_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                       "fselectcc gt($lhs comp $rhs) if true $t else $f",
+					       []>;
+	def F_SELECT_OGE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                       "fselectcc ge($lhs comp $rhs) if true $t else $f",
+					       []>;
+	def F_SELECT_OLT_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                       "fselectcc lt($lhs comp $rhs) if true $t else $f",
+					       []>;
+	def F_SELECT_OLE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                       "fselectcc le($lhs comp $rhs) if true $t else $f",
+					       []>;
+    	def F_SELECT_UEQ_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+                                               "fselectcc eq($lhs comp $rhs) if true $t else $f",
+	                                       []>;
+	def F_SELECT_UNE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                       "fselectcc ne($lhs comp $rhs) if true $t else $f",
+			   	 	       []>;
+	def F_SELECT_UGT_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                       "fselectcc gt($lhs comp $rhs) if true $t else $f",
+					       []>;
+	def F_SELECT_UGE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                       "fselectcc ge($lhs comp $rhs) if true $t else $f",
+					       []>;
+	def F_SELECT_ULT_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                       "fselectcc lt($lhs comp $rhs) if true $t else $f",
+					       []>;
+	def F_SELECT_ULE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                       "fselectcc le($lhs comp $rhs) if true $t else $f",
+					       []>;
+
+    	def F_FSELECT_OEQ_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+                                                "fselectcc eq($lhs comp $rhs) if true $t else $f",
+	                                        []>;
+	def F_FSELECT_ONE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                        "fselectcc ne($lhs comp $rhs) if true $t else $f",
+			   	 	        []>;
+	def F_FSELECT_OGT_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                        "fselectcc gt($lhs comp $rhs) if true $t else $f",
+					        []>;
+	def F_FSELECT_OGE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                        "fselectcc ge($lhs comp $rhs) if true $t else $f",
+					        []>;
+	def F_FSELECT_OLT_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                        "fselectcc lt($lhs comp $rhs) if true $t else $f",
+					        []>;
+	def F_FSELECT_OLE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                        "fselectcc le($lhs comp $rhs) if true $t else $f",
+					        []>;
+    	def F_FSELECT_UEQ_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+                                                "fselectcc eq($lhs comp $rhs) if true $t else $f",
+	                                        []>;
+	def F_FSELECT_UNE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                        "fselectcc ne($lhs comp $rhs) if true $t else $f",
+			   	 	        []>;
+	def F_FSELECT_UGT_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                        "fselectcc gt($lhs comp $rhs) if true $t else $f",
+					        []>;
+	def F_FSELECT_UGE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                        "fselectcc ge($lhs comp $rhs) if true $t else $f",
+					        []>;
+	def F_FSELECT_ULT_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                        "fselectcc lt($lhs comp $rhs) if true $t else $f",
+					        []>;
+	def F_FSELECT_ULE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	                                        "fselectcc le($lhs comp $rhs) if true $t else $f",
+					        []>;
     }
+    
     def CMOV_EQ_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
                                          "moveq\t$d, $t",
                                          []>;
@@ -1213,7 +1286,7 @@ def : Pat<(brcond (i32 (setule (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
           (JMP_FCOMP_ULS_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
 
 
-// selectcc patterns
+// int selectcc patterns
 def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (i32 FR32:$T), (i32 FR32:$F), SETEQ),
           (SELECT_EQ_P (i32 FR32:$T), (i32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
 def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (i32 FR32:$T), (i32 FR32:$F), SETNE),
@@ -1234,7 +1307,6 @@ def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (i32 FR32:$T), (i32 FR32:$
           (SELECT_LO_P (i32 FR32:$T), (i32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
 def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (i32 FR32:$T), (i32 FR32:$F), SETULE),
           (SELECT_LS_P (i32 FR32:$T), (i32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
-
 def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (f32 FR32:$T), (f32 FR32:$F), SETEQ),
           (FSELECT_EQ_P (f32 FR32:$T), (f32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
 def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (f32 FR32:$T), (f32 FR32:$F), SETNE),
@@ -1255,25 +1327,60 @@ def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (f32 FR32:$T), (f32 FR32:$
           (FSELECT_LO_P (f32 FR32:$T), (f32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
 def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (f32 FR32:$T), (f32 FR32:$F), SETULE),
           (FSELECT_LS_P (f32 FR32:$T), (f32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
-	  
+
+
+// float selectcc patterns
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (i32 GR32:$T), (i32 GR32:$F), SETOEQ),
+          (F_SELECT_OEQ_P (i32 GR32:$T), (i32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (i32 GR32:$T), (i32 GR32:$F), SETONE),
+          (F_SELECT_ONE_P (i32 GR32:$T), (i32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (i32 GR32:$T), (i32 GR32:$F), SETOGT),
+          (F_SELECT_OGT_P (i32 GR32:$T), (i32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (i32 GR32:$T), (i32 GR32:$F), SETOGE),
+          (F_SELECT_OGE_P (i32 GR32:$T), (i32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (i32 GR32:$T), (i32 GR32:$F), SETOLT),
+          (F_SELECT_OLT_P (i32 GR32:$T), (i32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (i32 GR32:$T), (i32 GR32:$F), SETOLE),
+          (F_SELECT_OLE_P (i32 GR32:$T), (i32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (i32 GR32:$T), (i32 GR32:$F), SETUEQ),
+          (F_SELECT_UEQ_P (i32 GR32:$T), (i32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (i32 GR32:$T), (i32 GR32:$F), SETUNE),
+          (F_SELECT_UNE_P (i32 GR32:$T), (i32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (i32 GR32:$T), (i32 GR32:$F), SETUGT),
+          (F_SELECT_UGT_P (i32 GR32:$T), (i32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (i32 GR32:$T), (i32 GR32:$F), SETUGE),
+          (F_SELECT_UGE_P (i32 GR32:$T), (i32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (i32 GR32:$T), (i32 GR32:$F), SETULT),
+          (F_SELECT_ULT_P (i32 GR32:$T), (i32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (i32 GR32:$T), (i32 GR32:$F), SETULE),
+          (F_SELECT_ULE_P (i32 GR32:$T), (i32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$F), SETOEQ),
+          (F_FSELECT_OEQ_P (f32 GR32:$T), (f32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$F), SETONE),
+          (F_FSELECT_ONE_P (f32 GR32:$T), (f32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$F), SETOGT),
+          (F_FSELECT_OGT_P (f32 GR32:$T), (f32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$F), SETOGE),
+          (F_FSELECT_OGE_P (f32 GR32:$T), (f32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$F), SETOLT),
+          (F_FSELECT_OLT_P (f32 GR32:$T), (f32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$F), SETOLE),
+          (F_FSELECT_OLE_P (f32 GR32:$T), (f32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$F), SETUEQ),
+          (F_FSELECT_UEQ_P (f32 GR32:$T), (f32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$F), SETUNE),
+          (F_FSELECT_UNE_P (f32 GR32:$T), (f32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$F), SETUGT),
+          (F_FSELECT_UGT_P (f32 GR32:$T), (f32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$F), SETUGE),
+          (F_FSELECT_UGE_P (f32 GR32:$T), (f32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$F), SETULT),
+          (F_FSELECT_ULT_P (f32 GR32:$T), (f32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$F), SETULE),
+          (F_FSELECT_ULE_P (f32 GR32:$T), (f32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
+
 /* Likewise for float. */
 multiclass FCONDCC<string cond, PatFrag node> {
-	let Constraints = "$D = $F" in {
-		def _SELECT_RR : S16<
-					(outs GR32:$D), (ins GR32:$A, GR32:$B, GR32:$T, GR32:$F),
-					"fcmp\t$A, $B\n\tmov"#cond#"\t$D, $T",
-					[(set GR32:$D,
-						(select (node (f32 GR32:$A), (f32 GR32:$B)), (i32 GR32:$T), (i32 GR32:$F)))]
-				>;
-
-		def _SELECT_RR_F : S16<
-					(outs GR32:$D), (ins GR32:$A, GR32:$B, GR32:$T, GR32:$F),
-					"fcmp\t$A, $B\n\tmov"#cond#"\t$D, $T",
-					[(set GR32:$D,
-						(select (node (f32 GR32:$A), (f32 GR32:$B)), (f32 GR32:$T), (f32 GR32:$F)))]
-				>;
-	}
-
 	def _SET_RR : S16<
 				(outs GR32:$D), (ins GR32:$A, GR32:$B),
 				"fcmp\t$A, $B\n\tmov\t$D, #0\n\tmov"#cond#"\t$D, #1",
