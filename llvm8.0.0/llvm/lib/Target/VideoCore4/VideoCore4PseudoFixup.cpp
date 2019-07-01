@@ -36,8 +36,10 @@
 	BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))      \
 	  .addReg(Reg1)					      \
 	  .addReg(Reg2);				      \
-	BuildMI(MBB, I, dl, TII->get(opcode))  \
-	  .addMBB(BB);
+	BuildMI(MBB, I, dl, TII->get(opcode))		      \
+	  .addMBB(BB);					      \
+							      \
+        Changed = true;
 
 #define JUMP_FCOMP_CC(opcode) \
         unsigned           Reg1 = MI->getOperand(0).getReg(); \
@@ -50,7 +52,9 @@
 	  .addReg(Reg1)					      \
 	  .addReg(Reg2);				      \
 	BuildMI(MBB, I, dl, TII->get(opcode))		      \
-	  .addMBB(BB);
+	  .addMBB(BB);					      \
+							      \
+        Changed = true;
 
 #define	SELECT_CC(opcode) \
         unsigned Reg1 = MI->getOperand(0).getReg();		     \
@@ -85,7 +89,9 @@
  	  BuildMI(MBB, I, dl, TII->get(reverseCmovConditon(opcode))) \
 	    .addReg(Reg1)					     \
 	    .addReg(Reg3);					     \
-	}
+	}							     \
+								     \
+        Changed = true;
 
 #define SETCC_RI(opcode) \
         unsigned Reg1 = MI->getOperand(0).getReg();		\
@@ -102,7 +108,9 @@
 	    .addImm(0);						\
 	BuildMI(MBB, I, dl, TII->get(opcode))			\
 	  .addReg(Reg1)						\
-	  .addImm(1);
+	  .addImm(1);						\
+								\
+        Changed = true;
 
 #define SETCC_RR(opcode) \
         unsigned Reg1 = MI->getOperand(0).getReg();		\
@@ -119,8 +127,9 @@
 	    .addImm(0);						\
 	BuildMI(MBB, I, dl, TII->get(opcode))			\
 	  .addReg(Reg1)						\
-	  .addImm(1);
-
+	  .addImm(1);						\
+								\
+        Changed = true;
 
 using namespace llvm;
 
@@ -174,505 +183,421 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
     case VideoCore4::JMP_COMP_EQ_P:
       {
 	JUMP_COMP_CC(VideoCore4::JMP_CC_EQ);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_NE_P:
       {
 	JUMP_COMP_CC(VideoCore4::JMP_CC_NE);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_GT_P:
       {
 	JUMP_COMP_CC(VideoCore4::JMP_CC_GT);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_GE_P:
       {
 	JUMP_COMP_CC(VideoCore4::JMP_CC_GE);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_LT_P:
       {
 	JUMP_COMP_CC(VideoCore4::JMP_CC_LT);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_LE_P:
       {
 	JUMP_COMP_CC(VideoCore4::JMP_CC_LE);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_HI_P:
       {
 	JUMP_COMP_CC(VideoCore4::JMP_CC_HI);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_HS_P:
       {
 	JUMP_COMP_CC(VideoCore4::JMP_CC_HS);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_LO_P:
       {
 	JUMP_COMP_CC(VideoCore4::JMP_CC_LO);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_LS_P:
       {
 	JUMP_COMP_CC(VideoCore4::JMP_CC_LS);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_EQ_F_P:
       {
 	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_EQ));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_NE_F_P:
       {
 	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_NE));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_GT_F_P:
       {
 	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_GT));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_GE_F_P:
       {
 	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_GE));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_LT_F_P:
       {
 	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_LT));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_LE_F_P:
       {
 	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_LE));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_HI_F_P:
       {
 	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_HI));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_HS_F_P:
       {
 	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_HS));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_LO_F_P:
       {
 	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_LO));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_COMP_LS_F_P:
       {
 	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_LS));
-	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_EQ_P:
       {
 	SELECT_CC(VideoCore4::CMOV_EQ_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_NE_P:
       {
 	SELECT_CC(VideoCore4::CMOV_NE_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_GT_P:
       {
 	SELECT_CC(VideoCore4::CMOV_GT_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_GE_P:
       {
 	SELECT_CC(VideoCore4::CMOV_GE_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_LT_P:
       {
 	SELECT_CC(VideoCore4::CMOV_LT_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_LE_P:
       {
 	SELECT_CC(VideoCore4::CMOV_LE_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_HI_P:
       {
 	SELECT_CC(VideoCore4::CMOV_HI_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_HS_P:
       {
 	SELECT_CC(VideoCore4::CMOV_HS_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_LO_P:
       {
 	SELECT_CC(VideoCore4::CMOV_LO_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SELECT_LS_P:
       {
 	SELECT_CC(VideoCore4::CMOV_LS_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_EQ_P:
       {
 	SELECT_CC(VideoCore4::CMOV_EQ_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_NE_P:
       {
 	SELECT_CC(VideoCore4::CMOV_NE_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_GT_P:
       {
 	SELECT_CC(VideoCore4::CMOV_GT_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_GE_P:
       {
 	SELECT_CC(VideoCore4::CMOV_GE_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_LT_P:
       {
 	SELECT_CC(VideoCore4::CMOV_LT_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_LE_P:
       {
 	SELECT_CC(VideoCore4::CMOV_LE_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_HI_P:
       {
 	SELECT_CC(VideoCore4::CMOV_HI_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_HS_P:
       {
 	SELECT_CC(VideoCore4::CMOV_HS_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_LO_P:
       {
 	SELECT_CC(VideoCore4::CMOV_LO_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::FSELECT_LS_P:
       {
 	SELECT_CC(VideoCore4::CMOV_LS_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_EQ_RI_P:
       {
 	SETCC_RI(VideoCore4::CMOV_EQ_RI_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_NE_RI_P:
       {
 	SETCC_RI(VideoCore4::CMOV_NE_RI_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_GT_RI_P:
       {
 	SETCC_RI(VideoCore4::CMOV_GT_RI_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_GE_RI_P:
       {
 	SETCC_RI(VideoCore4::CMOV_GE_RI_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_LT_RI_P:
       {
 	SETCC_RI(VideoCore4::CMOV_LT_RI_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_LE_RI_P:
       {
 	SETCC_RI(VideoCore4::CMOV_LE_RI_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_HI_RI_P:
       {
 	SETCC_RI(VideoCore4::CMOV_HI_RI_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_HS_RI_P:
       {
 	SETCC_RI(VideoCore4::CMOV_HS_RI_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_LO_RI_P:
       {
 	SETCC_RI(VideoCore4::CMOV_LO_RI_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_LS_RI_P:
       {
 	SETCC_RI(VideoCore4::CMOV_LS_RI_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_EQ_RR_P:
       {
 	SETCC_RR(VideoCore4::CMOV_EQ_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_NE_RR_P:
       {
 	SETCC_RR(VideoCore4::CMOV_NE_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_GT_RR_P:
       {
 	SETCC_RR(VideoCore4::CMOV_GT_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_GE_RR_P:
       {
 	SETCC_RR(VideoCore4::CMOV_GE_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_LT_RR_P:
       {
 	SETCC_RR(VideoCore4::CMOV_LT_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_LE_RR_P:
       {
 	SETCC_RR(VideoCore4::CMOV_LE_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_HI_RR_P:
       {
 	SETCC_RR(VideoCore4::CMOV_HI_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_HS_RR_P:
       {
 	SETCC_RR(VideoCore4::CMOV_HS_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_LO_RR_P:
       {
 	SETCC_RR(VideoCore4::CMOV_LO_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::SETCC_LS_RR_P:
       {
 	SETCC_RR(VideoCore4::CMOV_LS_RR_P);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_OEQ_P:
       {
 	JUMP_FCOMP_CC(VideoCore4::JMP_CC_EQ);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_ONE_P:
       {
 	JUMP_FCOMP_CC(VideoCore4::JMP_CC_NE);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_OGT_P:
       {
 	JUMP_FCOMP_CC(VideoCore4::JMP_CC_GT);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_OGE_P:
       {
 	JUMP_FCOMP_CC(VideoCore4::JMP_CC_GE);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_OLT_P:
       {
 	JUMP_FCOMP_CC(VideoCore4::JMP_CC_LT);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_OLE_P:
       {
 	JUMP_FCOMP_CC(VideoCore4::JMP_CC_LE);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_UEQ_P:
       {
 	JUMP_FCOMP_CC(VideoCore4::JMP_CC_EQ);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_UNE_P:
       {
 	JUMP_FCOMP_CC(VideoCore4::JMP_CC_NE);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_UHI_P:
       {
 	JUMP_FCOMP_CC(VideoCore4::JMP_CC_HI);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_UHS_P:
       {
 	JUMP_FCOMP_CC(VideoCore4::JMP_CC_HS);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_ULO_P:
       {
 	JUMP_FCOMP_CC(VideoCore4::JMP_CC_LO);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_ULS_P:
       {
 	JUMP_FCOMP_CC(VideoCore4::JMP_CC_LS);
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_OEQ_F_P:
       {
 	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_EQ));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_ONE_F_P:
       {
 	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_NE));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_OGT_F_P:
       {
 	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_GT));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_OGE_F_P:
       {
 	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_GE));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_OLT_F_P:
       {
 	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_LT));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_OLE_F_P:
       {
 	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_LE));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_UEQ_F_P:
       {
 	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_EQ));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_UNE_F_P:
       {
 	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_NE));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_UHI_F_P:
       {
 	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_HI));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_UHS_F_P:
       {
 	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_HS));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_ULO_F_P:
       {
 	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_LO));
-	Changed = true;
 	break;
       }
     case VideoCore4::JMP_FCOMP_ULS_F_P:
       {
 	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_LS));
-	Changed = true;
 	break;
       }
     default:
