@@ -140,9 +140,14 @@ inline bool isCondBranch(unsigned opc) {
 }
 
 inline bool
-IsUnconditionalJump(int Opc) {
+isUnconditionalJump(int Opc) {
   return (Opc    == llvm::VideoCore4::JMP
 	  || Opc == llvm::VideoCore4::JMP_R);
+}
+
+inline bool isBranch(unsigned opc) {
+  if (isCondBranch(opc) || isUnconditionalJump(opc)) return true;
+  return false;
 }
 
 inline unsigned

@@ -156,14 +156,14 @@ VideoCore4CFGOptimizer::runOnMachineFunction(MachineFunction &Fn) {
 	  
 	  // Ensure that BB2 has one instruction -- an unconditional jump.
 	  if ((LayoutSucc->size() == 1) &&
-	      IsUnconditionalJump(LayoutSucc->front().getOpcode())) {
+	      isUnconditionalJump(LayoutSucc->front().getOpcode())) {
 	    assert(JumpAroundTarget && "jump target is needed to process second basic block");
 	    MachineBasicBlock* UncondTarget = LayoutSucc->front().getOperand(0).getMBB();
 	    // Check if the layout successor of BB2 is BB3.
 	    bool case1 = LayoutSucc->isLayoutSuccessor(JumpAroundTarget);
 	    bool case2 = JumpAroundTarget->isSuccessor(UncondTarget)
 	      && JumpAroundTarget->size() >= 1
-	      && IsUnconditionalJump(JumpAroundTarget->back().getOpcode())
+	      && isUnconditionalJump(JumpAroundTarget->back().getOpcode())
 	      && JumpAroundTarget->pred_size() == 1
 	      && JumpAroundTarget->succ_size() == 1;
 	    

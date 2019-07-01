@@ -1256,14 +1256,7 @@ def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (f32 FR32:$T), (f32 FR32:$
 def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (f32 FR32:$T), (f32 FR32:$F), SETULE),
           (FSELECT_LS_P (f32 FR32:$T), (f32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
 	  
-def SELECT_GEN : S32<
-			(outs FR32:$D), (ins FR32:$A, FR32:$B, FR32:$T),
-			"# $D = if ($A) then $T else $B \n\tcmp\t$A, 0;\tmovne\t$D, $T;\tmoveq\t$D, $B",
-			[(set FR32:$D, (select (i32 FR32:$A), (i32 FR32:$B), (i32 FR32:$T)))]
-		>;
-
 /* Likewise for float. */
-
 multiclass FCONDCC<string cond, PatFrag node> {
 	let Constraints = "$D = $F" in {
 		def _SELECT_RR : S16<

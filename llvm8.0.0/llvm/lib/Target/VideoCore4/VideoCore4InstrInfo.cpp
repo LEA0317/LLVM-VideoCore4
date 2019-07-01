@@ -154,7 +154,7 @@ VideoCore4InstrInfo::AnalyzeBranch(MachineBasicBlock               &MBB,
 
   // If there is only one terminator instruction, process it.
   if (I == MBB.begin() || !isUnpredicatedTerminator(*--I)) {
-    if (IsUnconditionalJump(LastOpc)) {
+    if (isUnconditionalJump(LastOpc)) {
       TBB = LastInst->getOperand(0).getMBB();
       return false;
     }
@@ -172,8 +172,8 @@ VideoCore4InstrInfo::AnalyzeBranch(MachineBasicBlock               &MBB,
 
   // If AllowModify is true and the block ends with two or more unconditional
   // branches, delete all but the first unconditional branch.
-  if (AllowModify && IsUnconditionalJump(LastOpc)) {
-    while (IsUnconditionalJump(SecondLastOpc)) {
+  if (AllowModify && isUnconditionalJump(LastOpc)) {
+    while (isUnconditionalJump(SecondLastOpc)) {
       LastInst->eraseFromParent();
       LastInst = SecondLastInst;
       LastOpc  = LastInst->getOpcode();
@@ -189,7 +189,7 @@ VideoCore4InstrInfo::AnalyzeBranch(MachineBasicBlock               &MBB,
   }
 
   // If the block ends with a B and a Bcc, handle it.
-  if (isCondBranch(SecondLastOpc) && IsUnconditionalJump(LastOpc)) {
+  if (isCondBranch(SecondLastOpc) && isUnconditionalJump(LastOpc)) {
     for (int i=0; i<BRANCH_KIND_NUM; i++) {
       if (SecondLastOpc == BranchTakenOpcode[i]) {
 	// Transform the code
@@ -231,7 +231,7 @@ VideoCore4InstrInfo::AnalyzeBranch(MachineBasicBlock               &MBB,
 
   // If the block ends with two unconditional branches, handle it.  The second 
   // one is not executed.
-  if (IsUnconditionalJump(SecondLastOpc) && IsUnconditionalJump(LastOpc)) {
+  if (isUnconditionalJump(SecondLastOpc) && isUnconditionalJump(LastOpc)) {
     TBB = SecondLastInst->getOperand(0).getMBB();
     return false;
   }
