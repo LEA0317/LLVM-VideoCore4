@@ -168,6 +168,25 @@
 								\
         Changed = true;
 
+#define F_SETCC_RR(opcode) \
+        unsigned Reg1 = MI->getOperand(0).getReg();		\
+        unsigned Reg2 = MI->getOperand(1).getReg();		\
+	unsigned Reg3 = MI->getOperand(2).getReg();		\
+								\
+        MBB.erase(MI);						\
+								\
+	BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))	\
+	    .addReg(Reg2)					\
+	    .addReg(Reg3);					\
+	BuildMI(MBB, I, dl, TII->get(VideoCore4::MOV_FI))	\
+   	    .addReg(Reg1)					\
+	    .addImm(0);						\
+	BuildMI(MBB, I, dl, TII->get(opcode))			\
+	  .addReg(Reg1)						\
+	  .addImm(1);						\
+								\
+        Changed = true;
+
 using namespace llvm;
 
 namespace llvm {
@@ -755,6 +774,66 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
     case VideoCore4::F_FSELECT_ULE_P:
       {
 	F_SELECT_CC(VideoCore4::CMOV_LE_RR_P);
+	break;
+      }
+    case VideoCore4::F_SETCC_OEQ_RR_P:
+      {
+	F_SETCC_RR(VideoCore4::CMOV_EQ_RR_P);
+	break;
+      }
+    case VideoCore4::F_SETCC_ONE_RR_P:
+      {
+	F_SETCC_RR(VideoCore4::CMOV_NE_RR_P);
+	break;
+      }
+    case VideoCore4::F_SETCC_OGT_RR_P:
+      {
+	F_SETCC_RR(VideoCore4::CMOV_GT_RR_P);
+	break;
+      }
+    case VideoCore4::F_SETCC_OGE_RR_P:
+      {
+	F_SETCC_RR(VideoCore4::CMOV_GE_RR_P);
+	break;
+      }
+    case VideoCore4::F_SETCC_OLT_RR_P:
+      {
+	F_SETCC_RR(VideoCore4::CMOV_LT_RR_P);
+	break;
+      }
+    case VideoCore4::F_SETCC_OLE_RR_P:
+      {
+	F_SETCC_RR(VideoCore4::CMOV_LE_RR_P);
+	break;
+      }
+    case VideoCore4::F_SETCC_UEQ_RR_P:
+      {
+	F_SETCC_RR(VideoCore4::CMOV_EQ_RR_P);
+	break;
+      }
+    case VideoCore4::F_SETCC_UNE_RR_P:
+      {
+	F_SETCC_RR(VideoCore4::CMOV_NE_RR_P);
+	break;
+      }
+    case VideoCore4::F_SETCC_UGT_RR_P:
+      {
+	F_SETCC_RR(VideoCore4::CMOV_GT_RR_P);
+	break;
+      }
+    case VideoCore4::F_SETCC_UGE_RR_P:
+      {
+	F_SETCC_RR(VideoCore4::CMOV_GE_RR_P);
+	break;
+      }
+    case VideoCore4::F_SETCC_ULT_RR_P:
+      {
+	F_SETCC_RR(VideoCore4::CMOV_LT_RR_P);
+	break;
+      }
+    case VideoCore4::F_SETCC_ULE_RR_P:
+      {
+	F_SETCC_RR(VideoCore4::CMOV_LE_RR_P);
 	break;
       }
     default:

@@ -1161,7 +1161,6 @@ def SETCC_LO_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
 def SETCC_LS_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
                                       "",
 				      []>;
-
 def SETCC_EQ_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
                                       "",
 		  		      []>;
@@ -1193,7 +1192,45 @@ def SETCC_LS_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
                                       "",
 				      []>;
 
-// setcc ri patterns
+def F_SETCC_OEQ_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
+                                         "",
+		  		         []>;
+def F_SETCC_ONE_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
+                                         "",
+				         []>;
+def F_SETCC_OGT_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
+                                         "",
+				         []>;
+def F_SETCC_OGE_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
+                                         "",
+				         []>;
+def F_SETCC_OLT_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
+                                         "",
+				         []>;
+def F_SETCC_OLE_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
+                                         "",
+				         []>;
+def F_SETCC_UEQ_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
+                                         "",
+		  		         []>;
+def F_SETCC_UNE_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
+                                         "",
+				         []>;
+def F_SETCC_UGT_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
+                                         "",
+				         []>;
+def F_SETCC_UGE_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
+                                         "",
+				         []>;
+def F_SETCC_ULT_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
+                                         "",
+				         []>;
+def F_SETCC_ULE_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
+                                         "",
+				         []>;
+
+
+// int setcc ri patterns
 def : Pat<(seteq (i32 FR32:$A), (i32 immU5:$B)),
           (SETCC_EQ_RI_P (i32 FR32:$A), (immU5:$B))>;
 def : Pat<(setne (i32 FR32:$A), (i32 immU5:$B)),
@@ -1215,7 +1252,7 @@ def : Pat<(setult (i32 FR32:$A), (i32 immU5:$B)),
 def : Pat<(setule (i32 FR32:$A), (i32 immU5:$B)),
           (SETCC_LS_RI_P (i32 FR32:$A), (immU5:$B))>;
 
-// setcc rr patterns
+// int setcc rr patterns
 def : Pat<(seteq (i32 FR32:$A), (i32 FR32:$B)),
           (SETCC_EQ_RR_P (i32 FR32:$A), (i32 FR32:$B))>;
 def : Pat<(setne (i32 FR32:$A), (i32 FR32:$B)),
@@ -1236,6 +1273,32 @@ def : Pat<(setult (i32 FR32:$A), (i32 FR32:$B)),
           (SETCC_LO_RR_P (i32 FR32:$A), (i32 FR32:$B))>;
 def : Pat<(setule (i32 FR32:$A), (i32 FR32:$B)),
           (SETCC_LS_RR_P (i32 FR32:$A), (i32 FR32:$B))>;
+
+// float setcc rr patterns
+def : Pat<(setoeq (i32 GR32:$A), (i32 GR32:$B)),
+          (F_SETCC_OEQ_RR_P (i32 GR32:$A), (i32 GR32:$B))>;
+def : Pat<(setone (i32 GR32:$A), (i32 GR32:$B)),
+          (F_SETCC_ONE_RR_P (i32 GR32:$A), (i32 GR32:$B))>;
+def : Pat<(setogt (i32 GR32:$A), (i32 GR32:$B)),
+          (F_SETCC_OGT_RR_P (i32 GR32:$A), (i32 GR32:$B))>;
+def : Pat<(setoge (i32 GR32:$A), (i32 GR32:$B)),
+          (F_SETCC_OGE_RR_P (i32 GR32:$A), (i32 GR32:$B))>;
+def : Pat<(setolt (i32 GR32:$A), (i32 GR32:$B)),
+          (F_SETCC_OLT_RR_P (i32 GR32:$A), (i32 GR32:$B))>;
+def : Pat<(setole (i32 GR32:$A), (i32 GR32:$B)),
+          (F_SETCC_OLE_RR_P (i32 GR32:$A), (i32 GR32:$B))>;
+def : Pat<(setueq (i32 GR32:$A), (i32 GR32:$B)),
+          (F_SETCC_UEQ_RR_P (i32 GR32:$A), (i32 GR32:$B))>;
+def : Pat<(setune (i32 GR32:$A), (i32 GR32:$B)),
+          (F_SETCC_UNE_RR_P (i32 GR32:$A), (i32 GR32:$B))>;
+def : Pat<(setugt (i32 GR32:$A), (i32 GR32:$B)),
+          (F_SETCC_UGT_RR_P (i32 GR32:$A), (i32 GR32:$B))>;
+def : Pat<(setuge (i32 GR32:$A), (i32 GR32:$B)),
+          (F_SETCC_UGE_RR_P (i32 GR32:$A), (i32 GR32:$B))>;
+def : Pat<(setult (i32 GR32:$A), (i32 GR32:$B)),
+          (F_SETCC_ULT_RR_P (i32 GR32:$A), (i32 GR32:$B))>;
+def : Pat<(setule (i32 GR32:$A), (i32 GR32:$B)),
+          (F_SETCC_ULE_RR_P (i32 GR32:$A), (i32 GR32:$B))>;
 
 // int branch patterns
 def : Pat<(brcond (i32 (seteq (i32 GR32:$lhs), (i32 GR32:$rhs))), bb:$dst),
@@ -1379,27 +1442,6 @@ def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$
 def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$F), SETULE),
           (F_FSELECT_ULE_P (f32 GR32:$T), (f32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
 
-/* Likewise for float. */
-multiclass FCONDCC<string cond, PatFrag node> {
-	def _SET_RR : S16<
-				(outs GR32:$D), (ins GR32:$A, GR32:$B),
-				"fcmp\t$A, $B\n\tmov\t$D, #0\n\tmov"#cond#"\t$D, #1",
-				[(set GR32:$D, (node (f32 GR32:$A), (f32 GR32:$B)))]
-			>;
-}
-
-defm FCONDOEQ : FCONDCC<"eq", setoeq>;
-defm FCONDONE : FCONDCC<"ne", setone>;
-defm FCONDOGT : FCONDCC<"gt", setogt>;
-defm FCONDOGE : FCONDCC<"ge", setoge>;
-defm FCONDOLT : FCONDCC<"lt", setolt>;
-defm FCONDOLE : FCONDCC<"le", setole>;
-defm FCONDUEQ : FCONDCC<"eq", setueq>;
-defm FCONDUNE : FCONDCC<"ne", setune>;
-defm FCONDUGT : FCONDCC<"gt", setugt>;
-defm FCONDUGE : FCONDCC<"ge", setuge>;
-defm FCONDULT : FCONDCC<"lt", setult>;
-defm FCONDULE : FCONDCC<"le", setule>;
 
 /* --- Floating point arithmetic -------------------------------------------- */
 
