@@ -90,10 +90,10 @@ static unsigned BranchTakenOpcode[BRANCH_KIND_NUM] = {
   llvm::VideoCore4::JMP_FCOMP_OLE_P,
   llvm::VideoCore4::JMP_FCOMP_UEQ_P,
   llvm::VideoCore4::JMP_FCOMP_UNE_P,
-  llvm::VideoCore4::JMP_FCOMP_UHI_P,
-  llvm::VideoCore4::JMP_FCOMP_UHS_P,
-  llvm::VideoCore4::JMP_FCOMP_ULO_P,
-  llvm::VideoCore4::JMP_FCOMP_ULS_P
+  llvm::VideoCore4::JMP_FCOMP_UGT_P,
+  llvm::VideoCore4::JMP_FCOMP_UGE_P,
+  llvm::VideoCore4::JMP_FCOMP_ULT_P,
+  llvm::VideoCore4::JMP_FCOMP_ULE_P
 };
 static unsigned BranchNotTakenOpcode[BRANCH_KIND_NUM] = {
   llvm::VideoCore4::JMP_COMP_EQ_F_P,
@@ -114,10 +114,10 @@ static unsigned BranchNotTakenOpcode[BRANCH_KIND_NUM] = {
   llvm::VideoCore4::JMP_FCOMP_OLE_F_P,
   llvm::VideoCore4::JMP_FCOMP_UEQ_F_P,
   llvm::VideoCore4::JMP_FCOMP_UNE_F_P,
-  llvm::VideoCore4::JMP_FCOMP_UHI_F_P,
-  llvm::VideoCore4::JMP_FCOMP_UHS_F_P,
-  llvm::VideoCore4::JMP_FCOMP_ULO_F_P,
-  llvm::VideoCore4::JMP_FCOMP_ULS_F_P
+  llvm::VideoCore4::JMP_FCOMP_UGT_F_P,
+  llvm::VideoCore4::JMP_FCOMP_UGE_F_P,
+  llvm::VideoCore4::JMP_FCOMP_ULT_F_P,
+  llvm::VideoCore4::JMP_FCOMP_ULE_F_P
 };
 
 inline bool isCondTrueBranch(unsigned opc) {

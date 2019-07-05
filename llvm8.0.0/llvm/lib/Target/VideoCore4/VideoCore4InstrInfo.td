@@ -780,70 +780,37 @@ let isTerminator = 1, isBranch = 1 in {
 		def JMP_CC_LS : JMP_CC<"ls">;
 	}
 
-	let Defs = [SR], isCodeGenOnly = 1 in {
+  	let Defs = [SR], isCodeGenOnly = 1 in {
+	    class JMP_COMP_P<string cond> : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	  	 	                                      "",
+			                                      []>;
+	    class JMP_COMP_F_P<string cond> : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	  	 	                                        "",
+			                                        []>;
             // True
-            def JMP_COMP_EQ_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                          "cmpeq and jmp",
-			  			  []>;
-  	    def JMP_COMP_NE_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                          "cmpne and jmp",
-				 		  []>;
-	    def JMP_COMP_GT_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                          "cmpgt and jmp",
-						  []>;
-	    def JMP_COMP_GE_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                          "cmpge and jmp",
-						  []>;
-	    def JMP_COMP_LT_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                          "cmplt and jmp",
-						  []>;
-	    def JMP_COMP_LE_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                          "cmple and jmp",
-					  	  []>;
-	    def JMP_COMP_HI_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                          "cmpugt and jmp",
-						  []>;
-	    def JMP_COMP_HS_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                          "cmpuge and jmp",
-					  	  []>;
-	    def JMP_COMP_LO_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                          "cmpult and jmp",
-					  	  []>;
-	    def JMP_COMP_LS_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                          "cmpule and jmp",
-						  []>;
+            def JMP_COMP_EQ_P : JMP_COMP_P<"eq">;
+	    def JMP_COMP_NE_P : JMP_COMP_P<"ne">;
+	    def JMP_COMP_GT_P : JMP_COMP_P<"gt">;
+	    def JMP_COMP_GE_P : JMP_COMP_P<"ge">;
+	    def JMP_COMP_LT_P : JMP_COMP_P<"lt">;
+	    def JMP_COMP_LE_P : JMP_COMP_P<"le">;
+	    def JMP_COMP_HI_P : JMP_COMP_P<"ugt">;
+	    def JMP_COMP_HS_P : JMP_COMP_P<"uge">;
+	    def JMP_COMP_LO_P : JMP_COMP_P<"ult">;
+	    def JMP_COMP_LS_P : JMP_COMP_P<"ule">;
+
 
 	    // False
-	    def JMP_COMP_EQ_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "cmpeq and jmp",
-			  			    []>;
-  	    def JMP_COMP_NE_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "cmpne and jmp",
-				 		    []>;
-	    def JMP_COMP_GT_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "cmpgt and jmp",
-						    []>;
-	    def JMP_COMP_GE_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "cmpge and jmp",
-						    []>;
-	    def JMP_COMP_LT_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "cmplt and jmp",
-						    []>;
-	    def JMP_COMP_LE_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "cmple and jmp",
-					  	    []>;
-	    def JMP_COMP_HI_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "cmpugt and jmp",
-						    []>;
-	    def JMP_COMP_HS_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "cmpuge and jmp",
-					  	    []>;
-	    def JMP_COMP_LO_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "cmpult and jmp",
-					  	    []>;
-	    def JMP_COMP_LS_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "cmpule and jmp",
-				  		    []>;
+            def JMP_COMP_EQ_F_P : JMP_COMP_F_P<"eq">;
+	    def JMP_COMP_NE_F_P : JMP_COMP_F_P<"ne">;
+	    def JMP_COMP_GT_F_P : JMP_COMP_F_P<"gt">;
+	    def JMP_COMP_GE_F_P : JMP_COMP_F_P<"ge">;
+	    def JMP_COMP_LT_F_P : JMP_COMP_F_P<"lt">;
+	    def JMP_COMP_LE_F_P : JMP_COMP_F_P<"le">;
+	    def JMP_COMP_HI_F_P : JMP_COMP_F_P<"ugt">;
+	    def JMP_COMP_HS_F_P : JMP_COMP_F_P<"uge">;
+	    def JMP_COMP_LO_F_P : JMP_COMP_F_P<"ult">;
+	    def JMP_COMP_LS_F_P : JMP_COMP_F_P<"ule">;
         }
 
 	/* Likewise, for floats. */
@@ -851,384 +818,181 @@ let isTerminator = 1, isBranch = 1 in {
 	    def FCMP_P : VideoCore4Pseudo<(outs), (ins FR32:$A, FR32:$B),
 				           "fcmp\t$A, $B",
 				           []>;
-            // True
-            def JMP_FCOMP_OEQ_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "fcmpoeq and jmp",
-			  			    []>;
-  	    def JMP_FCOMP_ONE_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "fcmpone and jmp",
-				   	 	    []>;
-	    def JMP_FCOMP_OGT_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "fcmpogt and jmp",
-						    []>;
-	    def JMP_FCOMP_OGE_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "fcmpoge and jmp",
-						    []>;
-	    def JMP_FCOMP_OLT_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "fcmpolt and jmp",
-						    []>;
-	    def JMP_FCOMP_OLE_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "fcmpole and jmp",
-		 			  	    []>;
-            def JMP_FCOMP_UEQ_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "fcmpueq and jmp",
-			  			    []>;
-  	    def JMP_FCOMP_UNE_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "fcmpune and jmp",
-				   	 	    []>;
-	    def JMP_FCOMP_UHI_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "fcmpugt and jmp",
-						    []>;
-	    def JMP_FCOMP_UHS_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "fcmpuge and jmp",
-						    []>;
-	    def JMP_FCOMP_ULO_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "fcmpult and jmp",
-						    []>;
-	    def JMP_FCOMP_ULS_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                            "fcmpule and jmp",
-		 			  	    []>;
 
-	    // False
-            def JMP_FCOMP_OEQ_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                              "!fcmpoeq and jmp",
-			  			      []>;
-  	    def JMP_FCOMP_ONE_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                              "!fcmpone and jmp",
-				   	 	      []>;
-	    def JMP_FCOMP_OGT_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                              "!fcmpogt and jmp",
-						      []>;
-	    def JMP_FCOMP_OGE_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                              "!fcmpoge and jmp",
-						      []>;
-	    def JMP_FCOMP_OLT_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                              "!fcmpolt and jmp",
-						      []>;
-	    def JMP_FCOMP_OLE_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                              "!fcmpole and jmp",
-		 			  	      []>;
-            def JMP_FCOMP_UEQ_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                              "!fcmpueq and jmp",
-			  			      []>;
-  	    def JMP_FCOMP_UNE_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                              "!fcmpune and jmp",
-				   	 	      []>;
-	    def JMP_FCOMP_UHI_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                              "!fcmpugt and jmp",
-						      []>;
-	    def JMP_FCOMP_UHS_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                              "!fcmpuge and jmp",
-						      []>;
-	    def JMP_FCOMP_ULO_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                              "!fcmpult and jmp",
-						      []>;
-	    def JMP_FCOMP_ULS_F_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	                                              "!fcmpule and jmp",
-		 			  	      []>;
+	    class JMP_FCOMP_P<string cond> : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	  	 	                                               "",
+			                                               []>;
+	    class JMP_FCOMP_F_P<string cond> : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
+	  	 	                                                 "",
+			                                                 []>;
+            // True
+            def JMP_FCOMP_OEQ_P : JMP_FCOMP_P<"oeq">;
+	    def JMP_FCOMP_ONE_P : JMP_FCOMP_P<"one">;
+	    def JMP_FCOMP_OGT_P : JMP_FCOMP_P<"ogt">;
+	    def JMP_FCOMP_OGE_P : JMP_FCOMP_P<"oge">;
+	    def JMP_FCOMP_OLT_P : JMP_FCOMP_P<"olt">;
+	    def JMP_FCOMP_OLE_P : JMP_FCOMP_P<"ole">;
+            def JMP_FCOMP_UEQ_P : JMP_FCOMP_P<"ueq">;
+	    def JMP_FCOMP_UNE_P : JMP_FCOMP_P<"une">;
+	    def JMP_FCOMP_UGT_P : JMP_FCOMP_P<"ugt">;
+	    def JMP_FCOMP_UGE_P : JMP_FCOMP_P<"uge">;
+	    def JMP_FCOMP_ULT_P : JMP_FCOMP_P<"ult">;
+	    def JMP_FCOMP_ULE_P : JMP_FCOMP_P<"ule">;
+
+            // False
+            def JMP_FCOMP_OEQ_F_P : JMP_FCOMP_F_P<"oeq">;
+	    def JMP_FCOMP_ONE_F_P : JMP_FCOMP_F_P<"one">;
+	    def JMP_FCOMP_OGT_F_P : JMP_FCOMP_F_P<"ogt">;
+	    def JMP_FCOMP_OGE_F_P : JMP_FCOMP_F_P<"oge">;
+	    def JMP_FCOMP_OLT_F_P : JMP_FCOMP_F_P<"olt">;
+	    def JMP_FCOMP_OLE_F_P : JMP_FCOMP_F_P<"ole">;
+            def JMP_FCOMP_UEQ_F_P : JMP_FCOMP_F_P<"ueq">;
+	    def JMP_FCOMP_UNE_F_P : JMP_FCOMP_F_P<"une">;
+	    def JMP_FCOMP_UGT_F_P : JMP_FCOMP_F_P<"ugt">;
+	    def JMP_FCOMP_UGE_F_P : JMP_FCOMP_F_P<"uge">;
+	    def JMP_FCOMP_ULT_F_P : JMP_FCOMP_F_P<"ult">;
+	    def JMP_FCOMP_ULE_F_P : JMP_FCOMP_F_P<"ule">;
         }
 }
 
 let isCodeGenOnly = 1 in {
     let Constraints = "$d = $f" in {
+	class SELECT_P<string cond> : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
+	  	 	                                "",
+			                                []>;
+	class FSELECT_P<string cond> : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
+	  	   	                                 "",
+			                                 []>;
+	class F_SELECT_P<string cond> : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	  	 	                                  "",
+			                                  []>;
+	class F_FSELECT_P<string cond> : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
+	  	 	                                   "",
+			                                   []>;
         // int select
-    	def SELECT_EQ_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-                                                "selectcc eq($lhs comp $rhs) if true $t else $f",
-	                                        []>;
-	def SELECT_NE_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                        "selectcc ne($lhs comp $rhs) if true $t else $f",
-			   	 	        []>;
-	def SELECT_GT_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                        "selectcc gt($lhs comp $rhs) if true $t else $f",
-					        []>;
-	def SELECT_GE_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                        "selectcc ge($lhs comp $rhs) if true $t else $f",
-					        []>;
-	def SELECT_LT_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                        "selectcc lt($lhs comp $rhs) if true $t else $f",
-					        []>;
-	def SELECT_LE_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                        "selectcc le($lhs comp $rhs) if true $t else $f",
-					        []>;
-	def SELECT_HI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                        "selectcc ugt($lhs comp $rhs) if true $t else $f",
-					        []>;
-	def SELECT_HS_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                        "selectcc uge($lhs comp $rhs) if true $t else $f",
-					        []>;
-	def SELECT_LO_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                        "selectcc ult($lhs comp $rhs) if true $t else $f",
-				                []>;
-	def SELECT_LS_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                        "selectcc ule($lhs comp $rhs) if true $t else $f",
-			                        []>;
-    	def FSELECT_EQ_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-                                             "selectcc eq($lhs comp $rhs) if true $t else $f",
-	                                     []>;
-	def FSELECT_NE_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                     "selectcc ne($lhs comp $rhs) if true $t else $f",
-			   	 	     []>;
-	def FSELECT_GT_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                     "selectcc gt($lhs comp $rhs) if true $t else $f",
-					     []>;
-	def FSELECT_GE_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                     "selectcc ge($lhs comp $rhs) if true $t else $f",
-					     []>;
-	def FSELECT_LT_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                     "selectcc lt($lhs comp $rhs) if true $t else $f",
-					     []>;
-	def FSELECT_LE_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                     "selectcc le($lhs comp $rhs) if true $t else $f",
-					     []>;
-	def FSELECT_HI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                     "selectcc ugt($lhs comp $rhs) if true $t else $f",
-					     []>;
-	def FSELECT_HS_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                     "selectcc uge($lhs comp $rhs) if true $t else $f",
-					     []>;
-	def FSELECT_LO_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                     "selectcc ult($lhs comp $rhs) if true $t else $f",
-				             []>;
-	def FSELECT_LS_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	                                     "selectcc ule($lhs comp $rhs) if true $t else $f",
-			                     []>;
+	def SELECT_EQ_P : SELECT_P<"eq">;
+	def SELECT_NE_P : SELECT_P<"ne">;
+	def SELECT_GT_P : SELECT_P<"gt">;
+	def SELECT_GE_P : SELECT_P<"ge">;
+	def SELECT_LT_P : SELECT_P<"lt">;
+	def SELECT_LE_P : SELECT_P<"le">;
+	def SELECT_HI_P : SELECT_P<"ugt">;
+	def SELECT_HS_P : SELECT_P<"uge">;
+	def SELECT_LO_P : SELECT_P<"ult">;
+	def SELECT_LS_P : SELECT_P<"ule">;
+
+	def FSELECT_EQ_P : FSELECT_P<"eq">;
+	def FSELECT_NE_P : FSELECT_P<"ne">;
+	def FSELECT_GT_P : FSELECT_P<"gt">;
+	def FSELECT_GE_P : FSELECT_P<"ge">;
+	def FSELECT_LT_P : FSELECT_P<"lt">;
+	def FSELECT_LE_P : FSELECT_P<"le">;
+	def FSELECT_HI_P : FSELECT_P<"ugt">;
+	def FSELECT_HS_P : FSELECT_P<"uge">;
+	def FSELECT_LO_P : FSELECT_P<"ult">;
+	def FSELECT_LS_P : FSELECT_P<"ule">;
+
         // float select
-    	def F_SELECT_OEQ_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-                                               "fselectcc eq($lhs comp $rhs) if true $t else $f",
-	                                       []>;
-	def F_SELECT_ONE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                       "fselectcc ne($lhs comp $rhs) if true $t else $f",
-			   	 	       []>;
-	def F_SELECT_OGT_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                       "fselectcc gt($lhs comp $rhs) if true $t else $f",
-					       []>;
-	def F_SELECT_OGE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                       "fselectcc ge($lhs comp $rhs) if true $t else $f",
-					       []>;
-	def F_SELECT_OLT_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                       "fselectcc lt($lhs comp $rhs) if true $t else $f",
-					       []>;
-	def F_SELECT_OLE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                       "fselectcc le($lhs comp $rhs) if true $t else $f",
-					       []>;
-    	def F_SELECT_UEQ_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-                                               "fselectcc eq($lhs comp $rhs) if true $t else $f",
-	                                       []>;
-	def F_SELECT_UNE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                       "fselectcc ne($lhs comp $rhs) if true $t else $f",
-			   	 	       []>;
-	def F_SELECT_UGT_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                       "fselectcc gt($lhs comp $rhs) if true $t else $f",
-					       []>;
-	def F_SELECT_UGE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                       "fselectcc ge($lhs comp $rhs) if true $t else $f",
-					       []>;
-	def F_SELECT_ULT_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                       "fselectcc lt($lhs comp $rhs) if true $t else $f",
-					       []>;
-	def F_SELECT_ULE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                       "fselectcc le($lhs comp $rhs) if true $t else $f",
-					       []>;
+	def F_SELECT_OEQ_P : F_SELECT_P<"oeq">;
+	def F_SELECT_ONE_P : F_SELECT_P<"one">;
+	def F_SELECT_OGT_P : F_SELECT_P<"ogt">;
+	def F_SELECT_OGE_P : F_SELECT_P<"oge">;
+	def F_SELECT_OLT_P : F_SELECT_P<"oge">;
+	def F_SELECT_OLE_P : F_SELECT_P<"ole">;
+	def F_SELECT_UEQ_P : F_SELECT_P<"ueq">;
+	def F_SELECT_UNE_P : F_SELECT_P<"une">;
+	def F_SELECT_UGT_P : F_SELECT_P<"ugt">;
+	def F_SELECT_UGE_P : F_SELECT_P<"uge">;
+	def F_SELECT_ULT_P : F_SELECT_P<"ult">;
+	def F_SELECT_ULE_P : F_SELECT_P<"ule">;
 
-    	def F_FSELECT_OEQ_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-                                                "fselectcc eq($lhs comp $rhs) if true $t else $f",
-	                                        []>;
-	def F_FSELECT_ONE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                        "fselectcc ne($lhs comp $rhs) if true $t else $f",
-			   	 	        []>;
-	def F_FSELECT_OGT_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                        "fselectcc gt($lhs comp $rhs) if true $t else $f",
-					        []>;
-	def F_FSELECT_OGE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                        "fselectcc ge($lhs comp $rhs) if true $t else $f",
-					        []>;
-	def F_FSELECT_OLT_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                        "fselectcc lt($lhs comp $rhs) if true $t else $f",
-					        []>;
-	def F_FSELECT_OLE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                        "fselectcc le($lhs comp $rhs) if true $t else $f",
-					        []>;
-    	def F_FSELECT_UEQ_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-                                                "fselectcc eq($lhs comp $rhs) if true $t else $f",
-	                                        []>;
-	def F_FSELECT_UNE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                        "fselectcc ne($lhs comp $rhs) if true $t else $f",
-			   	 	        []>;
-	def F_FSELECT_UGT_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                        "fselectcc gt($lhs comp $rhs) if true $t else $f",
-					        []>;
-	def F_FSELECT_UGE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                        "fselectcc ge($lhs comp $rhs) if true $t else $f",
-					        []>;
-	def F_FSELECT_ULT_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                        "fselectcc lt($lhs comp $rhs) if true $t else $f",
-					        []>;
-	def F_FSELECT_ULE_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	                                        "fselectcc le($lhs comp $rhs) if true $t else $f",
-					        []>;
+	def F_FSELECT_OEQ_P : F_FSELECT_P<"oeq">;
+	def F_FSELECT_ONE_P : F_FSELECT_P<"one">;
+	def F_FSELECT_OGT_P : F_FSELECT_P<"ogt">;
+	def F_FSELECT_OGE_P : F_FSELECT_P<"oge">;
+	def F_FSELECT_OLT_P : F_FSELECT_P<"oge">;
+	def F_FSELECT_OLE_P : F_FSELECT_P<"ole">;
+	def F_FSELECT_UEQ_P : F_FSELECT_P<"ueq">;
+	def F_FSELECT_UNE_P : F_FSELECT_P<"une">;
+	def F_FSELECT_UGT_P : F_FSELECT_P<"ugt">;
+	def F_FSELECT_UGE_P : F_FSELECT_P<"uge">;
+	def F_FSELECT_ULT_P : F_FSELECT_P<"uge">;
+	def F_FSELECT_ULE_P : F_FSELECT_P<"ule">;
     }
-    
-    def CMOV_EQ_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                         "moveq\t$d, $t",
-                                         []>;
-    def CMOV_NE_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                         "movne\t$d, $t",
-    			                 []>;
-    def CMOV_GT_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                         "movgt\t$d, $t",
-    			                 []>;
-    def CMOV_GE_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                         "movge\t$d, $t",
-    				         []>;
-    def CMOV_LT_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                         "movlt\t$d, $t",
-    				         []>;
-    def CMOV_LE_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                         "movle\t$d, $t",
-    				         []>;
-    def CMOV_HI_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                         "movhi\t$d, $t",
-    				          []>;
-    def CMOV_HS_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                         "movcc\t$d, $t",
-    				          []>;
-    def CMOV_LO_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                          "movcs\t$d, $t",
-    			                  []>;
-    def CMOV_LS_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-                                         "movls\t$d, $t",
-    		                          []>;
 
-    def CMOV_EQ_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
-                                         "moveq\t$d, $t",
-                                         []>;
-    def CMOV_NE_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
-                                         "movne\t$d, $t",
-    			                 []>;
-    def CMOV_GT_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
-                                         "movgt\t$d, $t",
-    			                 []>;
-    def CMOV_GE_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
-                                         "movge\t$d, $t",
-    				         []>;
-    def CMOV_LT_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
-                                         "movlt\t$d, $t",
-    				         []>;
-    def CMOV_LE_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
-                                         "movle\t$d, $t",
-    				         []>;
-    def CMOV_HI_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
-                                         "movhi\t$d, $t",
-    				          []>;
-    def CMOV_HS_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
-                                         "movcc\t$d, $t",
-    				          []>;
-    def CMOV_LO_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
-                                          "movcs\t$d, $t",
-    			                  []>;
-    def CMOV_LS_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
-                                         "movls\t$d, $t",
-    		                          []>;
+    class CMOV_RR_P<string cond> : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
+    	 	                                     "mov"#cond#"\t$d, $t",
+		 	                             []>;
+    class CMOV_RI_P<string cond> : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
+    	 	                                     "mov"#cond#"\t$d, $t",
+		 	                             []>;
+    def CMOV_EQ_RR_P : CMOV_RR_P<"eq">;
+    def CMOV_NE_RR_P : CMOV_RR_P<"ne">;
+    def CMOV_GT_RR_P : CMOV_RR_P<"gt">;
+    def CMOV_GE_RR_P : CMOV_RR_P<"ge">;
+    def CMOV_LT_RR_P : CMOV_RR_P<"lt">;
+    def CMOV_LE_RR_P : CMOV_RR_P<"le">;
+    def CMOV_HI_RR_P : CMOV_RR_P<"hi">;
+    def CMOV_HS_RR_P : CMOV_RR_P<"cc">;
+    def CMOV_LO_RR_P : CMOV_RR_P<"cs">;
+    def CMOV_LS_RR_P : CMOV_RR_P<"ls">;
+
+    def CMOV_EQ_RI_P : CMOV_RI_P<"eq">;
+    def CMOV_NE_RI_P : CMOV_RI_P<"ne">;
+    def CMOV_GT_RI_P : CMOV_RI_P<"gt">;
+    def CMOV_GE_RI_P : CMOV_RI_P<"ge">;
+    def CMOV_LT_RI_P : CMOV_RI_P<"lt">;
+    def CMOV_LE_RI_P : CMOV_RI_P<"le">;
+    def CMOV_HI_RI_P : CMOV_RI_P<"hi">;
+    def CMOV_HS_RI_P : CMOV_RI_P<"cc">;
+    def CMOV_LO_RI_P : CMOV_RI_P<"cs">;
+    def CMOV_LS_RI_P : CMOV_RI_P<"ls">;
 }
 
-def SETCC_EQ_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
-                                      "",
-		  		      []>;
-def SETCC_NE_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
-                                      "",
-				      []>;
-def SETCC_GT_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
-                                      "",
-				      []>;
-def SETCC_GE_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
-                                      "",
-				      []>;
-def SETCC_LT_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
-                                      "",
-				      []>;
-def SETCC_LE_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
-                                      "",
-				      []>;
-def SETCC_HI_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
-                                      "",
-				      []>;
-def SETCC_HS_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
-                                      "",
-				      []>;
-def SETCC_LO_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
-                                      "",
-				      []>;
-def SETCC_LS_RI_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
-                                      "",
-				      []>;
-def SETCC_EQ_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
-                                      "",
-		  		      []>;
-def SETCC_NE_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
-                                      "",
-				      []>;
-def SETCC_GT_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
-                                      "",
-				      []>;
-def SETCC_GE_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
-                                      "",
-				      []>;
-def SETCC_LT_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
-                                      "",
-				      []>;
-def SETCC_LE_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
-                                      "",
-				      []>;
-def SETCC_HI_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
-                                      "",
-				      []>;
-def SETCC_HS_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
-                                      "",
-				      []>;
-def SETCC_LO_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
-                                      "",
-				      []>;
-def SETCC_LS_RR_P : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
-                                      "",
-				      []>;
+class SETCC_RR_P<string cond> : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
+    	 	                                  "",
+		 	                          []>;
+class SETCC_RI_P<string cond> : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
+    	 	                                  "",
+		 	                          []>;
+class F_SETCC_RR_P<string cond> : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
+    	 	                                    "",
+		 	                            []>;
+def SETCC_EQ_RR_P : SETCC_RR_P<"eq">;
+def SETCC_NE_RR_P : SETCC_RR_P<"ne">;
+def SETCC_GT_RR_P : SETCC_RR_P<"gt">;
+def SETCC_GE_RR_P : SETCC_RR_P<"ge">;
+def SETCC_LT_RR_P : SETCC_RR_P<"lt">;
+def SETCC_LE_RR_P : SETCC_RR_P<"le">;
+def SETCC_HI_RR_P : SETCC_RR_P<"ugt">;
+def SETCC_HS_RR_P : SETCC_RR_P<"uge">;
+def SETCC_LO_RR_P : SETCC_RR_P<"ult">;
+def SETCC_LS_RR_P : SETCC_RR_P<"ule">;
 
-def F_SETCC_OEQ_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
-                                         "",
-		  		         []>;
-def F_SETCC_ONE_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
-                                         "",
-				         []>;
-def F_SETCC_OGT_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
-                                         "",
-				         []>;
-def F_SETCC_OGE_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
-                                         "",
-				         []>;
-def F_SETCC_OLT_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
-                                         "",
-				         []>;
-def F_SETCC_OLE_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
-                                         "",
-				         []>;
-def F_SETCC_UEQ_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
-                                         "",
-		  		         []>;
-def F_SETCC_UNE_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
-                                         "",
-				         []>;
-def F_SETCC_UGT_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
-                                         "",
-				         []>;
-def F_SETCC_UGE_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
-                                         "",
-				         []>;
-def F_SETCC_ULT_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
-                                         "",
-				         []>;
-def F_SETCC_ULE_RR_P : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
-                                         "",
-				         []>;
+def SETCC_EQ_RI_P : SETCC_RI_P<"eq">;
+def SETCC_NE_RI_P : SETCC_RI_P<"ne">;
+def SETCC_GT_RI_P : SETCC_RI_P<"gt">;
+def SETCC_GE_RI_P : SETCC_RI_P<"ge">;
+def SETCC_LT_RI_P : SETCC_RI_P<"lt">;
+def SETCC_LE_RI_P : SETCC_RI_P<"le">;
+def SETCC_HI_RI_P : SETCC_RI_P<"ugt">;
+def SETCC_HS_RI_P : SETCC_RI_P<"uge">;
+def SETCC_LO_RI_P : SETCC_RI_P<"ult">;
+def SETCC_LS_RI_P : SETCC_RI_P<"ule">;
 
+
+def F_SETCC_OEQ_RR_P : F_SETCC_RR_P<"oeq">;
+def F_SETCC_ONE_RR_P : F_SETCC_RR_P<"one">;
+def F_SETCC_OGT_RR_P : F_SETCC_RR_P<"ogt">;
+def F_SETCC_OGE_RR_P : F_SETCC_RR_P<"oge">;
+def F_SETCC_OLT_RR_P : F_SETCC_RR_P<"olt">;
+def F_SETCC_OLE_RR_P : F_SETCC_RR_P<"ole">;
+def F_SETCC_UEQ_RR_P : F_SETCC_RR_P<"ueq">;
+def F_SETCC_UNE_RR_P : F_SETCC_RR_P<"une">;
+def F_SETCC_UGT_RR_P : F_SETCC_RR_P<"ugt">;
+def F_SETCC_UGE_RR_P : F_SETCC_RR_P<"uge">;
+def F_SETCC_ULT_RR_P : F_SETCC_RR_P<"ult">;
+def F_SETCC_ULE_RR_P : F_SETCC_RR_P<"ule">;
 
 // int setcc ri patterns
 def : Pat<(seteq (i32 FR32:$A), (i32 immU5:$B)),
@@ -1340,13 +1104,13 @@ def : Pat<(brcond (i32 (setueq (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
 def : Pat<(brcond (i32 (setune (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
           (JMP_FCOMP_UNE_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
 def : Pat<(brcond (i32 (setugt (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
-          (JMP_FCOMP_UHI_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
+          (JMP_FCOMP_UGT_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
 def : Pat<(brcond (i32 (setuge (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
-          (JMP_FCOMP_UHS_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
+          (JMP_FCOMP_UGE_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
 def : Pat<(brcond (i32 (setult (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
-          (JMP_FCOMP_ULO_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
+          (JMP_FCOMP_ULT_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
 def : Pat<(brcond (i32 (setule (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
-          (JMP_FCOMP_ULS_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
+          (JMP_FCOMP_ULE_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
 
 
 // int selectcc patterns

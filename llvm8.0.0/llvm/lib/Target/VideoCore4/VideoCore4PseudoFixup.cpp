@@ -576,22 +576,22 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
 	JUMP_FCOMP_CC(VideoCore4::JMP_CC_NE);
 	break;
       }
-    case VideoCore4::JMP_FCOMP_UHI_P:
+    case VideoCore4::JMP_FCOMP_UGT_P:
       {
 	JUMP_FCOMP_CC(VideoCore4::JMP_CC_HI);
 	break;
       }
-    case VideoCore4::JMP_FCOMP_UHS_P:
+    case VideoCore4::JMP_FCOMP_UGE_P:
       {
 	JUMP_FCOMP_CC(VideoCore4::JMP_CC_HS);
 	break;
       }
-    case VideoCore4::JMP_FCOMP_ULO_P:
+    case VideoCore4::JMP_FCOMP_ULT_P:
       {
 	JUMP_FCOMP_CC(VideoCore4::JMP_CC_LO);
 	break;
       }
-    case VideoCore4::JMP_FCOMP_ULS_P:
+    case VideoCore4::JMP_FCOMP_ULE_P:
       {
 	JUMP_FCOMP_CC(VideoCore4::JMP_CC_LS);
 	break;
@@ -636,22 +636,22 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
 	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_NE));
 	break;
       }
-    case VideoCore4::JMP_FCOMP_UHI_F_P:
+    case VideoCore4::JMP_FCOMP_UGT_F_P:
       {
 	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_HI));
 	break;
       }
-    case VideoCore4::JMP_FCOMP_UHS_F_P:
+    case VideoCore4::JMP_FCOMP_UGE_F_P:
       {
 	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_HS));
 	break;
       }
-    case VideoCore4::JMP_FCOMP_ULO_F_P:
+    case VideoCore4::JMP_FCOMP_ULT_F_P:
       {
 	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_LO));
 	break;
       }
-    case VideoCore4::JMP_FCOMP_ULS_F_P:
+    case VideoCore4::JMP_FCOMP_ULE_F_P:
       {
 	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_LS));
 	break;
