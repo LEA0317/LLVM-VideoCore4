@@ -733,31 +733,23 @@ let isBranch=1, isIndirectBranch=1, isTerminator=1, isBarrier = 1 in {
 // --- Branch instructions -------------------------------------------------- 
 
 let Defs = [SR] in {
-	def CMP_F : S16<
-				(outs), (ins FR32:$A, FR32:$B),
-				"cmp\t$A, $B # fast",
-				[]
-			>;
-	def CMP_LI : S48<
-				(outs), (ins GR32:$A, i32imm:$B),
-				"cmp\t$A, $B # long imm",
-				[]
-			>;
+	def CMP_F : S16<(outs), (ins FR32:$A, FR32:$B),
+			 "cmp\t$A, $B # fast",
+			 []>;
+	def CMP_LI : S48<(outs), (ins GR32:$A, i32imm:$B),
+			  "cmp\t$A, $B # long imm",
+			  []>;
 }
 
 let isTerminator = 1, isBranch = 1 in {
 	let isBarrier = 1 in {
-		def JMP : S32<
-					(outs), (ins brtarget:$dst),
-					"b\t$dst",
-					[(br bb:$dst)]
-				>;
+		def JMP : S32<(outs), (ins brtarget:$dst),
+			       "b\t$dst",
+			       [(br bb:$dst)]>;
 		
-		def JMP_R : S16<
-					(outs), (ins GR32:$dst),
-					"b\t$dst",
-					[(brind GR32:$dst)]
-				>;
+		def JMP_R : S16<(outs), (ins GR32:$dst),
+				 "b\t$dst",
+				 [(brind GR32:$dst)]>;
 	}
 	
 	/* Generates a 3op compare-and-branch instruction. */
@@ -1210,30 +1202,22 @@ def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$
 /* --- Floating point arithmetic -------------------------------------------- */
 
 let isCommutable = 1 in {
-	def FADDrr : S32<
-				(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
-				"fadd\t{$rD, $rA, $rB}",
-				[(set (f32 GR32:$rD), (fadd (f32 GR32:$rA), (f32 GR32:$rB)))]
-			>;
+	def FADDrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
+			  "fadd\t{$rD, $rA, $rB}",
+			  [(set (f32 GR32:$rD), (fadd (f32 GR32:$rA), (f32 GR32:$rB)))]>;
 }
 
-def FSUBrr : S32<
-			(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
-			"fsub\t{$rD, $rA, $rB}",
-			[(set (f32 GR32:$rD), (fsub (f32 GR32:$rA), (f32 GR32:$rB)))]
-		>;
+def FSUBrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
+		  "fsub\t{$rD, $rA, $rB}",
+		  [(set (f32 GR32:$rD), (fsub (f32 GR32:$rA), (f32 GR32:$rB)))]>;
 
-def FMULrr : S32<
-			(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
-			"fmul\t{$rD, $rA, $rB}",
-			[(set (f32 GR32:$rD), (fmul (f32 GR32:$rA), (f32 GR32:$rB)))]
-		>;
+def FMULrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
+		  "fmul\t{$rD, $rA, $rB}",
+		  [(set (f32 GR32:$rD), (fmul (f32 GR32:$rA), (f32 GR32:$rB)))]>;
 
-def FDIVrr : S32<
-			(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
-			"fdiv\t{$rD, $rA, $rB}",
-			[(set (f32 GR32:$rD), (fdiv (f32 GR32:$rA), (f32 GR32:$rB)))]
-		>;
+def FDIVrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
+		  "fdiv\t{$rD, $rA, $rB}",
+		  [(set (f32 GR32:$rD), (fdiv (f32 GR32:$rA), (f32 GR32:$rB)))]>;
 
 //===----------------------------------------------------------------------===//
 // Non-Instruction Patterns

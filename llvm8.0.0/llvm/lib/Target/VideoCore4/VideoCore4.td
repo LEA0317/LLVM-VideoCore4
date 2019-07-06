@@ -30,13 +30,10 @@ def FeatureVideoCore4 : SubtargetFeature<"vc4",
 // VideoCore4 supported processors.
 //===----------------------------------------------------------------------===//
 
-// FIX ME (konda)
 class Proc<string Name, list<SubtargetFeature> Features>
-  : Processor<Name, NoItineraries, Features>;
-  //: ProcessorModel<Name, VC4GenericModel, Features>;
+  : ProcessorModel<Name, VC4GenericModel, Features>;
 class ProcVc4<string Name, list<SubtargetFeature> Features>
-  : Processor<Name, NoItineraries, Features>;
-  //: ProcessorModel<Name, VC4Model, Features>;
+  : ProcessorModel<Name, VC4Model, Features>;
 
 // FIX ME (konda)
 def : Proc   <"generic", [FeatureVideoCore4]>;

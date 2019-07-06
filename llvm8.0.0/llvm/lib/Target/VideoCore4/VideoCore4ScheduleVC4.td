@@ -7,18 +7,20 @@
 //
 //===----------------------------------------------------------------------===//
 
-def VC4Itineraries : ProcessorItineraries<[ALU, LSU, FPU], [], [
-  InstrItinData<IIALU              , [InstrStage<1, [ALU]>]>,
-  InstrItinData<IILSU              , [InstrStage<1, [LSU]>]>,
-  InstrItinData<IIFPU              , [InstrStage<1, [FPU]>]>,
-  InstrItinData<IIPseudo           , [InstrStage<1, [ALU]>]>
+// FIX ME
+def VC4Itineraries : ProcessorItineraries<[MUL, ADD], [], [
+  InstrItinData<IIALU              , [InstrStage<4, [MUL, ADD]>]>,
+  InstrItinData<IILSU              , [InstrStage<4, [MUL, ADD]>]>,
+  InstrItinData<IIMUL              , [InstrStage<4, [MUL, ADD]>]>,
+  InstrItinData<IISFU              , [InstrStage<16, [SFU]>]>,
+  InstrItinData<IIPseudo           , [InstrStage<4, [MUL, ADD]>]>
 ]>;
 
 // FIX ME
 def VC4Model : SchedMachineModel {
-  let IssueWidth        = 1;  // Max micro-ops that may be scheduled per cycle.
-  let LoadLatency       = 20; // Cycles for loads to access the cache.
-  let HighLatency       = 38; // Approximation of cycles for "high latency" ops.
+  let IssueWidth        = 2;  // Max micro-ops that may be scheduled per cycle.
+  let LoadLatency       = 4; // Cycles for loads to access the cache.
+  let HighLatency       = 16; // Approximation of cycles for "high latency" ops.
   let MicroOpBufferSize = 0; // in-order
   let MispredictPenalty = 10; // Extra cycles for a mispredicted branch.
 
