@@ -62,9 +62,11 @@ VideoCore4TargetLowering::VideoCore4TargetLowering(const VideoCore4TargetMachine
   // Compute derived properties from the register classes
   computeRegisterProperties(Subtarget.getRegisterInfo());
 
-  setOperationAction(ISD::CTLZ, MVT::i32, Legal);
-  setOperationAction(ISD::SMAX, MVT::i32, Legal);
-  setOperationAction(ISD::SMIN, MVT::i32, Legal);
+  setOperationAction(ISD::CTPOP, MVT::i32, Expand);
+  setOperationAction(ISD::CTTZ,  MVT::i32, Expand);
+  setOperationAction(ISD::CTLZ,  MVT::i32, Legal);
+  setOperationAction(ISD::SMAX,  MVT::i32, Legal);
+  setOperationAction(ISD::SMIN,  MVT::i32, Legal);
 
   setOperationAction(ISD::FMAXIMUM, MVT::f32, Legal);
   setOperationAction(ISD::FMINIMUM, MVT::f32, Legal);
@@ -72,6 +74,14 @@ VideoCore4TargetLowering::VideoCore4TargetLowering(const VideoCore4TargetMachine
   setOperationAction(ISD::FADD,     MVT::f32, Legal);
   setOperationAction(ISD::FMUL,     MVT::f32, Legal);
   setOperationAction(ISD::FNEG,     MVT::f32, Legal);
+
+  setOperationAction(ISD::FSQRT, MVT::f32, Legal);
+  setOperationAction(ISD::FDIV,  MVT::f32, Legal);
+
+  setOperationAction(ISD::SINT_TO_FP, MVT::i32, Legal);
+  setOperationAction(ISD::UINT_TO_FP, MVT::i32, Expand);
+  setOperationAction(ISD::FP_TO_SINT, MVT::f32, Legal);
+  setOperationAction(ISD::FP_TO_UINT, MVT::f32, Expand);
   
   setOperationAction(ISD::GlobalAddress, MVT::i32, Custom);
   setOperationAction(ISD::BR_CC,         MVT::i32, Expand);
@@ -114,6 +124,7 @@ VideoCore4TargetLowering::VideoCore4TargetLowering(const VideoCore4TargetMachine
   setOperationAction(ISD::STACKSAVE,    MVT::Other, Expand);
   setOperationAction(ISD::STACKRESTORE, MVT::Other, Expand);
 
+  setJumpIsExpensive(true);
   setMinFunctionAlignment(1);
   setPrefFunctionAlignment(1);
 }
@@ -793,4 +804,46 @@ VideoCore4TargetLowering::getTargetNodeName(unsigned Opcode) const {
   case VideoCore4ISD::GLOBAL:   return "VideoCore4ISD::GLOBAL";
   case VideoCore4ISD::BR_JT:    return "VideoCore4ISD::BR_JT";
   }
+}
+
+SDValue
+VideoCore4TargetLowering::getRecipEstimate(SDValue       Operand,
+					   SelectionDAG &DAG,
+					   int           Enabled,
+					   int          &RefinementSteps) const {
+  EVT VT = Operand.getValueType();
+
+  if (VT == MVT::f32) {
+    RefinementSteps = 2;
+    return DAG.getNode(VideoCore4ISD::RCP,
+		       SDLoc(Operand),
+                       VT,
+                       Operand);
+  } else {
+    llvm_unreachable("cannot handle this VT");
+  }
+
+  return SDValue();
+}
+
+SDValue
+VideoCore4TargetLowering::getSqrtEstimate(SDValue       Operand,
+					  SelectionDAG &DAG,
+					  int           Enabled,
+					  int          &RefinementSteps,
+					  bool         &UseOneConstNR,
+					  bool          Reciprocal) const {
+  EVT VT = Operand.getValueType();
+
+  if (VT == MVT::f32) {
+    RefinementSteps = 2;
+    return DAG.getNode(VideoCore4ISD::RSQRT,
+		       SDLoc(Operand),
+		       VT,
+		       Operand);
+  } else {
+    llvm_unreachable("cannot handle this VT");
+  }
+
+  return SDValue();
 }

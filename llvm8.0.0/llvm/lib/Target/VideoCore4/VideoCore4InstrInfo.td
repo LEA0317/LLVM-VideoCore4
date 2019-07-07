@@ -21,17 +21,18 @@ def retflag       : SDNode<"VideoCore4ISD::RET_FLAG", SDTNone,
                            [SDNPHasChain, SDNPOptInGlue, SDNPVariadic]>;
 
 def callseq_start : SDNode<"ISD::CALLSEQ_START",
-			SDCallSeqStart<[SDTCisVT<0, i32>]>,
-			[SDNPHasChain, SDNPOutGlue]
-		>;
+			    SDCallSeqStart<[SDTCisVT<0, i32>]>,
+			    [SDNPHasChain, SDNPOutGlue]>;
 def callseq_end : SDNode<"ISD::CALLSEQ_END",
-			SDCallSeqEnd<[SDTCisVT<0, i32>, SDTCisVT<1, i32>]>,
-			[SDNPHasChain, SDNPOptInGlue, SDNPOutGlue]
-		>;
+		   	  SDCallSeqEnd<[SDTCisVT<0, i32>, SDTCisVT<1, i32>]>,
+			  [SDNPHasChain, SDNPOptInGlue, SDNPOutGlue]>;
 def call : SDNode<"VideoCore4ISD::CALL",
-			SDTypeProfile<0, 1, [SDTCisVT<0, i32>]>,
-			[SDNPHasChain, SDNPOptInGlue, SDNPOutGlue, SDNPVariadic]
-		>;
+	           SDTypeProfile<0, 1, [SDTCisVT<0, i32>]>,
+		   [SDNPHasChain, SDNPOptInGlue, SDNPOutGlue, SDNPVariadic]>;
+
+def VCrsqrt : SDNode<"VideoCore4ISD::RSQRT", SDTFPUnaryOp, []>;
+def VCrcp   : SDNode<"VideoCore4ISD::RCP",   SDTFPUnaryOp, []>;
+
 
 //===----------------------------------------------------------------------===//
 // VideoCore4 Operand Definitions.
@@ -1208,6 +1209,14 @@ let isCommutable = 0 in {
 		      [(set (f32 GR32:$rD), (sint_to_fp (i32 GR32:$rA)))]>;
 }
 
+// recip
+def FRSQRT : S32<(outs GR32:$rD), (ins GR32:$rA),
+	          "rsqrt\t{$rD, $rA}",
+	          [(set (f32 GR32:$rD), (VCrsqrt (f32 GR32:$rA)))]>;
+def FRCP : S32<(outs GR32:$rD), (ins GR32:$rA),
+	        "rcp\t{$rD, $rA}",
+	        [(set (f32 GR32:$rD), (VCrcp (f32 GR32:$rA)))]>;
+			 
 def : Pat<(fabs (f32 GR32:$rA)),
           (FMAXABSrr (FMAXABSrr (f32 $rA), (FSUBrr (f32 TMP), (f32 TMP))), (FMINABSrr (f32 $rA), (FSUBrr (f32 TMP), (f32 TMP))))>;
 

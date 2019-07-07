@@ -35,7 +35,10 @@ namespace llvm {
       /// recursive references.
       GLOBAL,
       
-      BR_JT
+      BR_JT,
+
+      RCP,
+      RSQRT
     };
   }
   
@@ -56,7 +59,7 @@ namespace llvm {
     /// getTargetNodeName - This method returns the name of a target specific
     /// DAG node.
     virtual const char *getTargetNodeName(unsigned Opcode) const;
-
+    
   private:
     const VideoCore4Subtarget &Subtarget;
     const DataLayout          *TD;
@@ -90,6 +93,20 @@ namespace llvm {
                               const SDLoc                          &dl,
                               SelectionDAG                         &DAG,
                               SmallVectorImpl<SDValue>             &InVals) const;
+    
+    SDValue
+    getRecipEstimate(SDValue       Operand,
+                     SelectionDAG &DAG,
+                     int           Enabled,
+                     int          &RefinementSteps) const override;
+
+    SDValue
+    getSqrtEstimate(SDValue       Operand,
+                    SelectionDAG &DAG,
+                    int           Enabled,
+                    int          &RefinementSteps,
+                    bool         &UseOneConstNR,
+                    bool          Reciprocal) const override;
 
     /*SDValue LowerCallResult(SDValue Chain, SDValue InFlag,
                             CallingConv::ID CallConv, bool isVarArg,
