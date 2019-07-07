@@ -470,7 +470,7 @@ defm MIN_RR : ALU2_REG_REG_REG<"min\t$D, $A, $B",
 	                        GR32,
 	                        (smin (i32 GR32:$A), (i32 GR32:$B))>;
 
-def CLTZ_P : VideoCore4Pseudo<(outs GR32:$rD), (ins GR32:$rA),
+def CTLZ_P : VideoCore4Pseudo<(outs GR32:$rD), (ins GR32:$rA),
     	     		       "clz\t$rD, $rA",
 			       [(set (i32 GR32:$rD), (ctlz (i32 GR32:$rA)))]>;
 
@@ -1207,6 +1207,17 @@ let isCommutable = 0 in {
     def ITOFrr : S32<(outs GR32:$rD), (ins GR32:$rA),
  		      "ftoi\t{$rD, $rA",
 		      [(set (f32 GR32:$rD), (sint_to_fp (i32 GR32:$rA)))]>;
+}
+
+// bitcast
+let Constraints = "$rD = $rA" in { 
+    def FTOICONV_P : VideoCore4Pseudo<(outs GR32:$rD), (ins GR32:$rA),
+    	                               "",
+	                               [(set (i32 GR32:$rD), (bitconvert (f32 GR32:$rA)))]>;
+    def ITOFCONV_P : VideoCore4Pseudo<(outs GR32:$rD), (ins GR32:$rA),
+                                       "",
+	                               [(set (f32 GR32:$rD), (bitconvert (i32 GR32:$rA)))]>;
+
 }
 
 // recip
