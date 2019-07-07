@@ -866,7 +866,7 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       }
     }
   }
-  
+
   return Changed;
 }
 
@@ -875,15 +875,15 @@ VideoCore4PseudoFixup::runOnMachineFunction(MachineFunction &F) {
   if (skipFunction(F.getFunction())) {
     return false;
   }
-  
+
   LLVM_DEBUG(dbgs() << ("== VideoCore4PseudoFixup ==\n"));
-  
+
   bool Changed = false;
-  
+
   for (MachineFunction::iterator FI = F.begin(), FE = F.end();
        FI != FE; ++FI) {
     Changed |= runOnMachineBasicBlock(*FI);
   }
-  
+
   return Changed;
 }
