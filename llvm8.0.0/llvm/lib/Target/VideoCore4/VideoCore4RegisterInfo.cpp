@@ -48,6 +48,7 @@ BitVector
 VideoCore4RegisterInfo::getReservedRegs(const MachineFunction &MF) const {
   BitVector Reserved(getNumRegs());
 
+  Reserved.set(VideoCore4::TMP);
   Reserved.set(VideoCore4::SP);
   Reserved.set(VideoCore4::PC);
   Reserved.set(VideoCore4::GP);

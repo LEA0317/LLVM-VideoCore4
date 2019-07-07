@@ -29,6 +29,7 @@ class GRegAlias<string n, VideoCore4Reg R> : VideoCore4Reg<n> {
 foreach i = 0-31 in {
 	def R#i : VideoCore4Reg<"r"#i>;
 }
+def TMP : GRegAlias<"tmp", R23>;
 def GP  : GRegAlias<"gp",  R24>;
 def SP  : GRegAlias<"sp",  R25>;
 def LR  : GRegAlias<"lr",  R26>;
@@ -49,7 +50,7 @@ def PC  : GRegAlias<"pc",  R31>;
 
 /* All registers */
 def GR32 : RegisterClass<"VideoCore4", [i32, f32], 32,
-    (add (sequence "R%u", 0, 29), GP, SP, LR)>;
+    (add (sequence "R%u", 0, 29), TMP, GP, SP, LR)>;
 
 /* Fast registers */
 def FR32 : RegisterClass<"VideoCore4", [i32, f32], 32,
