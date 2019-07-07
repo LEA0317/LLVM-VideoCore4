@@ -13,6 +13,10 @@
 
 include "VideoCore4InstrFormats.td"
 
+def bitcast_fpimm_to_i32 : SDNodeXForm<fpimm, [{
+  return CurDAG->getTargetConstant(N->getValueAPF().bitcastToAPInt().getZExtValue(), SDLoc(N), MVT::i32);
+}]>;
+
 def retflag       : SDNode<"VideoCore4ISD::RET_FLAG", SDTNone,
                            [SDNPHasChain, SDNPOptInGlue, SDNPVariadic]>;
 
@@ -1166,9 +1170,9 @@ def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$
 /* --- Floating point arithmetic -------------------------------------------- */
 
 let isCommutable = 1 in {
-   def FADDrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
-	  	     "fadd\t{$rD, $rA, $rB}",
-		     [(set (f32 GR32:$rD), (fadd (f32 GR32:$rA), (f32 GR32:$rB)))]>;
+    def FADDrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
+ 	  	      "fadd\t{$rD, $rA, $rB}",
+		      [(set (f32 GR32:$rD), (fadd (f32 GR32:$rA), (f32 GR32:$rB)))]>;
     def FMAXrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
 		      "fmax\t{$rD, $rA, $rB}",
 		      [(set (f32 GR32:$rD), (fmaximum (f32 GR32:$rA), (f32 GR32:$rB)))]>;
@@ -1203,6 +1207,12 @@ let isCommutable = 0 in {
  		      "ftoi\t{$rD, $rA",
 		      [(set (f32 GR32:$rD), (sint_to_fp (i32 GR32:$rA)))]>;
 }
+
+def : Pat<(fabs (f32 GR32:$rA)),
+          (FMAXABSrr (FMAXABSrr (f32 $rA), (FSUBrr (f32 TMP), (f32 TMP))), (FMINABSrr (f32 $rA), (FSUBrr (f32 TMP), (f32 TMP))))>;
+
+def : Pat<(fneg (f32 GR32:$rA)),
+          (FSUBrr (FSUBrr (f32 TMP), (f32 TMP)), (f32 $rA))>;
 
 //===----------------------------------------------------------------------===//
 // Non-Instruction Patterns
