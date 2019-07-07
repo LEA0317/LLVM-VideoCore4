@@ -77,11 +77,15 @@ VideoCore4TargetLowering::VideoCore4TargetLowering(const VideoCore4TargetMachine
 
   setOperationAction(ISD::FSQRT, MVT::f32, Legal);
   setOperationAction(ISD::FDIV,  MVT::f32, Legal);
+  setOperationAction(ISD::FLOG,  MVT::f32, Legal);
+  setOperationAction(ISD::FEXP,  MVT::f32, Legal);
 
   setOperationAction(ISD::SINT_TO_FP, MVT::i32, Legal);
   setOperationAction(ISD::UINT_TO_FP, MVT::i32, Expand);
   setOperationAction(ISD::FP_TO_SINT, MVT::f32, Legal);
   setOperationAction(ISD::FP_TO_UINT, MVT::f32, Expand);
+  setOperationAction(ISD::BITCAST,    MVT::f32, Legal);
+  setOperationAction(ISD::BITCAST,    MVT::i32, Legal);
   
   setOperationAction(ISD::GlobalAddress, MVT::i32, Custom);
   setOperationAction(ISD::BR_CC,         MVT::i32, Expand);
