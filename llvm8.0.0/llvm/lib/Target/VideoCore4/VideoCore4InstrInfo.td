@@ -141,14 +141,13 @@ def calltarget : Operand<i32>;
 
 let hasSideEffects = 0 in
 	def NOP : VideoCore4Inst<(outs), (ins),
-													"nop", []>;
+	                          "nop",
+				  []>;
 
 let isReturn = 1, isTerminator = 1, isBarrier = 1 in {
-  def RET : S32<
-				(outs), (ins variable_ops),
-				"b\t%lr",
-				[(retflag)]
-			>;
+  def RET : S32<(outs), (ins variable_ops),
+		 "b\t%lr",
+		 [(retflag)]>;
 }
 
 /* --- Calls ---------------------------------------------------------------- */
@@ -173,17 +172,13 @@ let Defs = [SP], Uses = [SP] in {
 }
 
 let Defs = [R0, R1, R2, R3, R4, R5, LR], isCall = 1 in {
-	def CALL : S32<
-				(outs), (ins calltarget:$D),
-				"bl\t$D",
-				[(call texternalsym:$D)]
-			>;
+	def CALL : S32<(outs), (ins calltarget:$D),
+			"bl\t$D",
+			[(call texternalsym:$D)]>;
 
-	def CALL_R : S16<
-				(outs), (ins GR32:$D),
-				"bl\t$D",
-				[(call GR32:$D)]
-			>;
+	def CALL_R : S16<(outs), (ins GR32:$D),
+			  "bl\t$D",
+			  [(call GR32:$D)]>;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -192,28 +187,22 @@ let Defs = [R0, R1, R2, R3, R4, R5, LR], isCall = 1 in {
 
 multiclass ALU1_REG<string op, RegisterClass rc, dag node> {
 	let Constraints = "$D = $A" in {
-		def _R : S16<
-					(outs rc:$D), (ins rc:$A),
-					op,
-					[(set (i32 rc:$D), node)]
-				>;
+		def _R : S16<(outs rc:$D), (ins rc:$A),
+			      op,
+			      [(set (i32 rc:$D), node)]>;
 	}
 }
 
 multiclass ALU1_REG_REG<string op, RegisterClass rc, dag node> {
-	def _RR : S16<
-				(outs rc:$D), (ins rc:$A),
-				op,
-				[(set (i32 rc:$D), node)]
-			>;
+	def _RR : S16<(outs rc:$D), (ins rc:$A),
+		       op,
+		       [(set (i32 rc:$D), node)]>;
 }
 
 multiclass ALU1_REG_IMM<string op, RegisterClass rc, dag node> {
-	def _RI : S16<
-				(outs rc:$D), (ins i32imm:$A),
-				op,
-				[(set (i32 rc:$D), node)]
-			>;
+	def _RI : S16<(outs rc:$D), (ins i32imm:$A),
+		       op,
+		       [(set (i32 rc:$D), node)]>;
 }
 
 multiclass ALU1_F_RI<string op2, string op3, PatFrag node> {
@@ -239,31 +228,25 @@ multiclass ALU1_FI_RI<string op2, string op3, PatFrag node> {
 
 multiclass ALU2_REG_IMM<string op, RegisterClass rc, dag node> {
 	let Constraints = "$D = $A" in {
-		def _RI : S16<
-				(outs rc:$D), (ins rc:$A, i32imm:$B),
-				op,
-				[(set (i32 rc:$D), node)]
-			>;
+		def _RI : S16<(outs rc:$D), (ins rc:$A, i32imm:$B),
+			       op,
+			       [(set (i32 rc:$D), node)]>;
 	}
 }
 
 multiclass ALU2_REG_IMM_PSEUDO<string op, RegisterClass rc> {
 	let Constraints = "$D = $A" in {
-		def _RI : S16<
-				(outs rc:$D), (ins rc:$A, i32imm:$B),
-				op,
-				[]
-			>;
+		def _RI : S16<(outs rc:$D), (ins rc:$A, i32imm:$B),
+			       op,
+			       []>;
 	}
 }
 
 multiclass ALU2_REG_REG<string op, RegisterClass rc, dag node> {
 	let Constraints = "$D = $A" in {
-		def _RR : S16<
-				(outs rc:$D), (ins rc:$A, rc:$B),
-				op,
-				[(set (i32 rc:$D), node)]
-			>;
+		def _RR : S16<(outs rc:$D), (ins rc:$A, rc:$B),
+			       op,
+			       [(set (i32 rc:$D), node)]>;
 	}
 }
 
@@ -274,19 +257,15 @@ multiclass ALU2_REG_REG_C<string op, RegisterClass rc, dag node> {
 }
 
 multiclass ALU2_REG_REG_IMM<string op, RegisterClass rc, dag node> {
-	def _RRI : S32<
-			(outs rc:$D), (ins rc:$A, i32imm:$B),
+	def _RRI : S32<(outs rc:$D), (ins rc:$A, i32imm:$B),
 			op,
-			[(set (i32 rc:$D), node)]
-		>;
+			[(set (i32 rc:$D), node)]>;
 }
 
 multiclass ALU2_REG_REG_REG<string op, RegisterClass rc, dag node> {
-	def _RRR : S32<
-			(outs rc:$D), (ins rc:$A, rc:$B),
+	def _RRR : S32<(outs rc:$D), (ins rc:$A, rc:$B),
 			op,
-			[(set (i32 rc:$D), node)]
-		>;
+			[(set (i32 rc:$D), node)]>;
 }
 
 multiclass ALU2_REG_REG_REG_C<string op, RegisterClass rc, dag node> {
@@ -459,35 +438,36 @@ defm ADDs2 : ADDSCALE<2>;
 defm ADDs3 : ADDSCALE<3>; // actually an ALU2_FI_R instruction
 defm ADDs4 : ADDSCALE<4>;
 
-defm MULHD_UU_R : ALU2_REG_REG_REG<
-	"mulhdu\t$D, $A, $B",
-	GR32,
-	(mulhu (i32 GR32:$A), (i32 GR32:$B))
->;
+defm MULHD_UU_R : ALU2_REG_REG_REG<"mulhdu\t$D, $A, $B",
+	                            GR32,
+	                            (mulhu (i32 GR32:$A), (i32 GR32:$B))>;
 
-defm MULHD_UU_I : ALU2_REG_REG_IMM<
-	"mulhdu\t$D, $A, $B",
-	GR32,
-	(mulhu (i32 GR32:$A), immS6:$B)
->;
+defm MULHD_UU_I : ALU2_REG_REG_IMM<"mulhdu\t$D, $A, $B",
+	                            GR32,
+	                            (mulhu (i32 GR32:$A), immS6:$B)>;
 
-defm MULHD_SS_R : ALU2_REG_REG_REG<
-	"mulhds\t$D, $A, $B",
-	GR32,
-	(mulhs (i32 GR32:$A), (i32 GR32:$B))
->;
+defm MULHD_SS_R : ALU2_REG_REG_REG<"mulhds\t$D, $A, $B",
+	                            GR32,
+	                            (mulhs (i32 GR32:$A), (i32 GR32:$B))>;
 
-defm MULHD_SS_I : ALU2_REG_REG_IMM<
-	"mulhds\t$D, $A, $B",
-	GR32,
-	(mulhs (i32 GR32:$A), immS6:$B)
->;
+defm MULHD_SS_I : ALU2_REG_REG_IMM<"mulhds\t$D, $A, $B",
+	                            GR32,
+	                            (mulhs (i32 GR32:$A), immS6:$B)>;
 
-defm DIV_R : ALU2_REG_REG_REG<
-	"divs\t$D, $A, $B",
-	GR32,
-	(sdiv (i32 GR32:$A), (i32 GR32:$B))
->;
+defm DIV_R : ALU2_REG_REG_REG<"divs\t$D, $A, $B",
+	                       GR32,
+	                       (sdiv (i32 GR32:$A), (i32 GR32:$B))>;
+
+defm MAX_RR : ALU2_REG_REG_REG<"max\t$D, $A, $B",
+	                        GR32,
+	                        (smax (i32 GR32:$A), (i32 GR32:$B))>;
+defm MIN_RR : ALU2_REG_REG_REG<"min\t$D, $A, $B",
+	                        GR32,
+	                        (smin (i32 GR32:$A), (i32 GR32:$B))>;
+
+def CLTZ_P : VideoCore4Pseudo<(outs GR32:$rD), (ins GR32:$rA),
+    	     		       "clz\t$rD, $rA",
+			       [(set (i32 GR32:$rD), (ctlz (i32 GR32:$rA)))]>;
 
 /*
 defm DIV_I : ALU2_REG_REG_IMM<
@@ -497,17 +477,13 @@ defm DIV_I : ALU2_REG_REG_IMM<
 >;
 */
 
-defm DIVU_R : ALU2_REG_REG_REG<
-	"divu\t$D, $A, $B",
-	GR32,
-	(udiv (i32 GR32:$A), (i32 GR32:$B))
->;
+defm DIVU_R : ALU2_REG_REG_REG<"divu\t$D, $A, $B",
+	                        GR32,
+	                        (udiv (i32 GR32:$A), (i32 GR32:$B))>;
 
-defm DIVU_I : ALU2_REG_REG_IMM<
-	"divu\t$D, $A, $B",
-	GR32,
-	(udiv (i32 GR32:$A), immS6:$B)
->;
+defm DIVU_I : ALU2_REG_REG_IMM<"divu\t$D, $A, $B",
+	                        GR32,
+	                        (udiv (i32 GR32:$A), immS6:$B)>;
 
 ////////////////////////////////////////////////////////////////////////////////////
 // Memory Operations
@@ -670,45 +646,33 @@ defm MEMFRAMEF : MEMFRAME<"", f32>;
 let isAsCheapAsAMove = 1 in
 {
 	class MOV<RegisterClass rc, dag node> :
-		S16<
-			(outs rc:$D), (ins rc:$S),
-			"mov\t$D, $S",
-			[(set rc:$D, node)]
-		>;
+		S16<(outs rc:$D), (ins rc:$S),
+		     "mov\t$D, $S",
+		     [(set rc:$D, node)]>;
 
 	def MOV_FI : MOV<FR32, (i32 immU5:$S)>;
 	def MOV_RI : MOV<GR32, (i32 immU5:$S)>;
 
-	def MOV_F : S16<
-				(outs FR32:$D), (ins FR32:$A),
-				"mov\t$D, $A # fast",
-				[]
-			>;
+	def MOV_F : S16<(outs FR32:$D), (ins FR32:$A),
+			 "mov\t$D, $A # fast",
+			 []>;
 
-	def MOV_R : S32<
-				(outs GR32:$D), (ins GR32:$A),
-				"mov\t$D, $A # medium",
-				[]
-			>;
+	def MOV_R : S32<(outs GR32:$D), (ins GR32:$A),
+			 "mov\t$D, $A # medium",
+			 []>;
 
-	def MOV_LI : S48<
-				(outs GR32:$D), (ins i32imm:$A),
-				"mov\t$D, $A # long",
-				[(set GR32:$D, imm:$A)]
-			>;
+	def MOV_LI : S48<(outs GR32:$D), (ins i32imm:$A),
+			 "mov\t$D, $A # long",
+			 [(set GR32:$D, imm:$A)]>;
 
-	def MOVF_LI : S48<
-				(outs GR32:$D), (ins f32imm:$A),
-				"mov\t$D, $A # float long",
-				[(set GR32:$D, fpimm:$A)]
-			>;
+	def MOVF_LI : S48<(outs GR32:$D), (ins f32imm:$A),
+			   "mov\t$D, $A # float long",
+			   [(set GR32:$D, fpimm:$A)]>;
 }
 
-def LEA_PC_LI : S48<
-				(outs GR32:$D), (ins i32imm:$A),
-				"lea\t$D, $A(%pc) # PCrel load",
-				[(set GR32:$D, imm:$A)]
-			>
+def LEA_PC_LI : S48<(outs GR32:$D), (ins i32imm:$A),
+		     "lea\t$D, $A(%pc) # PCrel load",
+		     [(set GR32:$D, imm:$A)]>
 {
 	bits<5> D;
 	bits<32> A;
@@ -1202,22 +1166,43 @@ def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$
 /* --- Floating point arithmetic -------------------------------------------- */
 
 let isCommutable = 1 in {
-	def FADDrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
-			  "fadd\t{$rD, $rA, $rB}",
-			  [(set (f32 GR32:$rD), (fadd (f32 GR32:$rA), (f32 GR32:$rB)))]>;
+   def FADDrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
+	  	     "fadd\t{$rD, $rA, $rB}",
+		     [(set (f32 GR32:$rD), (fadd (f32 GR32:$rA), (f32 GR32:$rB)))]>;
+    def FMAXrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
+		      "fmax\t{$rD, $rA, $rB}",
+		      [(set (f32 GR32:$rD), (fmaximum (f32 GR32:$rA), (f32 GR32:$rB)))]>;
+    def FMINrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
+		      "fmin\t{$rD, $rA, $rB}",
+		      [(set (f32 GR32:$rD), (fminimum (f32 GR32:$rA), (f32 GR32:$rB)))]>;
+    def FMAXABSrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
+		         "fmaxabs\t{$rD, $rA, $rB}",
+		         [(set (f32 GR32:$rD), (fabs (fmaximum (f32 GR32:$rA), (f32 GR32:$rB))))]>;
+    def FMINABSrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
+		         "fminabs\t{$rD, $rA, $rB}",
+		         [(set (f32 GR32:$rD), (fabs (fminimum (f32 GR32:$rA), (f32 GR32:$rB))))]>;
 }
 
-def FSUBrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
-		  "fsub\t{$rD, $rA, $rB}",
-		  [(set (f32 GR32:$rD), (fsub (f32 GR32:$rA), (f32 GR32:$rB)))]>;
+let isCommutable = 0 in {
+    def FSUBrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
+		      "fsub\t{$rD, $rA, $rB}",
+		      [(set (f32 GR32:$rD), (fsub (f32 GR32:$rA), (f32 GR32:$rB)))]>;
 
-def FMULrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
-		  "fmul\t{$rD, $rA, $rB}",
-		  [(set (f32 GR32:$rD), (fmul (f32 GR32:$rA), (f32 GR32:$rB)))]>;
+    def FMULrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
+   	   	      "fmul\t{$rD, $rA, $rB}",
+		      [(set (f32 GR32:$rD), (fmul (f32 GR32:$rA), (f32 GR32:$rB)))]>;
 
-def FDIVrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
-		  "fdiv\t{$rD, $rA, $rB}",
-		  [(set (f32 GR32:$rD), (fdiv (f32 GR32:$rA), (f32 GR32:$rB)))]>;
+    def FDIVrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
+		      "fdiv\t{$rD, $rA, $rB}",
+		      [(set (f32 GR32:$rD), (fdiv (f32 GR32:$rA), (f32 GR32:$rB)))]>;
+
+    def FTOIrr : S32<(outs GR32:$rD), (ins GR32:$rA),
+ 		      "ftoi\t{$rD, $rA",
+		      [(set (i32 GR32:$rD), (fp_to_sint (f32 GR32:$rA)))]>;
+    def ITOFrr : S32<(outs GR32:$rD), (ins GR32:$rA),
+ 		      "ftoi\t{$rD, $rA",
+		      [(set (f32 GR32:$rD), (sint_to_fp (i32 GR32:$rA)))]>;
+}
 
 //===----------------------------------------------------------------------===//
 // Non-Instruction Patterns
