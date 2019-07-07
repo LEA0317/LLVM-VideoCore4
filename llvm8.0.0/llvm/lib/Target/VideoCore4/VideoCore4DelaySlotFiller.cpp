@@ -11,6 +11,8 @@
 #include "llvm/PassAnalysisSupport.h"
 #include "llvm/CodeGen/MachineInstrBuilder.h"
 
+#include <iostream>
+
 using namespace llvm;
 
 #define DEBUG_TYPE "vc4-delayslot-filler"
@@ -69,27 +71,52 @@ VideoCore4DelaySlotFiller::runOnMachineFunction(MachineFunction &Fn) {
 // check branch and fill dalayslot (Todo: improve this)
 bool
 VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
+  bool                        isChanged = false;
   MachineBasicBlock::iterator MBBI;
   const auto                 &Subtarget = MBB.getParent()->getSubtarget();
   const TargetInstrInfo      *TII       = Subtarget.getInstrInfo();
-
-  MBB.dump();
+  
   for (MBBI = MBB.getLastNonDebugInstr();; MBBI--) {
-    MBBI->dump();
     if (MBBI == MBB.begin()) { break; }
 
     if (isBranch(MBBI->getOpcode())
-	|| isCall(MBBI->getOpcode())) {
-      MachineBasicBlock::iterator I = MBBI;
-      MachineInstr *MI = &(*I);
+	|| isCall(MBBI->getOpcode())
+	|| isReturn(MBBI->getOpcode())) {
+
+      MachineBasicBlock::iterator I  = MBBI;
+      MachineInstr               *MI = &(*I);
       I++;
-      DebugLoc dl = MI->getDebugLoc();
-      BuildMI(MBB, I, dl, TII->get(VideoCore4::NOP));
-      BuildMI(MBB, I, dl, TII->get(VideoCore4::NOP));
-      BuildMI(MBB, I, dl, TII->get(VideoCore4::NOP));
+      DebugLoc  dl           = MI->getDebugLoc();
+      const int numDelaySlot = 3;
+
+      // fill delay slot
+      {
+	MachineBasicBlock::iterator fillCandidateMBBI = MBBI;
+	MachineBasicBlock::iterator stopMBBI          = MBBI;
+	stopMBBI--;
+
+	for (int i=0; i<numDelaySlot; i++) {
+	  bool fillNop = true;
+	  fillCandidateMBBI--;
+
+	  if (fillNop == true) {
+	    while (i<3) {
+	      BuildMI(MBB, I, dl, TII->get(VideoCore4::NOP));
+	      i++;
+	    }
+	    isChanged = true;
+	    break;
+	  } else {
+            MachineInstr *miResched = &(*fillCandidateMBBI);
+            MBB.remove(miResched);
+            MBB.insert(I, miResched);
+	    isChanged = true;
+	  }
+	}
+      }
     }
   }  
-  return false;
+  return isChanged;
 }
 
 FunctionPass*
