@@ -161,17 +161,22 @@ inline bool isCondBranch(unsigned opcode) {
 }
 
 inline bool
-isUnconditionalJump(int opcode) {
+isUnconditionalJump(unsigned opcode) {
   return (opcode    == llvm::VideoCore4::JMP
 	  || opcode == llvm::VideoCore4::JMP_R);
 }
 
 inline bool
-isCall(int opcode) {
+isCall(unsigned opcode) {
   return (opcode    == llvm::VideoCore4::CALL
 	  || opcode == llvm::VideoCore4::CALL_R);
 }
 
+inline bool
+isReturn(unsigned opcode) {
+  return (opcode == llvm::VideoCore4::RET);
+}
+  
 inline bool isBranch(unsigned opcode) {
   if (isCondBranch(opcode)
       || isUnconditionalJump(opcode)
