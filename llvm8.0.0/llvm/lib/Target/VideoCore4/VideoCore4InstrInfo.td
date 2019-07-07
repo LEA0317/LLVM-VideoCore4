@@ -693,7 +693,7 @@ def : Pat<
 		(LEA_PC_LI tglobaladdr:$addr)
 	>;
 
-let isBranch=1, isIndirectBranch=1, isTerminator=1, isBarrier = 1 in {
+let isBranch=1, isIndirectBranch=1, isTerminator=1, isBarrier = 1, hasDelaySlot = 1 in {
     def BR_JT : S48<(outs), (ins InlineJT:$t, GR32:$i),
                      "# BR_JT Pseudo Instruction $i\n$t",
                      [(VideoCoreBR_JT tjumptable:$t, GR32:$i)]>;
@@ -711,7 +711,7 @@ let Defs = [SR] in {
 }
 
 let isTerminator = 1, isBranch = 1 in {
-	let isBarrier = 1 in {
+	let isBarrier = 1, hasDelaySlot = 1 in {
 		def JMP : S32<(outs), (ins brtarget:$dst),
 			       "b\t$dst",
 			       [(br bb:$dst)]>;
@@ -722,7 +722,7 @@ let isTerminator = 1, isBranch = 1 in {
 	}
 	
 	/* Generates a 3op compare-and-branch instruction. */
-	let Uses = [SR] in {
+	let Uses = [SR], hasDelaySlot = 1 in {
 		class JMP_CC<string cond> : S32<
 			(outs), (ins brtarget:$dst),
 			"b"#cond#"\t$dst",

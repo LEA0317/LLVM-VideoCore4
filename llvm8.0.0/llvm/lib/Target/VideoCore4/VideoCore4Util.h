@@ -10,8 +10,8 @@
 #define BRANCH_KIND_NUM 22
 
 inline unsigned
-reverseBranch(unsigned Opcode) {
-  switch (Opcode) {
+reverseBranch(unsigned opcode) {
+  switch (opcode) {
   case llvm::VideoCore4::JMP_CC_EQ:
     return llvm::VideoCore4::JMP_CC_NE;
   case llvm::VideoCore4::JMP_CC_NE:
@@ -39,10 +39,31 @@ reverseBranch(unsigned Opcode) {
   // error
   return UINT_MAX;
 }
-  
+
+inline bool isRawBranch(unsigned opcode) {
+  switch (opcode) {
+  case llvm::VideoCore4::JMP_CC_EQ:
+  case llvm::VideoCore4::JMP_CC_NE:
+  case llvm::VideoCore4::JMP_CC_GT:
+  case llvm::VideoCore4::JMP_CC_GE:
+  case llvm::VideoCore4::JMP_CC_LT:
+  case llvm::VideoCore4::JMP_CC_LE:
+  case llvm::VideoCore4::JMP_CC_HI:
+  case llvm::VideoCore4::JMP_CC_HS:
+  case llvm::VideoCore4::JMP_CC_LO:
+  case llvm::VideoCore4::JMP_CC_LS:
+    return true;
+  default:
+    return false;
+  }
+
+  // error
+  return false;
+}
+
 inline unsigned
-reverseCmovConditon(unsigned Opcode) {
-  switch (Opcode) {
+reverseCmovConditon(unsigned opcode) {
+  switch (opcode) {
   case llvm::VideoCore4::CMOV_EQ_RR_P:
     return llvm::VideoCore4::CMOV_NE_RR_P;
   case llvm::VideoCore4::CMOV_NE_RR_P:
@@ -120,33 +141,41 @@ static unsigned BranchNotTakenOpcode[BRANCH_KIND_NUM] = {
   llvm::VideoCore4::JMP_FCOMP_ULE_F_P
 };
 
-inline bool isCondTrueBranch(unsigned opc) {
+inline bool isCondTrueBranch(unsigned opcode) {
   for (int i=0; i<BRANCH_KIND_NUM; i++) {
-    if (BranchTakenOpcode[i] == opc) return true;
+    if (BranchTakenOpcode[i] == opcode) return true;
   }
   return false;
 }
 
-inline bool isCondFalseBranch(unsigned opc) {
+inline bool isCondFalseBranch(unsigned opcode) {
   for (int i=0; i<BRANCH_KIND_NUM; i++) {
-    if (BranchNotTakenOpcode[i] == opc) return true;
+    if (BranchNotTakenOpcode[i] == opcode) return true;
   }
   return false;
 }
 
-inline bool isCondBranch(unsigned opc) {
-  if (isCondTrueBranch(opc) || isCondFalseBranch(opc)) return true;
+inline bool isCondBranch(unsigned opcode) {
+  if (isCondTrueBranch(opcode) || isCondFalseBranch(opcode)) return true;
   return false;
 }
 
 inline bool
-isUnconditionalJump(int Opc) {
-  return (Opc    == llvm::VideoCore4::JMP
-	  || Opc == llvm::VideoCore4::JMP_R);
+isUnconditionalJump(int opcode) {
+  return (opcode    == llvm::VideoCore4::JMP
+	  || opcode == llvm::VideoCore4::JMP_R);
 }
 
-inline bool isBranch(unsigned opc) {
-  if (isCondBranch(opc) || isUnconditionalJump(opc)) return true;
+inline bool
+isCall(int opcode) {
+  return (opcode    == llvm::VideoCore4::CALL
+	  || opcode == llvm::VideoCore4::CALL_R);
+}
+
+inline bool isBranch(unsigned opcode) {
+  if (isCondBranch(opcode)
+      || isUnconditionalJump(opcode)
+      || isRawBranch(opcode)) return true;
   return false;
 }
 
