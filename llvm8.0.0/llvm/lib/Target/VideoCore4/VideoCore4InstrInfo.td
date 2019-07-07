@@ -1220,13 +1220,13 @@ let Constraints = "$rD = $rA" in {
 
 }
 
-def FLOG : S32<(outs GR32:$rD), (ins GR32:$rA),
-	        "log\t{$rD, $rA}",
-	        [(set (f32 GR32:$rD), (flog (f32 GR32:$rA)))]>;
+def FLOG2 : S32<(outs GR32:$rD), (ins GR32:$rA),
+	         "log2\t{$rD, $rA}",
+	         [(set (f32 GR32:$rD), (flog2 (f32 GR32:$rA)))]>;
 		
-def FEXP : S32<(outs GR32:$rD), (ins GR32:$rA),
-	        "exp\t{$rD, $rA}",
-	        [(set (f32 GR32:$rD), (fexp (f32 GR32:$rA)))]>;
+def FEXP2 : S32<(outs GR32:$rD), (ins GR32:$rA),
+	         "exp2\t{$rD, $rA}",
+	         [(set (f32 GR32:$rD), (fexp2 (f32 GR32:$rA)))]>;
 
 // recip
 def FRSQRT : S32<(outs GR32:$rD), (ins GR32:$rA),
