@@ -348,6 +348,20 @@ HasDataDep(const llvm::MachineInstr *MI,
     }
   }
 
+  for (const auto &MO_Def1 : MI->defs()) {
+    if (!MO_Def1.isReg()) continue;
+
+    unsigned Reg = MO_Def1.getReg();
+
+    for (const auto &MO_Def2 : Other->defs()) {
+      if (!MO_Def2.isReg()) continue;
+
+      if (MO_Def2.getReg() == Reg) {
+	return Reg;
+      }
+    }
+  }
+
   return UINT_MAX;
 }
 
