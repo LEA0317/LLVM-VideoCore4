@@ -11,6 +11,8 @@
 #include "llvm/PassAnalysisSupport.h"
 #include "llvm/CodeGen/MachineInstrBuilder.h"
 
+#include <iostream>
+
 using namespace llvm;
 
 #define DEBUG_TYPE "vc4-delayslot-filler"
@@ -106,8 +108,6 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
 	  maySchedBoundaryMBBI++;
 	  bool isFirst = true;
 	  for (;;) {
-	    if (maySchedBoundaryMBBI == MBB.getLastNonDebugInstr()) break;
-	    
 	    // has dependency (cannot insert)
 	    if (HasDataDep(&(*fillCandidateMBBI), &(*maySchedBoundaryMBBI))    != UINT_MAX
 		|| HasDataDep(&(*maySchedBoundaryMBBI), &(*fillCandidateMBBI)) != UINT_MAX) {
@@ -123,12 +123,13 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
 	      delayslotInstNum--;
 	      stopMBBI++;
 	      
-	      if (fillCandidateMBBI == MBB.getFirstNonDebugInstr()) {
-		break;
-	      }
+	      if (fillCandidateMBBI == MBB.getFirstNonDebugInstr()) { break; }
+	      
 	      fillCandidateMBBI--;
 	      break;
 	    }
+	    if (maySchedBoundaryMBBI == MBB.getLastNonDebugInstr()) { break; }
+
 	    maySchedBoundaryMBBI++;
 	    isFirst = false;
 	    while (!isEffectiveInst(maySchedBoundaryMBBI->getOpcode())) maySchedBoundaryMBBI++;
@@ -148,7 +149,7 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
 	delayslotInstNum--;
 	isChanged = true;
       }
-      if (MBBI == MBB.getFirstNonDebugInstr()) break;
+      if (MBBI == MBB.getFirstNonDebugInstr()) { break; }
     }
     if (MBBI == MBB.getFirstNonDebugInstr()) { break; }
   }  
