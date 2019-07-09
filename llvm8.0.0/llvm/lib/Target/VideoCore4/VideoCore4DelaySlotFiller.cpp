@@ -11,9 +11,6 @@
 #include "llvm/PassAnalysisSupport.h"
 #include "llvm/CodeGen/MachineInstrBuilder.h"
 
-#include <iostream>
-#include <vector>
-
 using namespace llvm;
 
 #define DEBUG_TYPE "vc4-delayslot-filler"
@@ -149,8 +146,8 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
       while (delayslotInstNum > 0) {
 	BuildMI(MBB, I, dl, TII->get(VideoCore4::NOP));
 	delayslotInstNum--;
+	isChanged = true;
       }
-      isChanged = true;
       if (MBBI == MBB.getFirstNonDebugInstr()) break;
     }
     if (MBBI == MBB.getFirstNonDebugInstr()) { break; }
