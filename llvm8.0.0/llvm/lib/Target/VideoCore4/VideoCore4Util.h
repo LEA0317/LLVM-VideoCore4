@@ -7,7 +7,111 @@
 #include "llvm/PassAnalysisSupport.h"
 #include "llvm/CodeGen/MachineInstrBuilder.h"
 
+#include <iostream>
+
 #define BRANCH_KIND_NUM 22
+
+inline std::string
+getRegisterName(unsigned reg) {
+  switch (reg) {
+  case llvm::VideoCore4::R0:
+    return "r0";
+  case llvm::VideoCore4::R1:
+    return "r1";
+  case llvm::VideoCore4::R2:
+    return "r2";
+  case llvm::VideoCore4::R3:
+    return "r3";
+  case llvm::VideoCore4::R4:
+    return "r4";
+  case llvm::VideoCore4::R5:
+    return "r5";
+  case llvm::VideoCore4::R6:
+    return "r6";
+  case llvm::VideoCore4::R7:
+    return "r7";
+  case llvm::VideoCore4::R8:
+    return "r8";
+  case llvm::VideoCore4::R9:
+    return "r9";
+  case llvm::VideoCore4::R10:
+    return "r10";
+  case llvm::VideoCore4::R11:
+    return "r11";
+  case llvm::VideoCore4::R12:
+    return "r12";
+  case llvm::VideoCore4::R13:
+    return "r13";
+  case llvm::VideoCore4::R14:
+    return "r14";
+  case llvm::VideoCore4::R15:
+    return "r15";
+  case llvm::VideoCore4::R16:
+    return "r16";
+  case llvm::VideoCore4::R17:
+    return "r17";
+  case llvm::VideoCore4::R18:
+    return "r18";
+  case llvm::VideoCore4::R19:
+    return "r19";
+  case llvm::VideoCore4::R20:
+    return "r20";
+  case llvm::VideoCore4::R21:
+    return "r21";
+  case llvm::VideoCore4::R22:
+    return "r22";
+  case llvm::VideoCore4::R23:
+  case llvm::VideoCore4::TMP:
+    return "tmp";
+  case llvm::VideoCore4::R24:
+  case llvm::VideoCore4::GP:
+    return "gp";
+  case llvm::VideoCore4::R25:
+  case llvm::VideoCore4::SP:
+    return "sp";
+  case llvm::VideoCore4::R26:
+  case llvm::VideoCore4::LR:
+    return "lr";
+  case llvm::VideoCore4::R27:
+    return "r27";
+  case llvm::VideoCore4::R28:
+  case llvm::VideoCore4::ESP:
+    return "esp";
+  case llvm::VideoCore4::R29:
+    return "r29";
+  case llvm::VideoCore4::R30:
+  case llvm::VideoCore4::SR:
+    return "sr";
+  case llvm::VideoCore4::R31:
+  case llvm::VideoCore4::PC:
+    return "pc";
+  default:
+    llvm_unreachable("cannot get reg name");
+  }
+
+  // error
+  return nullptr;
+}
+
+// FIX ME
+inline bool
+isEffectiveInst(unsigned opcode) {
+  if (opcode >= llvm::VideoCore4::INSTRUCTION_LIST_END) return false;
+
+  switch (opcode) {
+  case llvm::VideoCore4::DBG_VALUE:
+  case llvm::VideoCore4::DBG_LABEL:
+  case llvm::VideoCore4::PHI:
+  case llvm::VideoCore4::IMPLICIT_DEF:
+  case llvm::VideoCore4::CFI_INSTRUCTION:
+    return false;
+  default:
+    return true;
+  }
+
+  // error
+  return true;
+}
 
 inline unsigned
 reverseBranch(unsigned opcode) {
@@ -217,6 +321,34 @@ parseCondBranch(llvm::MachineInstr                          *LastInst,
                 llvm::SmallVectorImpl<llvm::MachineOperand> &Cond) {
   Cond.push_back(llvm::MachineOperand::CreateImm(CC::DUMMY));
   Target = LastInst->getOperand(2).getMBB();
+}
+
+// MI is defined by Other Instruction?
+inline unsigned int
+HasDataDep(const llvm::MachineInstr *MI,
+           const llvm::MachineInstr *Other) {
+  for (const auto &MO_Use : MI->uses()) {
+    if (!MO_Use.isReg()) continue;
+
+    unsigned Reg = MO_Use.getReg();
+
+    if (Other->getOpcode()    == llvm::VideoCore4::CMP_F
+	|| Other->getOpcode() == llvm::VideoCore4::CMP_LI) {
+      if (Reg == llvm::VideoCore4::SR) {
+	return Reg;
+      }
+    }
+
+    for (const auto &MO_Def : Other->defs()) {
+      if (!MO_Def.isReg()) continue;
+
+      if (MO_Def.getReg() == Reg) {
+	return Reg;
+      }
+    }
+  }
+
+  return UINT_MAX;
 }
 
 #endif
