@@ -113,7 +113,7 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
 		|| HasDataDep(&(*maySchedBoundaryMBBI), &(*fillCandidateMBBI)) != UINT_MAX) {
 	      break;
 	    }
-	    
+
 	    // fill dalay slot
 	    if (maySchedBoundaryMBBI == stopMBBI && isFirst == false) {
 	      MachineInstr *miResched = &(*fillCandidateMBBI);
@@ -122,25 +122,25 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
 	      isChanged = true;
 	      delayslotInstNum--;
 	      stopMBBI++;
-	      
+
 	      if (fillCandidateMBBI == MBB.getFirstNonDebugInstr()) { break; }
-	      
+
 	      fillCandidateMBBI--;
 	      break;
 	    }
 	    if (maySchedBoundaryMBBI == MBB.getLastNonDebugInstr()) { break; }
-
+	    
 	    maySchedBoundaryMBBI++;
 	    isFirst = false;
 	    while (!isEffectiveInst(maySchedBoundaryMBBI->getOpcode())) maySchedBoundaryMBBI++;
-	    if (MBBI == MBB.getFirstNonDebugInstr()) break;
+	    if (MBBI == MBB.getFirstNonDebugInstr()) { break; }
 	  }
 	}
-	if (delayslotInstNum == 0) break;
-	if (fillCandidateMBBI == MBB.getFirstNonDebugInstr()) break;
+	if (delayslotInstNum == 0) { break; }
+	if (fillCandidateMBBI == MBB.getFirstNonDebugInstr()) { break; }
 	fillCandidateMBBI--;
 	while (!isEffectiveInst(fillCandidateMBBI->getOpcode())) fillCandidateMBBI--;
-	if (MBBI == MBB.getFirstNonDebugInstr()) break;
+	if (MBBI == MBB.getFirstNonDebugInstr()) { break; }
       }
       
       // insert remain nop
