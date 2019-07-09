@@ -12,6 +12,7 @@
 #include "llvm/CodeGen/MachineInstrBuilder.h"
 
 #include <iostream>
+#include <vector>
 
 using namespace llvm;
 
@@ -68,7 +69,7 @@ VideoCore4DelaySlotFiller::runOnMachineFunction(MachineFunction &Fn) {
   return isModified;
 }
 
-// check branch and fill dalayslot (Todo: improve this)
+// check branch and fill delayslot (Todo: improve this)
 bool
 VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
   bool                        isChanged = false;
@@ -77,44 +78,82 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
   const TargetInstrInfo      *TII       = Subtarget.getInstrInfo();
   
   for (MBBI = MBB.getLastNonDebugInstr();; MBBI--) {
-    if (MBBI == MBB.begin()) { break; }
+    while (!isEffectiveInst(MBBI->getOpcode())) {
+      MBBI--;
+    }
+    if (MBBI == MBB.getFirstNonDebugInstr()) { break; }
 
+    // must fill delay slot
     if (isBranch(MBBI->getOpcode())
-	|| isCall(MBBI->getOpcode())
-	|| isReturn(MBBI->getOpcode())) {
-
+	|| isReturn(MBBI->getOpcode())
+	|| isCall(MBBI->getOpcode())) {
       MachineBasicBlock::iterator I  = MBBI;
       MachineInstr               *MI = &(*I);
       I++;
-      DebugLoc  dl           = MI->getDebugLoc();
-      const int numDelaySlot = 3;
+      DebugLoc  dl = MI->getDebugLoc();
 
       // fill delay slot
-      {
-	MachineBasicBlock::iterator fillCandidateMBBI = MBBI;
-	MachineBasicBlock::iterator stopMBBI          = MBBI;
-	stopMBBI--;
-
-	for (int i=0; i<numDelaySlot; i++) {
-	  bool fillNop = true;
-	  fillCandidateMBBI--;
-
-	  if (fillNop == true) {
-	    while (i<3) {
-	      BuildMI(MBB, I, dl, TII->get(VideoCore4::NOP));
-	      i++;
+      int                         delayslotInstNum  = 3;
+      MachineBasicBlock::iterator fillCandidateMBBI = MBBI;
+      MachineBasicBlock::iterator stopMBBI          = MBBI;
+      
+      fillCandidateMBBI--;
+      for (;;) {
+	// if branch inst, give up
+	if (isBranch(fillCandidateMBBI->getOpcode())
+	    || isReturn(fillCandidateMBBI->getOpcode())
+	    || isCall(fillCandidateMBBI->getOpcode())) {
+	  break;
+	} else {
+	  MachineBasicBlock::iterator maySchedBoundaryMBBI = fillCandidateMBBI;
+	  maySchedBoundaryMBBI++;
+	  bool isFirst = true;
+	  for (;;) {
+	    if (maySchedBoundaryMBBI == MBB.getLastNonDebugInstr()) break;
+	    
+	    // has dependency (cannot insert)
+	    if (HasDataDep(&(*fillCandidateMBBI), &(*maySchedBoundaryMBBI))    != UINT_MAX
+		|| HasDataDep(&(*maySchedBoundaryMBBI), &(*fillCandidateMBBI)) != UINT_MAX) {
+	      break;
 	    }
-	    isChanged = true;
-	    break;
-	  } else {
-            MachineInstr *miResched = &(*fillCandidateMBBI);
-            MBB.remove(miResched);
-            MBB.insert(I, miResched);
-	    isChanged = true;
+	    
+	    // fill dalay slot
+	    if (maySchedBoundaryMBBI == stopMBBI && isFirst == false) {
+	      MachineInstr *miResched = &(*fillCandidateMBBI);
+	      MBB.remove(miResched);
+	      MBB.insert(I, miResched);
+	      isChanged = true;
+	      delayslotInstNum--;
+	      stopMBBI++;
+	      
+	      if (fillCandidateMBBI == MBB.getFirstNonDebugInstr()) {
+		break;
+	      }
+	      fillCandidateMBBI--;
+	      break;
+	    }
+	    maySchedBoundaryMBBI++;
+	    isFirst = false;
+	    while (!isEffectiveInst(maySchedBoundaryMBBI->getOpcode())) maySchedBoundaryMBBI++;
+	    if (MBBI == MBB.getFirstNonDebugInstr()) break;
 	  }
 	}
+	if (delayslotInstNum == 0) break;
+	if (fillCandidateMBBI == MBB.getFirstNonDebugInstr()) break;
+	fillCandidateMBBI--;
+	while (!isEffectiveInst(fillCandidateMBBI->getOpcode())) fillCandidateMBBI--;
+	if (MBBI == MBB.getFirstNonDebugInstr()) break;
       }
+      
+      // insert remain nop
+      while (delayslotInstNum > 0) {
+	BuildMI(MBB, I, dl, TII->get(VideoCore4::NOP));
+	delayslotInstNum--;
+      }
+      isChanged = true;
+      if (MBBI == MBB.getFirstNonDebugInstr()) break;
     }
+    if (MBBI == MBB.getFirstNonDebugInstr()) { break; }
   }  
   return isChanged;
 }
