@@ -816,7 +816,7 @@ let isTerminator = 1, isBranch = 1 in {
         }
 }
 
-let isCodeGenOnly = 1 in {
+let isCodeGenOnly = 1, Uses = [SR] in {
     let Constraints = "$d = $f" in {
 	class SELECT_P<string cond> : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
 	  	 	                                "",
