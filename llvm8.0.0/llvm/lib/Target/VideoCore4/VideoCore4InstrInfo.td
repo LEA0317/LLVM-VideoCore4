@@ -149,7 +149,7 @@ let hasSideEffects = 0 in
 	                          "nop",
 				  []>;
 
-let isReturn = 1, isTerminator = 1, isBarrier = 1 in {
+let isReturn = 1, isTerminator = 1, isBarrier = 1, Uses = [LR] in {
   def RET : S32<(outs), (ins variable_ops),
 		 "b\t%lr",
 		 [(retflag)]>;
