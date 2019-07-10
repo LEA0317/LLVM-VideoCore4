@@ -109,8 +109,8 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
 	  bool isFirst = true;
 	  for (;;) {
 	    // has dependency (cannot insert)
-	    if (HasDataDep(&(*fillCandidateMBBI), &(*maySchedBoundaryMBBI))    != UINT_MAX
-		|| HasDataDep(&(*maySchedBoundaryMBBI), &(*fillCandidateMBBI)) != UINT_MAX) {
+	    if (HasDataDepForDelaySlot(&(*fillCandidateMBBI), &(*maySchedBoundaryMBBI))    != UINT_MAX
+		|| HasDataDepForDelaySlot(&(*maySchedBoundaryMBBI), &(*fillCandidateMBBI)) != UINT_MAX) {
 	      break;
 	    }
 

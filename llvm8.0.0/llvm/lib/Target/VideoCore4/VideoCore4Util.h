@@ -365,4 +365,47 @@ HasDataDep(const llvm::MachineInstr *MI,
   return UINT_MAX;
 }
 
+inline unsigned int
+HasDataDepForDelaySlot(const llvm::MachineInstr *MI,
+		       const llvm::MachineInstr *Other) {
+  if (isCall(MI->getOpcode())) return UINT_MAX;
+      
+  for (const auto &MO_Use : MI->uses()) {
+    if (!MO_Use.isReg()) continue;
+
+    unsigned Reg = MO_Use.getReg();
+
+    if (Other->getOpcode()    == llvm::VideoCore4::CMP_F
+	|| Other->getOpcode() == llvm::VideoCore4::CMP_LI) {
+      if (Reg == llvm::VideoCore4::SR) {
+	return Reg;
+      }
+    }
+
+    for (const auto &MO_Def : Other->defs()) {
+      if (!MO_Def.isReg()) continue;
+
+      if (MO_Def.getReg() == Reg) {
+	return Reg;
+      }
+    }
+  }
+
+  for (const auto &MO_Def1 : MI->defs()) {
+    if (!MO_Def1.isReg()) continue;
+
+    unsigned Reg = MO_Def1.getReg();
+
+    for (const auto &MO_Def2 : Other->defs()) {
+      if (!MO_Def2.isReg()) continue;
+
+      if (MO_Def2.getReg() == Reg) {
+	return Reg;
+      }
+    }
+  }
+
+  return UINT_MAX;
+}
+
 #endif
