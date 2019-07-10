@@ -368,7 +368,8 @@ HasDataDep(const llvm::MachineInstr *MI,
 inline unsigned int
 HasDataDepForDelaySlot(const llvm::MachineInstr *MI,
 		       const llvm::MachineInstr *Other) {
-  if (isCall(MI->getOpcode())) return UINT_MAX;
+  if (isCall(MI->getOpcode())
+      || isReturn(MI->getOpcode())) return UINT_MAX;
       
   for (const auto &MO_Use : MI->uses()) {
     if (!MO_Use.isReg()) continue;
