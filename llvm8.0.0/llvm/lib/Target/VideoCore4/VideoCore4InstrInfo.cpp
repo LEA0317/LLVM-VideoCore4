@@ -154,13 +154,13 @@ VideoCore4InstrInfo::AnalyzeBranch(MachineBasicBlock               &MBB,
 
   // If there is only one terminator instruction, process it.
   if (I == MBB.begin() || !isUnpredicatedTerminator(*--I)) {
-    if (isUnconditionalJump(LastOpc)) {
+    if (vc4util::isUnconditionalJump(LastOpc)) {
       TBB = LastInst->getOperand(0).getMBB();
       return false;
     }
-    if (isCondTrueBranch(LastOpc)) {
+    if (vc4util::isCondTrueBranch(LastOpc)) {
       // Block ends with fall-through condbranch.
-      parseCondBranch(LastInst, TBB, Cond);
+      vc4util::parseCondBranch(LastInst, TBB, Cond);
       return false;
     }
     return true; // Can't handle indirect branch.
@@ -172,8 +172,8 @@ VideoCore4InstrInfo::AnalyzeBranch(MachineBasicBlock               &MBB,
 
   // If AllowModify is true and the block ends with two or more unconditional
   // branches, delete all but the first unconditional branch.
-  if (AllowModify && isUnconditionalJump(LastOpc)) {
-    while (isUnconditionalJump(SecondLastOpc)) {
+  if (AllowModify && vc4util::isUnconditionalJump(LastOpc)) {
+    while (vc4util::isUnconditionalJump(SecondLastOpc)) {
       LastInst->eraseFromParent();
       LastInst = SecondLastInst;
       LastOpc  = LastInst->getOpcode();
@@ -189,9 +189,9 @@ VideoCore4InstrInfo::AnalyzeBranch(MachineBasicBlock               &MBB,
   }
 
   // If the block ends with a B and a Bcc, handle it.
-  if (isCondBranch(SecondLastOpc) && isUnconditionalJump(LastOpc)) {
+  if (vc4util::isCondBranch(SecondLastOpc) && vc4util::isUnconditionalJump(LastOpc)) {
     for (int i=0; i<BRANCH_KIND_NUM; i++) {
-      if (SecondLastOpc == BranchTakenOpcode[i]) {
+      if (SecondLastOpc == vc4util::BranchTakenOpcode[i]) {
 	// Transform the code
 	//
 	// L2:
@@ -213,7 +213,7 @@ VideoCore4InstrInfo::AnalyzeBranch(MachineBasicBlock               &MBB,
 	    && MBB.isLayoutSuccessor(TargetBB)) {
 	  MachineBasicBlock *BNcondMBB = LastInst->getOperand(0).getMBB();
 	  
-	  BuildMI(&MBB, MBB.findDebugLoc(SecondLastInst), get(BranchNotTakenOpcode[i]))
+	  BuildMI(&MBB, MBB.findDebugLoc(SecondLastInst), get(vc4util::BranchNotTakenOpcode[i]))
 	    .addReg(SecondLastInst->getOperand(0).getReg())
 	    .addReg(SecondLastInst->getOperand(1).getReg())
 	    .addMBB(BNcondMBB);
@@ -231,7 +231,7 @@ VideoCore4InstrInfo::AnalyzeBranch(MachineBasicBlock               &MBB,
 
   // If the block ends with two unconditional branches, handle it.  The second 
   // one is not executed.
-  if (isUnconditionalJump(SecondLastOpc) && isUnconditionalJump(LastOpc)) {
+  if (vc4util::isUnconditionalJump(SecondLastOpc) && vc4util::isUnconditionalJump(LastOpc)) {
     TBB = SecondLastInst->getOperand(0).getMBB();
     return false;
   }

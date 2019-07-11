@@ -11,6 +11,8 @@
 
 #define BRANCH_KIND_NUM 22
 
+namespace vc4util {
+
 inline std::string
 getRegisterName(unsigned reg) {
   switch (reg) {
@@ -408,5 +410,7 @@ HasDataDepForDelaySlot(const llvm::MachineInstr *MI,
 
   return UINT_MAX;
 }
+
+} // end namespace vc4util
 
 #endif

@@ -71,77 +71,77 @@
         Changed = true;
 
 #define	SELECT_CC(opcode) \
-        unsigned reg1 = MI->getOperand(0).getReg();		     \
-        unsigned reg2 = MI->getOperand(1).getReg();		     \
-        unsigned reg3 = MI->getOperand(2).getReg();		     \
-        unsigned reg4 = MI->getOperand(3).getReg();		     \
-        unsigned reg5 = MI->getOperand(4).getReg();		     \
-								     \
-        MBB.erase(MI);						     \
-								     \
-	if (reg1 == reg3) {					     \
-	  BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))	     \
-	    .addReg(reg4)					     \
-	    .addReg(reg5);					     \
-	  BuildMI(MBB, I, dl, TII->get(opcode))			     \
-	    .addReg(reg1)					     \
-	    .addReg(reg2);					     \
-	} else if (reg1 == reg2) {				     \
-	  BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))	     \
-	    .addReg(reg4)					     \
-	    .addReg(reg5);					     \
-	  BuildMI(MBB, I, dl, TII->get(reverseCmovConditon(opcode))) \
-	    .addReg(reg1)					     \
-	    .addReg(reg3);					     \
-	} else {						     \
-	  BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))	     \
-	    .addReg(reg4)					     \
-	    .addReg(reg5);					     \
-	  BuildMI(MBB, I, dl, TII->get(opcode))			     \
-	    .addReg(reg1)					     \
-	    .addReg(reg2);					     \
- 	  BuildMI(MBB, I, dl, TII->get(reverseCmovConditon(opcode))) \
-	    .addReg(reg1)					     \
-	    .addReg(reg3);					     \
-	}							     \
-								     \
+        unsigned reg1 = MI->getOperand(0).getReg();			      \
+        unsigned reg2 = MI->getOperand(1).getReg();		              \
+        unsigned reg3 = MI->getOperand(2).getReg();		              \
+        unsigned reg4 = MI->getOperand(3).getReg();		              \
+        unsigned reg5 = MI->getOperand(4).getReg();		              \
+								              \
+        MBB.erase(MI);						              \
+								              \
+	if (reg1 == reg3) {					   	      \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))	   	      \
+	    .addReg(reg4)						      \
+	    .addReg(reg5);						      \
+	  BuildMI(MBB, I, dl, TII->get(opcode))				      \
+	    .addReg(reg1)						      \
+	    .addReg(reg2);						      \
+	} else if (reg1 == reg2) {					      \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))		      \
+	    .addReg(reg4)						      \
+	    .addReg(reg5);						      \
+	  BuildMI(MBB, I, dl, TII->get(vc4util::reverseCmovConditon(opcode))) \
+	    .addReg(reg1)						      \
+	    .addReg(reg3);						      \
+	} else {							      \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))		      \
+	    .addReg(reg4)						      \
+	    .addReg(reg5);						      \
+	  BuildMI(MBB, I, dl, TII->get(opcode))				      \
+	    .addReg(reg1)						      \
+	    .addReg(reg2);						      \
+ 	  BuildMI(MBB, I, dl, TII->get(vc4util::reverseCmovConditon(opcode))) \
+	    .addReg(reg1)						      \
+	    .addReg(reg3);						      \
+	}								      \
+									      \
         Changed = true;
 
 #define	F_SELECT_CC(opcode) \
-        unsigned reg1 = MI->getOperand(0).getReg();		     \
-        unsigned reg2 = MI->getOperand(1).getReg();		     \
-        unsigned reg3 = MI->getOperand(2).getReg();		     \
-        unsigned reg4 = MI->getOperand(3).getReg();		     \
-        unsigned reg5 = MI->getOperand(4).getReg();		     \
-								     \
-        MBB.erase(MI);						     \
-								     \
-	if (reg1 == reg3) {					     \
-	  BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))	     \
-	    .addReg(reg4)					     \
-	    .addReg(reg5);					     \
-	  BuildMI(MBB, I, dl, TII->get(opcode))			     \
-	    .addReg(reg1)					     \
-	    .addReg(reg2);					     \
-	} else if (reg1 == reg2) {				     \
-	  BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))	     \
-	    .addReg(reg4)					     \
-	    .addReg(reg5);					     \
-	  BuildMI(MBB, I, dl, TII->get(reverseCmovConditon(opcode))) \
-	    .addReg(reg1)					     \
-	    .addReg(reg3);					     \
-	} else {						     \
-	  BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))	     \
-	    .addReg(reg4)					     \
-	    .addReg(reg5);					     \
-	  BuildMI(MBB, I, dl, TII->get(opcode))			     \
-	    .addReg(reg1)					     \
-	    .addReg(reg2);					     \
- 	  BuildMI(MBB, I, dl, TII->get(reverseCmovConditon(opcode))) \
-	    .addReg(reg1)					     \
-	    .addReg(reg3);					     \
-	}							     \
-								     \
+        unsigned reg1 = MI->getOperand(0).getReg();		              \
+        unsigned reg2 = MI->getOperand(1).getReg();		              \
+        unsigned reg3 = MI->getOperand(2).getReg();		              \
+        unsigned reg4 = MI->getOperand(3).getReg();		              \
+        unsigned reg5 = MI->getOperand(4).getReg();		              \
+								              \
+        MBB.erase(MI);						              \
+								              \
+	if (reg1 == reg3) {					              \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))	              \
+	    .addReg(reg4)					              \
+	    .addReg(reg5);					              \
+	  BuildMI(MBB, I, dl, TII->get(opcode))			              \
+	    .addReg(reg1)					              \
+	    .addReg(reg2);					              \
+	} else if (reg1 == reg2) {				              \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))	              \
+	     .addReg(reg4)						      \
+	     .addReg(reg5);					      	      \
+	  BuildMI(MBB, I, dl, TII->get(vc4util::reverseCmovConditon(opcode))) \
+	    .addReg(reg1)					              \
+	    .addReg(reg3);					              \
+	} else {						              \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))	              \
+	    .addReg(reg4)					              \
+	    .addReg(reg5);					              \
+	  BuildMI(MBB, I, dl, TII->get(opcode))			              \
+	    .addReg(reg1)					              \
+	    .addReg(reg2);				   	              \
+ 	  BuildMI(MBB, I, dl, TII->get(vc4util::reverseCmovConditon(opcode))) \
+	    .addReg(reg1)					              \
+	    .addReg(reg3);					              \
+	}							              \
+								              \
         Changed = true;
 
 #define SETCC_RI(opcode) \
@@ -302,52 +302,52 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       }
     case VideoCore4::JMP_COMP_EQ_F_P:
       {
-	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_EQ));
+	JUMP_COMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_EQ));
 	break;
       }
     case VideoCore4::JMP_COMP_NE_F_P:
       {
-	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_NE));
+	JUMP_COMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_NE));
 	break;
       }
     case VideoCore4::JMP_COMP_GT_F_P:
       {
-	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_GT));
+	JUMP_COMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_GT));
 	break;
       }
     case VideoCore4::JMP_COMP_GE_F_P:
       {
-	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_GE));
+	JUMP_COMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_GE));
 	break;
       }
     case VideoCore4::JMP_COMP_LT_F_P:
       {
-	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_LT));
+	JUMP_COMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_LT));
 	break;
       }
     case VideoCore4::JMP_COMP_LE_F_P:
       {
-	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_LE));
+	JUMP_COMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_LE));
 	break;
       }
     case VideoCore4::JMP_COMP_HI_F_P:
       {
-	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_HI));
+	JUMP_COMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_HI));
 	break;
       }
     case VideoCore4::JMP_COMP_HS_F_P:
       {
-	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_HS));
+	JUMP_COMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_HS));
 	break;
       }
     case VideoCore4::JMP_COMP_LO_F_P:
       {
-	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_LO));
+	JUMP_COMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_LO));
 	break;
       }
     case VideoCore4::JMP_COMP_LS_F_P:
       {
-	JUMP_COMP_CC(reverseBranch(VideoCore4::JMP_CC_LS));
+	JUMP_COMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_LS));
 	break;
       }
     case VideoCore4::SELECT_EQ_P:
@@ -612,62 +612,62 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       }
     case VideoCore4::JMP_FCOMP_OEQ_F_P:
       {
-	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_EQ));
+	JUMP_FCOMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_EQ));
 	break;
       }
     case VideoCore4::JMP_FCOMP_ONE_F_P:
       {
-	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_NE));
+	JUMP_FCOMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_NE));
 	break;
       }
     case VideoCore4::JMP_FCOMP_OGT_F_P:
       {
-	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_GT));
+	JUMP_FCOMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_GT));
 	break;
       }
     case VideoCore4::JMP_FCOMP_OGE_F_P:
       {
-	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_GE));
+	JUMP_FCOMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_GE));
 	break;
       }
     case VideoCore4::JMP_FCOMP_OLT_F_P:
       {
-	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_LT));
+	JUMP_FCOMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_LT));
 	break;
       }
     case VideoCore4::JMP_FCOMP_OLE_F_P:
       {
-	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_LE));
+	JUMP_FCOMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_LE));
 	break;
       }
     case VideoCore4::JMP_FCOMP_UEQ_F_P:
       {
-	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_EQ));
+	JUMP_FCOMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_EQ));
 	break;
       }
     case VideoCore4::JMP_FCOMP_UNE_F_P:
       {
-	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_NE));
+	JUMP_FCOMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_NE));
 	break;
       }
     case VideoCore4::JMP_FCOMP_UGT_F_P:
       {
-	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_HI));
+	JUMP_FCOMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_HI));
 	break;
       }
     case VideoCore4::JMP_FCOMP_UGE_F_P:
       {
-	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_HS));
+	JUMP_FCOMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_HS));
 	break;
       }
     case VideoCore4::JMP_FCOMP_ULT_F_P:
       {
-	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_LO));
+	JUMP_FCOMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_LO));
 	break;
       }
     case VideoCore4::JMP_FCOMP_ULE_F_P:
       {
-	JUMP_FCOMP_CC(reverseBranch(VideoCore4::JMP_CC_LS));
+	JUMP_FCOMP_CC(vc4util::reverseBranch(VideoCore4::JMP_CC_LS));
 	break;
       }
     case VideoCore4::F_SELECT_OEQ_P:

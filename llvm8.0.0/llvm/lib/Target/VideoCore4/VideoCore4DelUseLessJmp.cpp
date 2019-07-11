@@ -94,26 +94,26 @@ VideoCore4DelJmp::runOnMachineBasicBlock(MachineBasicBlock &MBB,
     return Changed;
   }
   
-  if (isUnconditionalJump(I->getOpcode())
+  if (vc4util::isUnconditionalJump(I->getOpcode())
       && I->getOperand(0).getMBB() == &MBBN) {
     MBB.erase(I);
     Changed = true;
   } else {
     for (int i=0; i < BRANCH_KIND_NUM; i++) {
-      if (I->getOpcode()               == BranchTakenOpcode[i]
+      if (I->getOpcode()               == vc4util::BranchTakenOpcode[i]
 	  && I->getOperand(2).getMBB() == &MBBN) {
 	MBB.erase(I);
 	Changed = true;
 	break;
       } else {	
-	if (I->getOpcode()              == BranchNotTakenOpcode[i]) {
+	if (I->getOpcode()              == vc4util::BranchNotTakenOpcode[i]) {
 	  if (I->getOperand(2).getMBB() == &MBBN) {
 	    MBB.erase(I);
 	    Changed = true;
 	  } else {
 	    prevI = I;
 	    prevI--;
-	    if (prevI->getOpcode()              == BranchTakenOpcode[i]) {
+	    if (prevI->getOpcode()              == vc4util::BranchTakenOpcode[i]) {
 	      if (prevI->getOperand(2).getMBB() == &MBBN) {
 		MBB.erase(prevI);
 		Changed = true;

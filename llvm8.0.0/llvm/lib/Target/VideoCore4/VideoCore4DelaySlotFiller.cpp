@@ -77,15 +77,15 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
   const TargetInstrInfo      *TII       = Subtarget.getInstrInfo();
   
   for (MBBI = MBB.getLastNonDebugInstr();; MBBI--) {
-    while (!isEffectiveInst(MBBI->getOpcode())) {
+    while (!vc4util::isEffectiveInst(MBBI->getOpcode())) {
       MBBI--;
     }
     if (MBBI == MBB.getFirstNonDebugInstr()) { break; }
 
     // must fill delay slot
-    if (isBranch(MBBI->getOpcode())
-	|| isReturn(MBBI->getOpcode())
-	|| isCall(MBBI->getOpcode())) {
+    if (vc4util::isBranch(MBBI->getOpcode())
+	|| vc4util::isReturn(MBBI->getOpcode())
+	|| vc4util::isCall(MBBI->getOpcode())) {
       MachineBasicBlock::iterator I  = MBBI;
       MachineInstr               *MI = &(*I);
       I++;
@@ -99,9 +99,9 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
       fillCandidateMBBI--;
       for (;;) {
 	// if branch inst, give up
-	if (isBranch(fillCandidateMBBI->getOpcode())
-	    || isReturn(fillCandidateMBBI->getOpcode())
-	    || isCall(fillCandidateMBBI->getOpcode())) {
+	if (vc4util::isBranch(fillCandidateMBBI->getOpcode())
+	    || vc4util::isReturn(fillCandidateMBBI->getOpcode())
+	    || vc4util::isCall(fillCandidateMBBI->getOpcode())) {
 	  break;
 	} else {
 	  MachineBasicBlock::iterator maySchedBoundaryMBBI = fillCandidateMBBI;
@@ -109,8 +109,8 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
 	  bool isFirst = true;
 	  for (;;) {
 	    // has dependency (cannot insert)
-	    if (HasDataDepForDelaySlot(&(*fillCandidateMBBI), &(*maySchedBoundaryMBBI))    != UINT_MAX
-		|| HasDataDepForDelaySlot(&(*maySchedBoundaryMBBI), &(*fillCandidateMBBI)) != UINT_MAX) {
+	    if (vc4util::HasDataDepForDelaySlot(&(*fillCandidateMBBI), &(*maySchedBoundaryMBBI))    != UINT_MAX
+		|| vc4util::HasDataDepForDelaySlot(&(*maySchedBoundaryMBBI), &(*fillCandidateMBBI)) != UINT_MAX) {
 	      break;
 	    }
 
@@ -132,14 +132,14 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
 	    
 	    maySchedBoundaryMBBI++;
 	    isFirst = false;
-	    while (!isEffectiveInst(maySchedBoundaryMBBI->getOpcode())) maySchedBoundaryMBBI++;
+	    while (!vc4util::isEffectiveInst(maySchedBoundaryMBBI->getOpcode())) { maySchedBoundaryMBBI++; }
 	    if (MBBI == MBB.getFirstNonDebugInstr()) { break; }
 	  }
 	}
 	if (delayslotInstNum == 0) { break; }
 	if (fillCandidateMBBI == MBB.getFirstNonDebugInstr()) { break; }
 	fillCandidateMBBI--;
-	while (!isEffectiveInst(fillCandidateMBBI->getOpcode())) fillCandidateMBBI--;
+	while (!vc4util::isEffectiveInst(fillCandidateMBBI->getOpcode())) { fillCandidateMBBI--; }
 	if (MBBI == MBB.getFirstNonDebugInstr()) { break; }
       }
       

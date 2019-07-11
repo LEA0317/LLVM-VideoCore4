@@ -70,7 +70,7 @@ void
 VideoCore4CFGOptimizer::InvertAndChangeJumpTarget(MachineInstr      &MI,
 						  MachineBasicBlock *NewTarget) {
   const TargetInstrInfo *TII = MI.getParent()->getParent()->getSubtarget().getInstrInfo();
-  unsigned NewOpcode = reverseBranchCondition(&MI);
+  unsigned NewOpcode = vc4util::reverseBranchCondition(&MI);
 
   MI.setDesc(TII->get(NewOpcode));
   MI.getOperand(2).setMBB(NewTarget);
@@ -94,7 +94,7 @@ VideoCore4CFGOptimizer::runOnMachineFunction(MachineFunction &Fn) {
     if (MII != MBB->end()) {
       MachineInstr &MI  = *MII;
       int           Opc = MI.getOpcode();
-      if (isCondBranch(Opc)) {
+      if (vc4util::isCondBranch(Opc)) {
 	//
 	// (Case 1) Transform the code if the following condition occurs:
 	//   BB1: if (p0) jump BB3
@@ -144,7 +144,7 @@ VideoCore4CFGOptimizer::runOnMachineFunction(MachineFunction &Fn) {
 	// The target of the unconditional branch must be JumpAroundTarget.
 	// TODO: If not, we should not invert the unconditional branch.
 	MachineBasicBlock* CondBranchTarget = nullptr;
-	if (isCondBranch(MI.getOpcode())) {
+	if (vc4util::isCondBranch(MI.getOpcode())) {
 	  CondBranchTarget = MI.getOperand(2).getMBB();
 	}
 	  
@@ -156,14 +156,14 @@ VideoCore4CFGOptimizer::runOnMachineFunction(MachineFunction &Fn) {
 	  
 	  // Ensure that BB2 has one instruction -- an unconditional jump.
 	  if ((LayoutSucc->size() == 1) &&
-	      isUnconditionalJump(LayoutSucc->front().getOpcode())) {
+	      vc4util::isUnconditionalJump(LayoutSucc->front().getOpcode())) {
 	    assert(JumpAroundTarget && "jump target is needed to process second basic block");
 	    MachineBasicBlock* UncondTarget = LayoutSucc->front().getOperand(0).getMBB();
 	    // Check if the layout successor of BB2 is BB3.
 	    bool case1 = LayoutSucc->isLayoutSuccessor(JumpAroundTarget);
 	    bool case2 = JumpAroundTarget->isSuccessor(UncondTarget)
 	      && JumpAroundTarget->size() >= 1
-	      && isUnconditionalJump(JumpAroundTarget->back().getOpcode())
+	      && vc4util::isUnconditionalJump(JumpAroundTarget->back().getOpcode())
 	      && JumpAroundTarget->pred_size() == 1
 	      && JumpAroundTarget->succ_size() == 1;
 	    
