@@ -124,7 +124,9 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
 
 	      if (fillCandidateMBBI == MBB.getFirstNonDebugInstr()) { break; }
 
-	      fillCandidateMBBI--;
+	      for (int i=0; i<3-delayslotInstNum; i++) {
+		fillCandidateMBBI--;
+	      }
 	      break;
 	    }
 	    if (maySchedBoundaryMBBI == MBB.getLastNonDebugInstr()) { break; }

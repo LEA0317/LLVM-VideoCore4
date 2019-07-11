@@ -389,6 +389,7 @@ HasDataDepForDelaySlot(const llvm::MachineInstr *MI,
       if (!MO_Def.isReg()) continue;
 
       if (MO_Def.getReg() == Reg) {
+	if (isCall(Other->getOpcode())) continue;
 	return Reg;
       }
     }
@@ -403,6 +404,7 @@ HasDataDepForDelaySlot(const llvm::MachineInstr *MI,
       if (!MO_Def2.isReg()) continue;
 
       if (MO_Def2.getReg() == Reg) {
+	if (isCall(Other->getOpcode())) continue;
 	return Reg;
       }
     }
