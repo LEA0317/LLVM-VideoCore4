@@ -99,7 +99,7 @@ VideoCore4DelJmp::runOnMachineBasicBlock(MachineBasicBlock &MBB,
     MBB.erase(I);
     Changed = true;
   } else {
-    for (int i=0; i < BRANCH_KIND_NUM; i++) {
+    for (int i=0; i < vc4util::branchKindNum; i++) {
       if (I->getOpcode()               == vc4util::BranchTakenOpcode[i]
 	  && I->getOperand(2).getMBB() == &MBBN) {
 	MBB.erase(I);

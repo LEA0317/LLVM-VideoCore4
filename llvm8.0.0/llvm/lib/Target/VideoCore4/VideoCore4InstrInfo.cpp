@@ -16,6 +16,7 @@
 #include "VideoCore4Util.h"
 #include "VideoCore4MachineFunctionInfo.h"
 #include "VideoCore4TargetMachine.h"
+
 #include "llvm/IR/Function.h"
 #include "llvm/CodeGen/MachineFrameInfo.h"
 #include "llvm/CodeGen/MachineInstrBuilder.h"
@@ -190,7 +191,7 @@ VideoCore4InstrInfo::AnalyzeBranch(MachineBasicBlock               &MBB,
 
   // If the block ends with a B and a Bcc, handle it.
   if (vc4util::isCondBranch(SecondLastOpc) && vc4util::isUnconditionalJump(LastOpc)) {
-    for (int i=0; i<BRANCH_KIND_NUM; i++) {
+    for (int i=0; i<vc4util::branchKindNum; i++) {
       if (SecondLastOpc == vc4util::BranchTakenOpcode[i]) {
 	// Transform the code
 	//

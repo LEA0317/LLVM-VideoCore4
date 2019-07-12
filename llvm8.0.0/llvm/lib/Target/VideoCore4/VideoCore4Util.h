@@ -9,9 +9,10 @@
 
 #include <iostream>
 
-#define BRANCH_KIND_NUM 22
-
 namespace vc4util {
+
+const int branchKindNum = 22;
+const int numDelayslot  = 3;
 
 inline std::string
 getRegisterName(unsigned reg) {
@@ -198,7 +199,7 @@ reverseCmovConditon(unsigned opcode) {
   return UINT_MAX;
 }
 
-static unsigned BranchTakenOpcode[BRANCH_KIND_NUM] = {
+static unsigned BranchTakenOpcode[branchKindNum] = {
   llvm::VideoCore4::JMP_COMP_EQ_P,
   llvm::VideoCore4::JMP_COMP_NE_P,
   llvm::VideoCore4::JMP_COMP_GT_P,
@@ -222,7 +223,7 @@ static unsigned BranchTakenOpcode[BRANCH_KIND_NUM] = {
   llvm::VideoCore4::JMP_FCOMP_ULT_P,
   llvm::VideoCore4::JMP_FCOMP_ULE_P
 };
-static unsigned BranchNotTakenOpcode[BRANCH_KIND_NUM] = {
+static unsigned BranchNotTakenOpcode[branchKindNum] = {
   llvm::VideoCore4::JMP_COMP_EQ_F_P,
   llvm::VideoCore4::JMP_COMP_NE_F_P,
   llvm::VideoCore4::JMP_COMP_GT_F_P,
@@ -248,14 +249,14 @@ static unsigned BranchNotTakenOpcode[BRANCH_KIND_NUM] = {
 };
 
 inline bool isCondTrueBranch(unsigned opcode) {
-  for (int i=0; i<BRANCH_KIND_NUM; i++) {
+  for (int i=0; i<branchKindNum; i++) {
     if (BranchTakenOpcode[i] == opcode) return true;
   }
   return false;
 }
 
 inline bool isCondFalseBranch(unsigned opcode) {
-  for (int i=0; i<BRANCH_KIND_NUM; i++) {
+  for (int i=0; i<branchKindNum; i++) {
     if (BranchNotTakenOpcode[i] == opcode) return true;
   }
   return false;
@@ -295,7 +296,7 @@ reverseBranchCondition(llvm::MachineInstr *mi) {
   unsigned reverseOpc = UINT_MAX;
   unsigned opc        = mi->getOpcode();
 
-  for (int i=0; i<BRANCH_KIND_NUM; i++) {
+  for (int i=0; i<branchKindNum; i++) {
     if (opc == BranchTakenOpcode[i]) {
       reverseOpc = BranchNotTakenOpcode[i];
       break;

@@ -68,7 +68,7 @@ VideoCore4DelaySlotFiller::runOnMachineFunction(MachineFunction &Fn) {
   return isModified;
 }
 
-// check branch and fill delayslot (Todo: improve this)
+// check branch and fill delayslot
 bool
 VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
   bool                        isChanged = false;
@@ -80,7 +80,22 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
     while (!vc4util::isEffectiveInst(MBBI->getOpcode())) {
       MBBI--;
     }
-    if (MBBI == MBB.getFirstNonDebugInstr()) { break; }
+    if (MBBI == MBB.getFirstNonDebugInstr()) {
+      if (MBBI == MBB.getLastNonDebugInstr()
+	  && (vc4util::isBranch(MBBI->getOpcode())
+	      || vc4util::isReturn(MBBI->getOpcode())
+	      || vc4util::isCall(MBBI->getOpcode()))) {
+	MachineBasicBlock::iterator I  = MBBI;
+	MachineInstr               *MI = &(*I);
+	I++;
+	DebugLoc dl = MI->getDebugLoc();
+	for (int i=0; i<vc4util::numDelayslot; i++) {
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::NOP));
+	}
+	isChanged = true;
+      }
+      break;
+    }
 
     // must fill delay slot
     if (vc4util::isBranch(MBBI->getOpcode())
@@ -92,7 +107,7 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
       DebugLoc  dl = MI->getDebugLoc();
 
       // fill delay slot
-      int                         delayslotInstNum  = 3;
+      int                         delayslotInstNum  = vc4util::numDelayslot;
       MachineBasicBlock::iterator fillCandidateMBBI = MBBI;
       MachineBasicBlock::iterator stopMBBI          = MBBI;
       
