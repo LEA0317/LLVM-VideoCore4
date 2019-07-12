@@ -27,7 +27,7 @@
 #include <iostream>
 
 #define BITCONV() \
-	unsigned reg1 = MI->getOperand(0).getReg();				\
+	unsigned reg1 = MI->getOperand(0).getReg();		\
 	unsigned reg2 = MI->getOperand(1).getReg();             \
 						                \
 	MBB.erase(MI);				                \
