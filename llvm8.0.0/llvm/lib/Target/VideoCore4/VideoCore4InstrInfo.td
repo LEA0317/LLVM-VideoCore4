@@ -1202,10 +1202,10 @@ let isCommutable = 0 in {
 		      [(set (f32 GR32:$rD), (fdiv (f32 GR32:$rA), (f32 GR32:$rB)))]>;
 
     def FTOIrr : S32<(outs GR32:$rD), (ins GR32:$rA),
- 		      "ftoi\t{$rD, $rA",
+ 		      "ftoi\t{$rD, $rA}",
 		      [(set (i32 GR32:$rD), (fp_to_sint (f32 GR32:$rA)))]>;
     def ITOFrr : S32<(outs GR32:$rD), (ins GR32:$rA),
- 		      "ftoi\t{$rD, $rA",
+ 		      "ftoi\t{$rD, $rA}",
 		      [(set (f32 GR32:$rD), (sint_to_fp (i32 GR32:$rA)))]>;
 }
 
