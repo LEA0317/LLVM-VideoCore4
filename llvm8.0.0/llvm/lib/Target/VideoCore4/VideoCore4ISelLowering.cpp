@@ -366,6 +366,7 @@ VideoCore4TargetLowering::LowerCCCArguments(SDValue                             
 	  llvm_unreachable(nullptr);
 	}
       case MVT::i32:
+      case MVT::f32:
 	unsigned VReg = RegInfo.createVirtualRegister(&VideoCore4::GR32RegClass);
 	RegInfo.addLiveIn(VA.getLocReg(),
 			  VReg);
