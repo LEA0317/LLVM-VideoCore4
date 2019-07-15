@@ -28,12 +28,12 @@ def IIPseudo           : InstrItinClass;
 //===----------------------------------------------------------------------===/
 
 // FIX ME
-def VC4GenericItineraries : ProcessorItineraries<[MUL, ADD], [], [
-  InstrItinData<IIALU              , [InstrStage<4, [MUL, ADD]>]>,
+def VC4GenericItineraries : ProcessorItineraries<[MUL, ADD, SFU], [], [
+  InstrItinData<IIALU              , [InstrStage<4, [MUL]>]>,
   InstrItinData<IILSU              , [InstrStage<4, [MUL, ADD]>]>,
-  InstrItinData<IIMUL              , [InstrStage<4, [MUL, ADD]>]>,
+  InstrItinData<IIMUL              , [InstrStage<4, [MUL]>]>,
   InstrItinData<IISFU              , [InstrStage<16, [SFU]>]>,
-  InstrItinData<IIPseudo           , [InstrStage<4, [MUL, ADD]>]>
+  InstrItinData<IIPseudo           , [InstrStage<4, [MUL], 0>,  InstrStage<4, [ADD]>]>
 ]>;
 
 // FIX ME

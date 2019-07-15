@@ -128,6 +128,7 @@ VideoCore4TargetLowering::VideoCore4TargetLowering(const VideoCore4TargetMachine
   setOperationAction(ISD::STACKSAVE,    MVT::Other, Expand);
   setOperationAction(ISD::STACKRESTORE, MVT::Other, Expand);
 
+  setSchedulingPreference(Sched::RegPressure);
   setJumpIsExpensive(true);
   setMinFunctionAlignment(1);
   setPrefFunctionAlignment(1);

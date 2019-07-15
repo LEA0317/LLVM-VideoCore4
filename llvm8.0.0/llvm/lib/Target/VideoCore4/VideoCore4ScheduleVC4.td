@@ -8,17 +8,17 @@
 //===----------------------------------------------------------------------===//
 
 // FIX ME
-def VC4Itineraries : ProcessorItineraries<[MUL, ADD], [], [
-  InstrItinData<IIALU              , [InstrStage<4, [MUL, ADD]>]>,
+def VC4Itineraries : ProcessorItineraries<[MUL, ADD, SFU], [], [
+  InstrItinData<IIALU              , [InstrStage<4, [MUL]>]>,
   InstrItinData<IILSU              , [InstrStage<4, [MUL, ADD]>]>,
-  InstrItinData<IIMUL              , [InstrStage<4, [MUL, ADD]>]>,
+  InstrItinData<IIMUL              , [InstrStage<4, [MUL]>]>,
   InstrItinData<IISFU              , [InstrStage<16, [SFU]>]>,
-  InstrItinData<IIPseudo           , [InstrStage<4, [MUL, ADD]>]>
+  InstrItinData<IIPseudo           , [InstrStage<4, [MUL], 0>,  InstrStage<4, [ADD]>]>
 ]>;
 
 // FIX ME
 def VC4Model : SchedMachineModel {
-  let IssueWidth        = 2;  // Max micro-ops that may be scheduled per cycle.
+  let IssueWidth        = 2; // Max micro-ops that may be scheduled per cycle.
   let LoadLatency       = 4; // Cycles for loads to access the cache.
   let HighLatency       = 16; // Approximation of cycles for "high latency" ops.
   let MicroOpBufferSize = 0; // in-order
