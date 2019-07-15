@@ -176,7 +176,7 @@ let Defs = [SP], Uses = [SP] in {
 			>;
 }
 
-let Defs = [R0, R1, R2, R3, R4, R5, LR], isCall = 1 in {
+let Defs = [LR], Uses = [LR], isCall = 1 in {
 	def CALL : S32<(outs), (ins calltarget:$D),
 			"bl\t$D",
 			[(call texternalsym:$D)]>;
