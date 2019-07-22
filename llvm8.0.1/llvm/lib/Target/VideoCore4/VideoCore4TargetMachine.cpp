@@ -171,7 +171,8 @@ VideoCore4PassConfig::addIRPasses() {
   addPass(createSROAPass());
 
   TargetPassConfig::addIRPasses();
-
+  
+  addPass(createInterleavedLoadCombinePass());
   addPass(createInterleavedAccessPass());
   addPass(createSeparateConstOffsetFromGEPPass());
   addPass(createEarlyCSEPass());
