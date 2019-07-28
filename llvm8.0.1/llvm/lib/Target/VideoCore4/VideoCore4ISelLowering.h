@@ -107,6 +107,15 @@ namespace llvm {
                     int          &RefinementSteps,
                     bool         &UseOneConstNR,
                     bool          Reciprocal) const override;
+    
+    EVT
+    getOptimalMemOpType(uint64_t         Size,
+			unsigned         DstAlign,
+			unsigned         SrcAlign,
+			bool             IsMemset,
+			bool             ZeroMemset,
+			bool             MemcpyStrSrc,
+			MachineFunction &MF) const override;
 
     /*SDValue LowerCallResult(SDValue Chain, SDValue InFlag,
                             CallingConv::ID CallConv, bool isVarArg,

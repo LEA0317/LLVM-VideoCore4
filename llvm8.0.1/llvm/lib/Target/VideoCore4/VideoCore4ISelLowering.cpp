@@ -853,3 +853,14 @@ VideoCore4TargetLowering::getSqrtEstimate(SDValue       Operand,
 
   return SDValue();
 }
+
+EVT
+VideoCore4TargetLowering::getOptimalMemOpType(uint64_t         Size,
+					      unsigned         DstAlign,
+					      unsigned         SrcAlign,
+					      bool             IsMemset,
+					      bool             ZeroMemset,
+					      bool             MemcpyStrSrc,
+					      MachineFunction &MF) const {
+  return MVT::i32;
+}
