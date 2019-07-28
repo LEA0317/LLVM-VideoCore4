@@ -12,6 +12,7 @@ add_public_tablegen_target(VideoCore4CommonTableGen)
 add_llvm_target(VideoCore4CodeGen
   VideoCore4AllocaHoisting.cpp
   VideoCore4AsmPrinter.cpp
+  VideoCore4BoolRetToInt.cpp
   VideoCore4CFGOptimizer.cpp
   VideoCore4DelaySlotFiller.cpp 
   VideoCore4DelUseLessJmp.cpp
