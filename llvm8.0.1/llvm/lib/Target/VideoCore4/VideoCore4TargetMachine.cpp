@@ -39,6 +39,7 @@ extern "C" void LLVMInitializeVideoCore4Target() {
   initializeVideoCore4DelJmpPass(*PR);
   initializeVideoCore4CFGOptimizerPass(*PR);
   initializeVideoCore4DelaySlotFillerPass(*PR);
+  initializeVideoCore4AllocaHoistingPass(*PR);
 }
 
 static Reloc::Model
@@ -189,6 +190,7 @@ VideoCore4PassConfig::addPreSched2() {
 bool
 VideoCore4PassConfig::addInstSelector() {
   addPass(createVideoCore4ISelDag(getVideoCore4TargetMachine(), getOptLevel()));
+  addPass(createVideoCore4AllocaHoistingPass());
   return false;
 }
 
