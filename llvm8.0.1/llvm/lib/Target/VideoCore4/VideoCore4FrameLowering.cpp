@@ -183,7 +183,7 @@ VideoCore4FrameLowering::eliminateCallFramePseudoInstr(MachineFunction          
       llvm_unreachable("Cannot handle this call frame pseudo instruction");
     }
   }
-  MBB.erase(I);
+  return MBB.erase(I);
 }
 
 

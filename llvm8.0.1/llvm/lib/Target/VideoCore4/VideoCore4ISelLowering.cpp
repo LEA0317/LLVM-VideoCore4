@@ -196,8 +196,8 @@ SDValue
 VideoCore4TargetLowering::LowerBR_JT(SDValue       Op,
 				     SelectionDAG &DAG) const {
   MachineFunction            &MF      = DAG.getMachineFunction();
-  const MachineJumpTableInfo *MJTI    = MF.getJumpTableInfo();
-  MachineRegisterInfo        &RegInfo = MF.getRegInfo();
+  //const MachineJumpTableInfo *MJTI    = MF.getJumpTableInfo();
+  //MachineRegisterInfo        &RegInfo = MF.getRegInfo();
   
   SDValue Chain = Op.getOperand(0);
   SDValue Table = Op.getOperand(1);
@@ -205,7 +205,7 @@ VideoCore4TargetLowering::LowerBR_JT(SDValue       Op,
   SDLoc dl(Op);
   
   JumpTableSDNode *JT       = cast<JumpTableSDNode>(Table);
-  unsigned         JTI      = JT->getIndex();
+  //unsigned         JTI      = JT->getIndex();
   SDValue          TargetJT = DAG.getTargetJumpTable(JT->getIndex(),
 						     MVT::i32);
   return DAG.getNode(VideoCore4ISD::BR_JT,
