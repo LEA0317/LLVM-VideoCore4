@@ -248,6 +248,8 @@ VideoCore4InstrInfo::insertBranch(MachineBasicBlock       &MBB,
 				  ArrayRef<MachineOperand> Cond,
 				  const DebugLoc          &DL,
 				  int                     *BytesAdded) const {
+  llvm_unreachable("VC4 does not have true condition branch");
+  /*
   if (Cond.empty()) {
     BuildMI(&MBB, DL, get(VideoCore4::JMP))
       .addMBB(TBB);
@@ -268,6 +270,7 @@ VideoCore4InstrInfo::insertBranch(MachineBasicBlock       &MBB,
     .addMBB(FBB);
 
   return 3;
+  */
 }
 
 unsigned
