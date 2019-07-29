@@ -72,13 +72,17 @@ public:
 			     SmallVectorImpl<MachineOperand> &Cond,
 			     bool                             AllowModify = false) const;
 
-  virtual unsigned InsertBranch(MachineBasicBlock        &MBB,
-				MachineBasicBlock        *TBB,
-                                 MachineBasicBlock       *FBB,
-                                 ArrayRef<MachineOperand> Cond,
-                                 DebugLoc                 DL) const;
+  virtual unsigned
+  insertBranch(MachineBasicBlock       &MBB,
+	       MachineBasicBlock       *TBB,
+	       MachineBasicBlock       *FBB,
+	       ArrayRef<MachineOperand> Cond,
+	       const DebugLoc          &DL,
+	       int                     *BytesAdded) const;
 
-  virtual unsigned RemoveBranch(MachineBasicBlock &MBB) const;
+  virtual unsigned
+  removeBranch(MachineBasicBlock &MBB,
+	       int               *BytesRemoved) const;
 
   void adjustStackPtr(int64_t                     amount,
 		      MachineBasicBlock          &MBB,

@@ -242,16 +242,54 @@ VideoCore4InstrInfo::AnalyzeBranch(MachineBasicBlock               &MBB,
 }
 
 unsigned
-VideoCore4InstrInfo::InsertBranch(MachineBasicBlock       &MBB,
+VideoCore4InstrInfo::insertBranch(MachineBasicBlock       &MBB,
 				  MachineBasicBlock       *TBB,
 				  MachineBasicBlock       *FBB,
 				  ArrayRef<MachineOperand> Cond,
-				  DebugLoc                 DL) const {
-  llvm_unreachable("InsertBranch");
+				  const DebugLoc          &DL,
+				  int                     *BytesAdded) const {
+  if (Cond.empty()) {
+    BuildMI(&MBB, DL, get(VideoCore4::JMP))
+      .addMBB(TBB);
+    return 1;
+  }
+
+  BuildMI(&MBB, DL, get(VideoCore4::CMP_G))
+    .addReg(VideoCore4::TMP)
+    .addReg(VideoCore4::TMP);
+  BuildMI(&MBB, DL, get(VideoCore4::JMP_CC_EQ))
+    .addMBB(TBB);
+
+  if (!FBB) {
+    return 2;
+  }
+
+  BuildMI(&MBB, DL, get(VideoCore4::JMP))
+    .addMBB(FBB);
+
+  return 3;
 }
 
 unsigned
-VideoCore4InstrInfo::RemoveBranch(MachineBasicBlock &MBB) const {
-  llvm_unreachable("RemoveBranch");
+VideoCore4InstrInfo::removeBranch(MachineBasicBlock &MBB,
+				  int               *BytesRemoved) const {
+  MachineBasicBlock::iterator I = MBB.end();
+  unsigned Count = 0;
+  while (I != MBB.begin()) {
+    --I;
+
+    if (I->isDebugValue())
+      continue;
+
+    if (vc4util::isBranch(I->getOpcode()) == false)
+      break;
+
+    I->eraseFromParent();
+    I = MBB.end();
+    ++Count;
+  }
+
+  return Count;
 }
+
 

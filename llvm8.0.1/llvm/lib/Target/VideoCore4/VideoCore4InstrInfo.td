@@ -705,6 +705,9 @@ let Defs = [SR] in {
 	def CMP_F : S16<(outs), (ins FR32:$A, FR32:$B),
 			 "cmp\t$A, $B # fast",
 			 []>;
+	def CMP_G : S16<(outs), (ins GR32:$A, GR32:$B),
+			 "cmp\t$A, $B",
+			 []>;
 	def CMP_LI : S48<(outs), (ins GR32:$A, i32imm:$B),
 			  "cmp\t$A, $B # long imm",
 			  []>;
