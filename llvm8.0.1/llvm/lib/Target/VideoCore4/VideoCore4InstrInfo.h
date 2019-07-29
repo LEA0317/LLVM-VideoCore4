@@ -83,6 +83,13 @@ public:
   void adjustStackPtr(int64_t                     amount,
 		      MachineBasicBlock          &MBB,
 		      MachineBasicBlock::iterator I) const;
+
+  virtual unsigned
+  getMachineCSELookAheadLimit() const override {
+    return 5; // ToDo(konda parameter tune)
+  }
+
+
 };
 
 }
