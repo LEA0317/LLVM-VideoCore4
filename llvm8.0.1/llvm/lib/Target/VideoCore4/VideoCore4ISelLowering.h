@@ -86,13 +86,14 @@ namespace llvm {
 			   SelectionDAG                          &DAG,
                            SmallVectorImpl<SDValue>              &InVals) const;
 
-    SDValue LowerCCCArguments(SDValue                               Chain,
-                              CallingConv::ID                       CallConv,
-                              bool                                  isVarArg,
-                              const SmallVectorImpl<ISD::InputArg> &Ins,
-                              const SDLoc                          &dl,
-                              SelectionDAG                         &DAG,
-                              SmallVectorImpl<SDValue>             &InVals) const;
+    SDValue
+    LowerCCCArguments(SDValue                               Chain,
+		      CallingConv::ID                       CallConv,
+		      bool                                  isVarArg,
+		      const SmallVectorImpl<ISD::InputArg> &Ins,
+		      const SDLoc                          &dl,
+		      SelectionDAG                         &DAG,
+		      SmallVectorImpl<SDValue>             &InVals) const;
     
     SDValue
     getRecipEstimate(SDValue       Operand,
