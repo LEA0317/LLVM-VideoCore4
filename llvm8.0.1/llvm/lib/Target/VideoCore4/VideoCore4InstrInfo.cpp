@@ -134,7 +134,7 @@ VideoCore4InstrInfo::adjustStackPtr(int64_t                     amount,
 }
 
 bool
-VideoCore4InstrInfo::AnalyzeBranch(MachineBasicBlock               &MBB,
+VideoCore4InstrInfo::analyzeBranch(MachineBasicBlock               &MBB,
 				   MachineBasicBlock              *&TBB,
 				   MachineBasicBlock              *&FBB,
 				   SmallVectorImpl<MachineOperand> &Cond,
@@ -248,29 +248,24 @@ VideoCore4InstrInfo::insertBranch(MachineBasicBlock       &MBB,
 				  ArrayRef<MachineOperand> Cond,
 				  const DebugLoc          &DL,
 				  int                     *BytesAdded) const {
-  llvm_unreachable("VC4 does not have true condition branch");
-  /*
   if (Cond.empty()) {
     BuildMI(&MBB, DL, get(VideoCore4::JMP))
       .addMBB(TBB);
     return 1;
   }
 
-  BuildMI(&MBB, DL, get(VideoCore4::CMP_G))
-    .addReg(VideoCore4::TMP)
-    .addReg(VideoCore4::TMP);
-  BuildMI(&MBB, DL, get(VideoCore4::JMP_CC_EQ))
+  // FIXME(konda): handle this
+  BuildMI(&MBB, DL, get(VideoCore4::JMP_TRUE_P))
     .addMBB(TBB);
 
   if (!FBB) {
-    return 2;
+    return 1;
   }
 
   BuildMI(&MBB, DL, get(VideoCore4::JMP))
     .addMBB(FBB);
 
-  return 3;
-  */
+  return 2;
 }
 
 unsigned

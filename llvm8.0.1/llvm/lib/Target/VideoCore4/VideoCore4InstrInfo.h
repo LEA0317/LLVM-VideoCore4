@@ -41,7 +41,8 @@ public:
   /// such, whenever a client has an instance of instruction info, it should
   /// always be able to get register info as well (through this method).
   ///
-  virtual const VideoCore4RegisterInfo& getRegisterInfo() const { return RI; }
+  virtual const VideoCore4RegisterInfo&
+  getRegisterInfo() const { return RI; }
 
   void
   copyPhysReg(MachineBasicBlock          &MBB,
@@ -51,26 +52,29 @@ public:
 	      unsigned                    SrcReg,
 	      bool                        KillSrc) const override;
 
-  virtual void storeRegToStackSlot(MachineBasicBlock          &MBB,
-                                   MachineBasicBlock::iterator MBBI,
-                                   unsigned                    SrcReg,
-				   bool                        isKill,
-				   int                         FrameIndex,
-                                   const TargetRegisterClass  *RC,
-                                   const TargetRegisterInfo   *TRI) const;
+  virtual void
+  storeRegToStackSlot(MachineBasicBlock          &MBB,
+		      MachineBasicBlock::iterator MBBI,
+		      unsigned                    SrcReg,
+		      bool                        isKill,
+		      int                         FrameIndex,
+		      const TargetRegisterClass  *RC,
+		      const TargetRegisterInfo   *TRI) const;
 
-  virtual void loadRegFromStackSlot(MachineBasicBlock          &MBB,
-				    MachineBasicBlock::iterator MBBI,
-				    unsigned                    DestReg,
-				    int                         FrameIndex,
-				    const TargetRegisterClass  *RC,
-				    const TargetRegisterInfo   *TRI) const;
+  virtual void
+  loadRegFromStackSlot(MachineBasicBlock          &MBB,
+		       MachineBasicBlock::iterator MBBI,
+		       unsigned                    DestReg,
+		       int                         FrameIndex,
+		       const TargetRegisterClass  *RC,
+		       const TargetRegisterInfo   *TRI) const;
 
-  virtual bool AnalyzeBranch(MachineBasicBlock               &MBB,
-			     MachineBasicBlock              *&TBB,
-			     MachineBasicBlock              *&FBB,
-			     SmallVectorImpl<MachineOperand> &Cond,
-			     bool                             AllowModify = false) const;
+  virtual bool
+  analyzeBranch(MachineBasicBlock               &MBB,
+		MachineBasicBlock              *&TBB,
+		MachineBasicBlock              *&FBB,
+		SmallVectorImpl<MachineOperand> &Cond,
+		bool                             AllowModify = false) const override;
 
   virtual unsigned
   insertBranch(MachineBasicBlock       &MBB,
@@ -78,11 +82,11 @@ public:
 	       MachineBasicBlock       *FBB,
 	       ArrayRef<MachineOperand> Cond,
 	       const DebugLoc          &DL,
-	       int                     *BytesAdded) const;
+	       int                     *BytesAdded) const override;
 
   virtual unsigned
   removeBranch(MachineBasicBlock &MBB,
-	       int               *BytesRemoved) const;
+	       int               *BytesRemoved) const override;
 
   void adjustStackPtr(int64_t                     amount,
 		      MachineBasicBlock          &MBB,

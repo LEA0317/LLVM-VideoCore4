@@ -742,6 +742,10 @@ let isTerminator = 1, isBranch = 1 in {
 		def JMP_CC_HS : JMP_CC<"cc">;
 		def JMP_CC_LO : JMP_CC<"cs">;
 		def JMP_CC_LS : JMP_CC<"ls">;
+
+		def JMP_TRUE_P : VideoCore4Pseudo<(outs), (ins brtarget:$dst),
+		    	       	 	           "brt\t$dst",
+						   []>;
 	}
 
   	let Defs = [SR], isCodeGenOnly = 1 in {
