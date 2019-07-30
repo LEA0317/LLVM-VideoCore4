@@ -59,7 +59,7 @@ public:
 		      bool                        isKill,
 		      int                         FrameIndex,
 		      const TargetRegisterClass  *RC,
-		      const TargetRegisterInfo   *TRI) const;
+		      const TargetRegisterInfo   *TRI) const override;
 
   virtual void
   loadRegFromStackSlot(MachineBasicBlock          &MBB,
@@ -67,7 +67,7 @@ public:
 		       unsigned                    DestReg,
 		       int                         FrameIndex,
 		       const TargetRegisterClass  *RC,
-		       const TargetRegisterInfo   *TRI) const;
+		       const TargetRegisterInfo   *TRI) const override;
 
   virtual bool
   analyzeBranch(MachineBasicBlock               &MBB,
@@ -87,10 +87,11 @@ public:
   virtual unsigned
   removeBranch(MachineBasicBlock &MBB,
 	       int               *BytesRemoved) const override;
-
-  void adjustStackPtr(int64_t                     amount,
-		      MachineBasicBlock          &MBB,
-		      MachineBasicBlock::iterator I) const;
+  
+  void
+  adjustStackPtr(int64_t                     amount,
+		 MachineBasicBlock          &MBB,
+		 MachineBasicBlock::iterator I) const;
 
   virtual unsigned
   getMachineCSELookAheadLimit() const override {

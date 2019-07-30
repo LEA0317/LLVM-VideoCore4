@@ -125,7 +125,7 @@ namespace llvm {
                             SmallVectorImpl<SDValue> &InVals) const;*/
 
     SDValue LowerCall(TargetLowering::CallLoweringInfo &CLI,
-                      SmallVectorImpl<SDValue>         &InVals) const;
+                      SmallVectorImpl<SDValue>         &InVals) const override;
 
     SDValue LowerFormalArguments(SDValue                               Chain,
 				 CallingConv::ID                       CallConv,

@@ -118,10 +118,10 @@ VideoCore4FrameLowering::spillCalleeSavedRegisters(MachineBasicBlock            
 }
 
 bool
-VideoCore4FrameLowering::restoreCalleeSavedRegisters(MachineBasicBlock                  &MBB,
-						     MachineBasicBlock::iterator         MI,
-						     const std::vector<CalleeSavedInfo> &CSI,
-						     const TargetRegisterInfo           *TRI) const {
+VideoCore4FrameLowering::restoreCalleeSavedRegisters(MachineBasicBlock            &MBB,
+						     MachineBasicBlock::iterator   MI,
+						     std::vector<CalleeSavedInfo> &CSI,
+						     const TargetRegisterInfo     *TRI) const {
   return false;
 }
 
@@ -155,8 +155,9 @@ VideoCore4FrameLowering::emitEpilogue(MachineFunction   &MF,
 }
 
 int
-VideoCore4FrameLowering::getFrameIndexOffset(const MachineFunction &MF,
-					     int                    FI) const {
+VideoCore4FrameLowering::getFrameIndexReference(const MachineFunction &MF,
+						int                    FI,
+						unsigned               &FrameReg) const {
   return MF.getFrameInfo().getObjectOffset(FI);
 }
 

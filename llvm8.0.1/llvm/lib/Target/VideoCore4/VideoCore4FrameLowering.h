@@ -38,25 +38,27 @@ public:
   void emitEpilogue(MachineFunction   &MF,
 		    MachineBasicBlock &MBB) const override;
 
-  int getFrameIndexOffset(const MachineFunction &MF,
-			  int                    FI) const;
-  bool hasFP(const MachineFunction &MF) const;
+  int getFrameIndexReference(const MachineFunction &MF,
+			     int                    FI,
+                             unsigned               &FrameReg) const override;
+
+  bool hasFP(const MachineFunction &MF) const override;
 
   MachineBasicBlock::iterator
   eliminateCallFramePseudoInstr(MachineFunction            &MF,
 				MachineBasicBlock          &MBB,
-				MachineBasicBlock::iterator MI) const;
+				MachineBasicBlock::iterator MI) const override;
 
   bool
   spillCalleeSavedRegisters(MachineBasicBlock                  &MBB,
                             MachineBasicBlock::iterator         MI,
                             const std::vector<CalleeSavedInfo> &CSI,
-                            const TargetRegisterInfo           *TRI) const;
-  bool 
-  restoreCalleeSavedRegisters(MachineBasicBlock                  &MBB,
-                              MachineBasicBlock::iterator         MI,
-                              const std::vector<CalleeSavedInfo> &CSI,
-                              const TargetRegisterInfo           *TRI) const;
+                            const TargetRegisterInfo           *TRI) const override;
+  bool
+  restoreCalleeSavedRegisters(MachineBasicBlock            &MBB,
+                              MachineBasicBlock::iterator   MI,
+                              std::vector<CalleeSavedInfo> &CSI,
+                              const TargetRegisterInfo     *TRI) const override;
 };
 
 } // End llvm namespace
