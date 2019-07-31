@@ -20,6 +20,7 @@ add_llvm_target(VideoCore4CodeGen
   VideoCore4InstrInfo.cpp
   VideoCore4ISelDAGToDAG.cpp
   VideoCore4ISelLowering.cpp
+  VideoCore4LowerIntrinsics.cpp
   VideoCore4MachineFunctionInfo.cpp
   VideoCore4MCInstLower.cpp
   VideoCore4RegisterInfo.cpp

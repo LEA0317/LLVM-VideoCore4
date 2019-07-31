@@ -22,8 +22,11 @@ namespace llvm {
   class VideoCore4TargetMachine;
   class VideoCore4AsmPrinter;
   class FunctionPass;
+  class ModulePass;
   class formatted_raw_ostream;
 
+  ModulePass *createVideoCore4LowerIntrinsicsPass(void);
+  
   FunctionPass*
   createVideoCore4ISelDag(VideoCore4TargetMachine &TM,
 			  CodeGenOpt::Level        OptLevel);
@@ -34,6 +37,7 @@ namespace llvm {
   FunctionPass *createVideoCore4CFGOptPass(void);
   FunctionPass *createVideoCore4DelaySlotFillerPass(void);
 
+  void initializeVideoCore4LowerIntrinsicsPass(PassRegistry &);
   void initializeVideoCore4BoolRetToIntPass(PassRegistry &);
   void initializeVideoCore4AllocaHoistingPass(PassRegistry &);
   void initializeVideoCore4DelaySlotFillerPass(PassRegistry&);
