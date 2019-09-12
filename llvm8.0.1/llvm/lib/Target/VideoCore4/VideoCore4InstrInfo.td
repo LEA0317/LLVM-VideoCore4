@@ -1243,7 +1243,7 @@ def FRCP : S32<(outs GR32:$rD), (ins GR32:$rA),
 	        [(set (f32 GR32:$rD), (VCrcp (f32 GR32:$rA)))]>;
 			 
 def : Pat<(fabs (f32 GR32:$rA)),
-          (FMAXABSrr (FSUBrr (f32 TMP), (f32 TMP)))>;
+          (FMAXABSrr (f32 $rA), (FSUBrr (f32 TMP), (f32 TMP)))>;
 
 def : Pat<(fneg (f32 GR32:$rA)),
           (FSUBrr (FSUBrr (f32 TMP), (f32 TMP)), (f32 $rA))>;
