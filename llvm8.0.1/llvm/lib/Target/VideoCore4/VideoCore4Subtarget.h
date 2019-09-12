@@ -31,7 +31,7 @@
 namespace llvm {
 class StringRef;
 class VideoCore4InstrInfo;
-class VideoCore4RegisterInfo;
+struct VideoCore4RegisterInfo;
 class VideoCore4TargetMachine;
 class VideoCore4FrameLowering;
 class VideoCore4TargetLowering;  

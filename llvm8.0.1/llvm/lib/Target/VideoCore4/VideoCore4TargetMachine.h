@@ -56,7 +56,7 @@ public:
   const VideoCore4Subtarget *getSubtargetImpl() const { return &Subtarget; }
   const VideoCore4Subtarget *getSubtargetImpl(const Function &) const override { return &Subtarget; }
   
-  virtual TargetPassConfig *createPassConfig(PassManagerBase &PM);
+  virtual TargetPassConfig *createPassConfig(PassManagerBase &PM) override;
 }; // VideoCore4TargetMachine.
 
 } // end namespace llvm

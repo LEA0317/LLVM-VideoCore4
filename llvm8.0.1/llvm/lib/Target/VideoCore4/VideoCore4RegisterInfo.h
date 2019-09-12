@@ -28,22 +28,22 @@ struct VideoCore4RegisterInfo : public VideoCore4GenRegisterInfo {
 public:
   VideoCore4RegisterInfo();
 
-  const uint16_t *getCalleeSavedRegs(const MachineFunction *MF = 0) const;
+  const MCPhysReg *getCalleeSavedRegs(const MachineFunction *MF = 0) const override;
 
-  BitVector getReservedRegs(const MachineFunction &MF) const;
+  BitVector getReservedRegs(const MachineFunction &MF) const override;
   const TargetRegisterClass* getPointerRegClass(const MachineFunction &MF,
-						unsigned               Kind = 0) const;
+						unsigned               Kind = 0) const override;
 
   void eliminateFrameIndex(MachineBasicBlock::iterator II,
                            int                         SPAdj,
 			   unsigned                    FIOperandNum,
-			   RegScavenger               *RS = NULL) const;
+			   RegScavenger               *RS = NULL) const override;
 
   unsigned
   getRegPressureLimit(const TargetRegisterClass *RC,
                       MachineFunction           &MF) const override;
 
-  unsigned getFrameRegister(const MachineFunction &MF) const;
+  unsigned getFrameRegister(const MachineFunction &MF) const override;
 };
 
 } // end namespace llvm

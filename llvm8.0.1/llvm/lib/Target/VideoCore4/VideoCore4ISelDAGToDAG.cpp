@@ -43,7 +43,7 @@ namespace {
     VideoCore4DAGToDAGISel(VideoCore4TargetMachine &TM, CodeGenOpt::Level OptLevel)
       : SelectionDAGISel(TM, OptLevel) {}
     
-    virtual StringRef getPassName() const {
+    virtual StringRef getPassName() const override {
       return "VideoCore4 DAG->DAG Pattern Instruction Selection";
     }
     
@@ -178,6 +178,7 @@ void VideoCore4DAGToDAGISel::Select(SDNode *N) {
 	CurDAG->SelectNodeTo(N, Opc, MVT::Other, Dest, Chain, Glue);
 	return;
       }
+      break;
     }
   default:
     break;

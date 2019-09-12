@@ -195,7 +195,7 @@ VideoCore4TargetLowering::LowerVASTART(SDValue       Op,
 SDValue
 VideoCore4TargetLowering::LowerBR_JT(SDValue       Op,
 				     SelectionDAG &DAG) const {
-  MachineFunction            &MF      = DAG.getMachineFunction();
+  //MachineFunction            &MF      = DAG.getMachineFunction();
   //const MachineJumpTableInfo *MJTI    = MF.getJumpTableInfo();
   //MachineRegisterInfo        &RegInfo = MF.getRegInfo();
   
@@ -238,9 +238,12 @@ VideoCore4TargetLowering::LowerOperation(SDValue       Op,
     }
   case ISD::FRAMEADDR:
     assert(false);
+    break;
   default:
     llvm_unreachable("unimplemented operand");
   }
+
+  return SDValue();
 }
 
 //===----------------------------------------------------------------------===//
@@ -359,12 +362,7 @@ VideoCore4TargetLowering::LowerCCCArguments(SDValue                             
       switch (RegVT.getSimpleVT().SimpleTy) {
       default:
 	{
-#ifndef NDEBUG
-	  errs() << "LowerFormalArguments Unhandled argument type: "
-		 << RegVT.getSimpleVT().SimpleTy
-		 << "\n";
-#endif
-	  llvm_unreachable(nullptr);
+	  llvm_unreachable("LowerFormalArguments Unhandled argument type: ");
 	}
       case MVT::i32:
       case MVT::f32:
@@ -383,9 +381,9 @@ VideoCore4TargetLowering::LowerCCCArguments(SDValue                             
       // Load the argument to a virtual register
       unsigned ObjSize = VA.getLocVT().getSizeInBits()/8;
       if (ObjSize > StackSlotSize) {
-	errs() << "LowerFormalArguments Unhandled argument type: "
-	       << EVT(VA.getLocVT()).getEVTString()
-	       << "\n";
+	LLVM_DEBUG(dbgs() << "LowerFormalArguments Unhandled argument type: "
+		   << EVT(VA.getLocVT()).getEVTString()
+		   << "\n");
       }
       // Create the frame index object for this incoming parameter...
       int FI = MFI.CreateFixedObject(ObjSize,

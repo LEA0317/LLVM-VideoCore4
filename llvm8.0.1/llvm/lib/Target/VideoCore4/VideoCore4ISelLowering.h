@@ -54,11 +54,11 @@ namespace llvm {
     
     /// LowerOperation - Provide custom lowering hooks for some operations.
     virtual SDValue LowerOperation(SDValue Op,
-				   SelectionDAG &DAG) const;
+				   SelectionDAG &DAG) const override;
 
     /// getTargetNodeName - This method returns the name of a target specific
     /// DAG node.
-    virtual const char *getTargetNodeName(unsigned Opcode) const;
+    virtual const char *getTargetNodeName(unsigned Opcode) const override;
     
   private:
     const VideoCore4Subtarget &Subtarget;
