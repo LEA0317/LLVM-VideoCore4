@@ -1189,10 +1189,10 @@ let isCommutable = 1 in {
 		      [(set (f32 GR32:$rD), (fminimum (f32 GR32:$rA), (f32 GR32:$rB)))]>;
     def FMAXABSrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
 		         "fmaxabs\t{$rD, $rA, $rB}",
-		         [(set (f32 GR32:$rD), (fabs (fmaximum (f32 GR32:$rA), (f32 GR32:$rB))))]>;
+		         [(set (f32 GR32:$rD), (fmaximum (fabs (f32 GR32:$rA)), (fabs (f32 GR32:$rB))))]>;
     def FMINABSrr : S32<(outs GR32:$rD), (ins GR32:$rA, GR32:$rB),
 		         "fminabs\t{$rD, $rA, $rB}",
-		         [(set (f32 GR32:$rD), (fabs (fminimum (f32 GR32:$rA), (f32 GR32:$rB))))]>;
+		         [(set (f32 GR32:$rD), (fminimum (fabs (f32 GR32:$rA)), (fabs (f32 GR32:$rB))))]>;
 }
 
 let isCommutable = 0 in {
@@ -1212,7 +1212,7 @@ let isCommutable = 0 in {
  		      "ftoi\t{$rD, $rA}",
 		      [(set (i32 GR32:$rD), (fp_to_sint (f32 GR32:$rA)))]>;
     def ITOFrr : S32<(outs GR32:$rD), (ins GR32:$rA),
- 		      "ftoi\t{$rD, $rA}",
+ 		      "itof\t{$rD, $rA}",
 		      [(set (f32 GR32:$rD), (sint_to_fp (i32 GR32:$rA)))]>;
 }
 
@@ -1224,7 +1224,6 @@ let Constraints = "$rD = $rA" in {
     def ITOFCONV_P : VideoCore4Pseudo<(outs GR32:$rD), (ins GR32:$rA),
                                        "",
 	                               [(set (f32 GR32:$rD), (bitconvert (i32 GR32:$rA)))]>;
-
 }
 
 def FLOG2 : S32<(outs GR32:$rD), (ins GR32:$rA),
@@ -1244,10 +1243,8 @@ def FRCP : S32<(outs GR32:$rD), (ins GR32:$rA),
 	        [(set (f32 GR32:$rD), (VCrcp (f32 GR32:$rA)))]>;
 			 
 def : Pat<(fabs (f32 GR32:$rA)),
-          (FMAXABSrr (FMAXABSrr (f32 $rA), (FSUBrr (f32 TMP), (f32 TMP))), (FMINABSrr (f32 $rA), (FSUBrr (f32 TMP), (f32 TMP))))>;
+          (FMAXABSrr (FSUBrr (f32 TMP), (f32 TMP)))>;
 
 def : Pat<(fneg (f32 GR32:$rA)),
           (FSUBrr (FSUBrr (f32 TMP), (f32 TMP)), (f32 $rA))>;
 
-//===----------------------------------------------------------------------===//
-// Non-Instruction Patterns
