@@ -13,10 +13,9 @@ CMAKE_FLAGS	+= -DCMAKE_BUILD_TYPE=Release
 CMAKE_FLAGS	+= -DLLVM_ENABLE_LLD=On
 CMAKE_FLAGS	+= -DCMAKE_C_COMPILER=clang-8
 CMAKE_FLAGS	+= -DCMAKE_CXX_COMPILER=clang++-8
-CMAKE_FLAGS	+= -G "Unix Makefiles"
+CMAKE_FLAGS	+= -G Ninja
 
-MAKE		:= make
-MAKE_FLAGS	:= -j`nproc` -l`nproc`
+MAKE		:= ninja all
 
 all: build
 
