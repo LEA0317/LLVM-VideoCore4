@@ -78,6 +78,9 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
   
   for (MBBI = MBB.getLastNonDebugInstr();; MBBI--) {
     while (!vc4util::isEffectiveInst(MBBI->getOpcode())) {
+      if (MBBI == MBB.getFirstNonDebugInstr()) {
+        break;
+      }
       MBBI--;
     }
     if (MBBI == MBB.getFirstNonDebugInstr()) {
