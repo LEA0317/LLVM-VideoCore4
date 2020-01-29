@@ -75,6 +75,9 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
   MachineBasicBlock::iterator MBBI;
   const auto                 &Subtarget = MBB.getParent()->getSubtarget();
   const TargetInstrInfo      *TII       = Subtarget.getInstrInfo();
+
+  // empty MBB
+  if (MBB.size() == 0) return false;
   
   for (MBBI = MBB.getLastNonDebugInstr();; MBBI--) {
     while (!vc4util::isEffectiveInst(MBBI->getOpcode())) {
