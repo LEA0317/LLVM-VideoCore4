@@ -160,8 +160,11 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
 	if (delayslotInstNum == 0) { break; }
 	if (fillCandidateMBBI == MBB.getFirstNonDebugInstr()) { break; }
 	fillCandidateMBBI--;
-	while (!vc4util::isEffectiveInst(fillCandidateMBBI->getOpcode())) { fillCandidateMBBI--; }
-	if (MBBI == MBB.getFirstNonDebugInstr()) { break; }
+	while (!artkUtil::isEffectiveMBBI(fillCandidateMBBI)) {
+	  if (fillCandidateMBBI == MBB.getFirstNonDebugInstr()) break;
+	  fillCandidateMBBI--;
+	}
+	if (fillCandidateMBBI == MBB.getFirstNonDebugInstr()) break;
       }
       
       // insert remain nop
