@@ -279,7 +279,7 @@ VideoCore4InstrInfo::removeBranch(MachineBasicBlock &MBB,
     if (I->isDebugValue())
       continue;
 
-    if (vc4util::isBranch(I->getOpcode()) == false)
+    if (vc4util::isBranchMBBI(I) == false)
       break;
 
     I->eraseFromParent();

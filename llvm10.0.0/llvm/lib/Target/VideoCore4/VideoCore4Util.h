@@ -116,6 +116,27 @@ isEffectiveInst(unsigned opcode) {
   return true;
 }
 
+ // FIX ME
+inline bool
+isEffectiveMBBI(llvm::MachineBasicBlock::iterator MBBI) {
+  unsigned opcode = MBBI->getOpcode();
+  if (opcode >= llvm::VideoCore4::INSTRUCTION_LIST_END) return false;
+
+  switch (opcode) {
+  case llvm::VideoCore4::DBG_VALUE:
+  case llvm::VideoCore4::DBG_LABEL:
+  case llvm::VideoCore4::PHI:
+  case llvm::VideoCore4::IMPLICIT_DEF:
+  case llvm::VideoCore4::CFI_INSTRUCTION:
+    return false;
+  default:
+    return true;
+  }
+
+  // error
+  return true;
+}
+
 inline unsigned
 reverseBranch(unsigned opcode) {
   switch (opcode) {
@@ -274,17 +295,38 @@ isUnconditionalJump(unsigned opcode) {
 }
 
 inline bool
-isCall(unsigned opcode) {
+isCallOpcode(unsigned opcode) {
   return (opcode    == llvm::VideoCore4::CALL
 	  || opcode == llvm::VideoCore4::CALL_R);
 }
 
 inline bool
-isReturn(unsigned opcode) {
+isCallMBBI(llvm::MachineBasicBlock::iterator MBBI) {
+  unsigned opcode = MBBI->getOpcode();
+  return (opcode    == llvm::VideoCore4::CALL
+	  || opcode == llvm::VideoCore4::CALL_R);
+}
+
+inline bool
+isReturnMBBI(llvm::MachineBasicBlock::iterator MBBI) {
+  unsigned opcode = MBBI->getOpcode();
+  return (opcode == llvm::VideoCore4::RET);
+}
+ 
+inline bool
+isReturnOpcode(unsigned opcode) {
   return (opcode == llvm::VideoCore4::RET);
 }
   
-inline bool isBranch(unsigned opcode) {
+inline bool isBranchOpcode(unsigned opcode) {
+  if (isCondBranch(opcode)
+      || isUnconditionalJump(opcode)
+      || isRawBranch(opcode)) return true;
+  return false;
+}
+
+inline bool isBranchMBBI(llvm::MachineBasicBlock::iterator MBBI) {
+  unsigned opcode = MBBI->getOpcode(); 
   if (isCondBranch(opcode)
       || isUnconditionalJump(opcode)
       || isRawBranch(opcode)) return true;
@@ -371,8 +413,8 @@ HasDataDep(const llvm::MachineInstr *MI,
 inline unsigned int
 HasDataDepForDelaySlot(const llvm::MachineInstr *MI,
 		       const llvm::MachineInstr *Other) {
-  if (isCall(MI->getOpcode())
-      || isReturn(MI->getOpcode())) return UINT_MAX;
+  if (isCallOpcode(MI->getOpcode())
+      || isReturnOpcode(MI->getOpcode())) return UINT_MAX;
       
   for (const auto &MO_Use : MI->uses()) {
     if (!MO_Use.isReg()) continue;

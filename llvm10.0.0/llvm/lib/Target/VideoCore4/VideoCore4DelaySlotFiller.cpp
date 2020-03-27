@@ -80,7 +80,7 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
   if (MBB.size() == 0) return false;
   
   for (MBBI = MBB.getLastNonDebugInstr();; MBBI--) {
-    while (!vc4util::isEffectiveInst(MBBI->getOpcode())) {
+    while (!vc4util::isEffectiveMBBI(MBBI)) {
       if (MBBI == MBB.getFirstNonDebugInstr()) {
         break;
       }
@@ -88,9 +88,9 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
     }
     if (MBBI == MBB.getFirstNonDebugInstr()) {
       if (MBBI == MBB.getLastNonDebugInstr()
-	  && (vc4util::isBranch(MBBI->getOpcode())
-	      || vc4util::isReturn(MBBI->getOpcode())
-	      || vc4util::isCall(MBBI->getOpcode()))) {
+	  && (vc4util::isBranchMBBI(MBBI)
+	      || vc4util::isReturnMBBI(MBBI)
+	      || vc4util::isCallMBBI(MBBI))) {
 	MachineBasicBlock::iterator I  = MBBI;
 	MachineInstr               *MI = &(*I);
 	I++;
@@ -104,13 +104,13 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
     }
 
     // must fill delay slot
-    if (vc4util::isBranch(MBBI->getOpcode())
-	|| vc4util::isReturn(MBBI->getOpcode())
-	|| vc4util::isCall(MBBI->getOpcode())) {
+    if (vc4util::isBranchMBBI(MBBI)
+	|| vc4util::isReturnMBBI(MBBI)
+	|| vc4util::isCallMBBI(MBBI)) {
       MachineBasicBlock::iterator I  = MBBI;
       MachineInstr               *MI = &(*I);
       I++;
-      DebugLoc  dl = MI->getDebugLoc();
+      DebugLoc dl = MI->getDebugLoc();
 
       // fill delay slot
       int                         delayslotInstNum  = vc4util::numDelayslot;
@@ -120,9 +120,9 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
       fillCandidateMBBI--;
       for (;;) {
 	// if branch inst, give up
-	if (vc4util::isBranch(fillCandidateMBBI->getOpcode())
-	    || vc4util::isReturn(fillCandidateMBBI->getOpcode())
-	    || vc4util::isCall(fillCandidateMBBI->getOpcode())) {
+	if (vc4util::isBranchMBBI(fillCandidateMBBI)
+	    || vc4util::isReturnMBBI(fillCandidateMBBI)
+	    || vc4util::isCallMBBI(fillCandidateMBBI)) {
 	  break;
 	} else {
 	  MachineBasicBlock::iterator maySchedBoundaryMBBI = fillCandidateMBBI;
@@ -153,14 +153,14 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
 	    if (maySchedBoundaryMBBI == MBB.getLastNonDebugInstr()) { break; }
 	    
 	    maySchedBoundaryMBBI++;
-	    while (!vc4util::isEffectiveInst(maySchedBoundaryMBBI->getOpcode())) { maySchedBoundaryMBBI++; }
+	    while (!vc4util::isEffectiveMBBI(maySchedBoundaryMBBI)) { maySchedBoundaryMBBI++; }
 	    if (MBBI == MBB.getFirstNonDebugInstr()) { break; }
 	  }
 	}
 	if (delayslotInstNum == 0) { break; }
 	if (fillCandidateMBBI == MBB.getFirstNonDebugInstr()) { break; }
 	fillCandidateMBBI--;
-	while (!vc4util::isEffectiveInst(fillCandidateMBBI->getOpcode())) {
+	while (!vc4util::isEffectiveMBBI(fillCandidateMBBI)) {
 	  if (fillCandidateMBBI == MBB.getFirstNonDebugInstr()) break;
 	  fillCandidateMBBI--;
 	}
