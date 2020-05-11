@@ -26,12 +26,12 @@ class Mangler;
   /// VideoCore4MCInstLower - This class is used to lower an MachineInstr
   /// into an MCInst.
   class LLVM_LIBRARY_VISIBILITY VideoCore4MCInstLower {
-    MCContext  &Ctx;
+    // MCContext  &Ctx;
     AsmPrinter &AP;
 
 public:
   VideoCore4MCInstLower(MCContext &ctx, AsmPrinter &printer)
-    : Ctx(ctx), AP(printer) {}
+    : /*Ctx(ctx),*/ AP(printer) {}
   void Lower(const MachineInstr *MI, MCInst &OutMI) const;
 };
 
