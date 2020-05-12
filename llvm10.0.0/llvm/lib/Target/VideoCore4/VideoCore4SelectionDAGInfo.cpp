@@ -11,9 +11,11 @@
 //
 //===----------------------------------------------------------------------===//
 
-#define DEBUG_TYPE "openrisc-selectiondag-info"
 #include "VideoCore4TargetMachine.h"
+
 using namespace llvm;
+
+#define DEBUG_TYPE "openrisc-selectiondag-info"
 
 VideoCore4SelectionDAGInfo::VideoCore4SelectionDAGInfo(const VideoCore4TargetMachine &TM) {
 }

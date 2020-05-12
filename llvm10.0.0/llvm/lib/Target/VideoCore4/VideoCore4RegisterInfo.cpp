@@ -12,8 +12,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-#define DEBUG_TYPE "openrisc-reg-info"
-
 #include "VideoCore4RegisterInfo.h"
 #include "VideoCore4FrameLowering.h"
 #include "VideoCore4.h"
@@ -28,6 +26,8 @@
 #include "llvm/Target/TargetOptions.h"
 #include "llvm/ADT/BitVector.h"
 #include "llvm/Support/ErrorHandling.h"
+
+#define DEBUG_TYPE "openrisc-reg-info"
 
 #define GET_REGINFO_TARGET_DESC
 #include "VideoCore4GenRegisterInfo.inc"

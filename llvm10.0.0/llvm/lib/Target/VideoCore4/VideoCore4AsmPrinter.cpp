@@ -12,7 +12,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-#define DEBUG_TYPE "asm-printer"
 #include "VideoCore4.h"
 #include "VideoCore4InstrInfo.h"
 #include "VideoCore4MCInstLower.h"
@@ -34,7 +33,11 @@
 #include "llvm/MC/MCSymbol.h"
 #include "llvm/Support/TargetRegistry.h"
 #include "llvm/Support/raw_ostream.h"
+
 using namespace llvm;
+
+#define DEBUG_TYPE "asm-printer"
+#define PASS_DESC  "VideoCore4 Assembly Printer"
 
 namespace llvm {
   class VideoCore4AsmPrinter : public AsmPrinter {
@@ -44,7 +47,7 @@ namespace llvm {
       : AsmPrinter(TM, std::move(Streamer)) {}
     
     virtual StringRef getPassName() const {
-      return "VideoCore4 Assembly Printer";
+      return PASS_DESC;
     }
     
     void EmitInstruction(const MachineInstr *MI);

@@ -25,6 +25,7 @@
 using namespace llvm;
 
 #define DEBUG_TYPE "del-jmp"
+#define PASS_DESC  "VideoCore4 Del Useless jmp"
 
 namespace llvm {
   FunctionPass *createVideoCore4DelJmpPass(void);
@@ -40,7 +41,7 @@ namespace {
 
     StringRef
     getPassName() const {
-      return "VideoCore4 Del Useless jmp";
+      return PASS_DESC;
     }
 
     bool
@@ -76,8 +77,8 @@ namespace {
 } // end of anonymous namespace
 
 INITIALIZE_PASS(VideoCore4DelJmp,
-		"del-jmp",
-		"del jump pass",
+		DEBUG_TYPE,
+		PASS_DESC,
 		false,
 		false)
 

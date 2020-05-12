@@ -11,8 +11,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-#define DEBUG_TYPE "vc4-lower"
-
 #include "VideoCore4ISelLowering.h"
 #include "VideoCore4.h"
 #include "VideoCore4MachineFunctionInfo.h"
@@ -36,7 +34,10 @@
 #include "llvm/Support/Debug.h"
 #include "llvm/Support/ErrorHandling.h"
 #include "llvm/Support/raw_ostream.h"
+
 using namespace llvm;
+
+#define DEBUG_TYPE "vc4-lower"
 
 VideoCore4TargetLowering*
 VideoCore4TargetLowering::create(const VideoCore4TargetMachine &TM) {
@@ -47,9 +48,9 @@ VideoCore4TargetLowering::VideoCore4TargetLowering(const VideoCore4TargetMachine
   TargetLowering(tm),
   Subtarget(*tm.getSubtargetImpl()) {
 
-  MaxStoresPerMemset  = (unsigned) 0xffffffff;
-  MaxStoresPerMemcpy  = (unsigned) 0xffffffff;
-  MaxStoresPerMemmove = (unsigned) 0xffffffff;
+  //MaxStoresPerMemset  = (unsigned) 0xffffffff;
+  //MaxStoresPerMemcpy  = (unsigned) 0xffffffff;
+  //MaxStoresPerMemmove = (unsigned) 0xffffffff;
   //TD = getDataLayout();
 
   // Set up the register classes.

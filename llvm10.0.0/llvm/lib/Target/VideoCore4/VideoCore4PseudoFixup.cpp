@@ -11,7 +11,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-#define DEBUG_TYPE "vc4-pseudo-fixup"
 #include "VideoCore4.h"
 #include "VideoCore4Util.h"
 #include "VideoCore4Subtarget.h"
@@ -26,7 +25,10 @@
 #include <cstdlib>
 #include <iostream>
 
-#define BITCONV() \
+#define DEBUG_TYPE "vc4-pseudo-fixup"
+#define PASS_DESC  "VideoCore4 pseudo fixer"
+
+#define BITCONV()						\
 	unsigned reg1 = MI->getOperand(0).getReg();		\
 	unsigned reg2 = MI->getOperand(1).getReg();             \
 						                \
@@ -215,7 +217,7 @@ namespace {
     }
 
     StringRef getPassName() const override {
-      return "VideoCore4 pesudo fixer";
+      return PASS_DESC;
     }
 
     bool runOnMachineBasicBlock(MachineBasicBlock &MBB);
@@ -227,8 +229,8 @@ namespace {
 }
 
 INITIALIZE_PASS(VideoCore4PseudoFixup,
-		"vc4-pseudo-fixup",
-		"VideoCore4 pseudo fixer",
+	        DEBUG_TYPE,
+		PASS_DESC,
 		false,
 		false)
 

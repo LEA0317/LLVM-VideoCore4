@@ -17,9 +17,10 @@
 #include "llvm/IR/Function.h"
 #include "llvm/IR/Instructions.h"
 
-#define DEBUG_TYPE "vc4-alloca-hoisting"
-
 using namespace llvm;
+
+#define DEBUG_TYPE "vc4-alloca-hoisting"
+#define PASS_DESC  "Hoisting alloca instructions in non-entry blocks to the entry block"
 
 namespace {
 // Hoisting the alloca instructions in the non-entry blocks to the entry
@@ -34,7 +35,7 @@ public:
   }
 
   StringRef getPassName() const override {
-    return "VideoCore4 alloca hoisting";
+    return PASS_DESC;
   }
 
   bool runOnFunction(Function &function) override;
@@ -67,8 +68,8 @@ namespace llvm {
 }
 
 INITIALIZE_PASS(VideoCore4AllocaHoisting,
-                "vc4-alloca-hoisting",
-                "Hoisting alloca instructions in non-entry blocks to the entry block",
+                DEBUG_TYPE,
+                PASS_DESC,
                 false,
                 false)
 

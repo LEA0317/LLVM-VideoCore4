@@ -26,6 +26,7 @@
 using namespace llvm;
 
 #define DEBUG_TYPE "vc4-cfg"
+#define PASS_DESC  "cfg opt pass"
 
 namespace llvm {
   FunctionPass *createVideoCore4CFGOptPass(void);
@@ -45,7 +46,7 @@ namespace {
     
     StringRef
     getPassName() const override {
-      return "cfg opt pass";
+      return PASS_DESC;
     }
 
     MachineFunctionProperties
@@ -61,8 +62,8 @@ namespace {
 }
 
 INITIALIZE_PASS(VideoCore4CFGOptimizer,
-                "vc4-cfg",
-                "cfg opt pass",
+                DEBUG_TYPE,
+                PASS_DESC,
                 false,
                 false)
 

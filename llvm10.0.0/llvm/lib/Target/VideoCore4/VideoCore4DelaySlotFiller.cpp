@@ -16,6 +16,7 @@
 using namespace llvm;
 
 #define DEBUG_TYPE "vc4-delayslot-filler"
+#define PASS_DESC  "delay Slot fill opt pass"
 
 namespace llvm {
   FunctionPass *createVideoCore4DelaySlotFillerPass(void);
@@ -33,7 +34,7 @@ namespace {
     bool runOnMachineFunction(MachineFunction &Fn) override;
 
     StringRef getPassName() const override {
-      return "delay Slot fill opt pass";
+      return PASS_DESC;
     }
 
   private:
@@ -44,8 +45,8 @@ namespace {
 }
 
 INITIALIZE_PASS(VideoCore4DelaySlotFiller,
-                "vc4-delayslot-filler",
-                "vc4 delayslot fill pass",
+                DEBUG_TYPE,
+                PASS_DESC,
                 false,
                 false)
 

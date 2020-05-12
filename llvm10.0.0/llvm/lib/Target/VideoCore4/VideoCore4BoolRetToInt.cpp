@@ -61,6 +61,7 @@ using namespace llvm;
 namespace {
 
 #define DEBUG_TYPE "bool-ret-to-int"
+#define PASS_DESC  "Convert i1 constants to i32/i64 if they are returned"
 
 class VideoCore4BoolRetToInt : public FunctionPass {
   static SmallPtrSet<Value *, 8> findAllDefs(Value *V) {
@@ -75,7 +76,7 @@ class VideoCore4BoolRetToInt : public FunctionPass {
       // Operands of CallInst are skipped because they may not be Bool type,
       // and their positions are defined by ABI.
       if (CurrUser && !isa<CallInst>(Curr))
-        for (auto &Op : CurrUser->operands())
+       for (auto &Op : CurrUser->operands())
           if (Defs.insert(Op).second)
             WorkList.push_back(Op);
     }
@@ -269,8 +270,8 @@ private:
 
 char VideoCore4BoolRetToInt::ID = 0;
 INITIALIZE_PASS(VideoCore4BoolRetToInt,
-		"bool-ret-to-int",
-                "Convert i1 constants to i32/i64 if they are returned",
+		DEBUG_TYPE,
+                PASS_DESC,
                 false,
 		false)
 

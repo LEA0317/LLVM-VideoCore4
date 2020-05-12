@@ -17,13 +17,14 @@
 #include "llvm/IR/Module.h"
 #include "llvm/Transforms/Utils/LowerMemIntrinsics.h"
 
-#define DEBUG_TYPE "vc4-lower-intrinsics"
-
 using namespace llvm;
+
+#define DEBUG_TYPE "vc4-lower-intrinsics"
+#define PASS_DESC  "VideoCore4 Lower Intrinsics"
 
 namespace {
 
-const unsigned MaxStaticSize = 512;
+const unsigned MaxStaticSize = 128;
 
 class VideoCore4LowerIntrinsics : public ModulePass {
 public:
@@ -34,7 +35,7 @@ public:
   bool runOnModule(Module &M) override;
   bool expandMemIntrinsicUses(Function &F);
   StringRef getPassName() const override {
-    return "VideoCore4 Lower Intrinsics";
+    return PASS_DESC;
   }
 
   void getAnalysisUsage(AnalysisUsage &AU) const override {
@@ -47,8 +48,8 @@ public:
 char VideoCore4LowerIntrinsics::ID = 0;
 
 INITIALIZE_PASS(VideoCore4LowerIntrinsics,
-		"vc4-lower-intrinsics",
-		"Lower intrinsics",
+		DEBUG_TYPE,
+		PASS_DESC,
 		false,
                 false)
 
