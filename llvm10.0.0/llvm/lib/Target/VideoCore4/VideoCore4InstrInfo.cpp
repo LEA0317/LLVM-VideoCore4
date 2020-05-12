@@ -119,7 +119,7 @@ VideoCore4InstrInfo::adjustStackPtr(int64_t                     amount,
 				    MachineBasicBlock          &MBB,
 				    MachineBasicBlock::iterator I) const {
   DebugLoc DL = I != MBB.end() ? I->getDebugLoc() : DebugLoc();
-  
+
   if (amount < 0) {
     BuildMI(MBB, I, DL, get(VideoCore4::SUB_F_RI), VideoCore4::SP)
       .addReg(VideoCore4::SP)
