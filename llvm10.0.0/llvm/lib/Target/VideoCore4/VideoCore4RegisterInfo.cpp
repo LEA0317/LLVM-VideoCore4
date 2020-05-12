@@ -49,10 +49,8 @@ VideoCore4RegisterInfo::getReservedRegs(const MachineFunction &MF) const {
   BitVector Reserved(getNumRegs());
 
   Reserved.set(VideoCore4::TMP);
-  Reserved.set(VideoCore4::SP);
   Reserved.set(VideoCore4::PC);
-  Reserved.set(VideoCore4::GP);
-  //Reserved.set(VideoCore4::SR);
+  Reserved.set(VideoCore4::SR);
   Reserved.set(VideoCore4::ESP);
 
   return Reserved;
@@ -113,10 +111,6 @@ VideoCore4RegisterInfo::getRegPressureLimit(const TargetRegisterClass *RC,
   case VideoCore4::IR32RegClassID:
     {
       return 3;
-    }
-  case VideoCore4::SR_CLASSRegClassID:
-    {
-      return 1;
     }
   case VideoCore4::PUSHPOP_START_REGSRegClassID:
     {

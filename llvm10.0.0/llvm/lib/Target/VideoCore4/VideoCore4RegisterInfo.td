@@ -41,12 +41,12 @@ def PC  : GRegAlias<"pc",  R31>;
 //  Register Classes
 //===----------------------------------------------------------------------===//
 
-//def CCR : RegisterClass<"VideoCore4", [i32], 32, (add SR)> {
-//  let CopyCost = -1;  // Don't allow copying of status registers.
-//
-//  // CCR is not allocatable.
-//  let isAllocatable = 0;
-//}
+def SR_CLASS : RegisterClass<"VideoCore4", [i32], 32, (add SR)> {
+  let CopyCost = -1;  // Don't allow copying of status registers.
+
+  // SR_CLASS is not allocatable.
+  let isAllocatable = 0;
+}
 
 /* All registers */
 def GR32 : RegisterClass<"VideoCore4", [i32, f32], 32,
@@ -59,9 +59,6 @@ def FR32 : RegisterClass<"VideoCore4", [i32, f32], 32,
 /* Indexable registers */
 def IR32 : RegisterClass<"VideoCore4", [i32], 32,
 	(add R0, GP, SP)>;
-
-def SR_CLASS : RegisterClass<"VideoCore4", [i32], 32,
-	(add SR)>;
 
 def PUSHPOP_START_REGS : RegisterClass<"VideoCore4", [i32], 32,
 	(add R0, R6, R16, GP)>;
