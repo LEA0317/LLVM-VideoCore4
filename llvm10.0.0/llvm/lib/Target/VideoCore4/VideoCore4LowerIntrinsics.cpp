@@ -24,7 +24,7 @@ using namespace llvm;
 
 namespace {
 
-const unsigned MaxStaticSize = 128;
+const unsigned MaxStaticSize = 32;
 
 class VideoCore4LowerIntrinsics : public ModulePass {
 public:
