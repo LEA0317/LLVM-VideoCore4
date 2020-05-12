@@ -303,34 +303,56 @@ isCallOpcode(unsigned opcode) {
 inline bool
 isCallMBBI(llvm::MachineBasicBlock::iterator MBBI) {
   unsigned opcode = MBBI->getOpcode();
-  return (opcode    == llvm::VideoCore4::CALL
-	  || opcode == llvm::VideoCore4::CALL_R);
-}
-
-inline bool
-isReturnMBBI(llvm::MachineBasicBlock::iterator MBBI) {
-  unsigned opcode = MBBI->getOpcode();
-  return (opcode == llvm::VideoCore4::RET);
+  return isCallOpcode(opcode);
 }
  
 inline bool
 isReturnOpcode(unsigned opcode) {
   return (opcode == llvm::VideoCore4::RET);
 }
-  
-inline bool isBranchOpcode(unsigned opcode) {
+
+inline bool
+isReturnMBBI(llvm::MachineBasicBlock::iterator MBBI) {
+  unsigned opcode = MBBI->getOpcode();
+  return isReturnOpcode(opcode);
+}
+
+inline bool
+isCmpOpcode(unsigned opcode) {
+  switch (opcode) {
+  case llvm::VideoCore4::CMP_F:
+  case llvm::VideoCore4::CMP_G:
+  case llvm::VideoCore4::CMP_LI:
+    {
+      return true;
+    }
+  default:
+    {
+      return false;
+    }
+  }
+
+  return false;
+}
+
+inline bool
+isCmpMBBI(llvm::MachineBasicBlock::iterator MBBI) {
+  unsigned opcode = MBBI->getOpcode();
+  return isCmpOpcode(opcode);
+}
+
+inline bool
+isBranchOpcode(unsigned opcode) {
   if (isCondBranch(opcode)
       || isUnconditionalJump(opcode)
       || isRawBranch(opcode)) return true;
   return false;
 }
 
-inline bool isBranchMBBI(llvm::MachineBasicBlock::iterator MBBI) {
+inline bool
+isBranchMBBI(llvm::MachineBasicBlock::iterator MBBI) {
   unsigned opcode = MBBI->getOpcode(); 
-  if (isCondBranch(opcode)
-      || isUnconditionalJump(opcode)
-      || isRawBranch(opcode)) return true;
-  return false;
+  return isBranchOpcode(opcode);
 }
 
 inline unsigned
