@@ -134,6 +134,16 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
 	      break;
 	    }
 
+	    // should not move cmp instr
+	    if (vc4util::isCmpMBBI(fillCandidateMBBI)) {
+	      break;
+	    }
+
+	    // should not move not effective instr
+	    if (!vc4util::isEffectiveMBBI(fillCandidateMBBI)) {
+	      break;
+	    }
+
 	    // fill dalay slot
 	    if (maySchedBoundaryMBBI == stopMBBI) {
 	      MachineInstr *miResched = &(*fillCandidateMBBI);
