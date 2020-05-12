@@ -33,6 +33,7 @@
 using namespace llvm;
 
 #define DEBUG_TYPE "vc4-isel"
+#define PASS_DESC  "VideoCore4 DAG->DAG Pattern Instruction Selection"
 
 /// VideoCore4DAGToDAGISel - VideoCore4 specific code to select VideoCore4 machine
 /// instructions for SelectionDAG operations.
@@ -45,7 +46,7 @@ namespace {
       : SelectionDAGISel(TM, OptLevel) {}
     
     virtual StringRef getPassName() const override {
-      return "VideoCore4 DAG->DAG Pattern Instruction Selection";
+      return PASS_DESC;
     }
     
     /// getI16Imm - Return a target constant with the specified value, of type
@@ -166,12 +167,12 @@ void VideoCore4DAGToDAGISel::Select(SDNode *N) {
       case ISD::CondCode::SETUGE: Opc = VideoCore4::JMP_CC_HS; break;
       case ISD::CondCode::SETULT: Opc = VideoCore4::JMP_CC_LO; break;
       case ISD::CondCode::SETULE: Opc = VideoCore4::JMP_CC_LS; break;
-      case ISD::CondCode::SETEQ: Opc = VideoCore4::JMP_CC_EQ; break;
-      case ISD::CondCode::SETGT: Opc = VideoCore4::JMP_CC_GT; break;
-      case ISD::CondCode::SETGE: Opc = VideoCore4::JMP_CC_GE; break;
-      case ISD::CondCode::SETLT: Opc = VideoCore4::JMP_CC_LT; break;
-      case ISD::CondCode::SETLE: Opc = VideoCore4::JMP_CC_LE; break;
-      case ISD::CondCode::SETNE: Opc = VideoCore4::JMP_CC_NE; break;
+      case ISD::CondCode::SETEQ:  Opc = VideoCore4::JMP_CC_EQ; break;
+      case ISD::CondCode::SETGT:  Opc = VideoCore4::JMP_CC_GT; break;
+      case ISD::CondCode::SETGE:  Opc = VideoCore4::JMP_CC_GE; break;
+      case ISD::CondCode::SETLT:  Opc = VideoCore4::JMP_CC_LT; break;
+      case ISD::CondCode::SETLE:  Opc = VideoCore4::JMP_CC_LE; break;
+      case ISD::CondCode::SETNE:  Opc = VideoCore4::JMP_CC_NE; break;
       default: Opc = 0xFFFFFFFF;
       }
 
