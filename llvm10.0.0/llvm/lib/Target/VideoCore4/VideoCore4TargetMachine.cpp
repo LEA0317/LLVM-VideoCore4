@@ -194,7 +194,6 @@ void
 VideoCore4PassConfig::addPreSched2() {
   addPass(createVideoCore4DelJmpPass());
   addPass(createVideoCore4PseudoFixupPass());
-  addPass(&IfConverterID, false);
 }
   
 bool
