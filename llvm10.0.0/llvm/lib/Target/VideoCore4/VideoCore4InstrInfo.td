@@ -149,7 +149,7 @@ let hasSideEffects = 0 in
 	                          "nop",
 				  []>;
 
-let isReturn = 1, isTerminator = 1, isBarrier = 1, Uses = [LR] in {
+let isReturn = 1, isTerminator = 1, isBarrier = 1 in {
   def RET : S32<(outs), (ins variable_ops),
 		 "b\t%lr",
 		 [(retflag)]>;
@@ -176,14 +176,15 @@ let Defs = [SP], Uses = [SP] in {
 			>;
 }
 
-let Defs = [LR], Uses = [LR], isCall = 1 in {
+let isCall = 1 in {
 	def CALL : S32<(outs), (ins calltarget:$D),
 			"bl\t$D",
 			[(call texternalsym:$D)]>;
-
-	def CALL_R : S16<(outs), (ins GR32:$D),
-			  "bl\t$D",
-			  [(call GR32:$D)]>;
+        let Defs = [LR], Uses = [LR] in {
+              def CALL_R : S16<(outs), (ins GR32:$D),
+	    		        "bl\t$D",
+			        [(call GR32:$D)]>;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -1248,3 +1249,5 @@ def : Pat<(fabs (f32 GR32:$rA)),
 def : Pat<(fneg (f32 GR32:$rA)),
           (FSUBrr (FSUBrr (f32 TMP), (f32 TMP)), (f32 $rA))>;
 
+def : Pat<(call tglobaladdr:$dst),
+          (CALL $dst)>;
