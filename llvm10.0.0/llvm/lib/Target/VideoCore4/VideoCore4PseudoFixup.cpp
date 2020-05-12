@@ -28,18 +28,17 @@
 #define DEBUG_TYPE "vc4-pseudo-fixup"
 #define PASS_DESC  "VideoCore4 pseudo fixer"
 
-#define BITCONV()						\
-	unsigned reg1 = MI->getOperand(0).getReg();		\
-	unsigned reg2 = MI->getOperand(1).getReg();             \
-						                \
-	MBB.erase(MI);				                \
-						                \
-	if (reg1 == reg2) {					\
-	} else {						\
-	  BuildMI(MBB, I, dl, TII->get(VideoCore4::MOV_R))	\
-	    .addReg(reg1)					\
-	    .addReg(reg2);					\
-	}							\
+#define BITCONV()						 \
+	unsigned reg1 = MI->getOperand(0).getReg();		 \
+	unsigned reg2 = MI->getOperand(1).getReg();              \
+						                 \
+	MBB.erase(MI);				                 \
+						                 \
+	if (reg1 == reg2) {					 \
+	} else {						 \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::MOV_R), reg1) \
+	    .addReg(reg2);					 \
+	}						  	 \
 	Changed = true;
 
 #define JUMP_COMP_CC(opcode) \
@@ -73,77 +72,69 @@
         Changed = true;
 
 #define	SELECT_CC(opcode) \
-        unsigned reg1 = MI->getOperand(0).getReg();			      \
-        unsigned reg2 = MI->getOperand(1).getReg();		              \
-        unsigned reg3 = MI->getOperand(2).getReg();		              \
-        unsigned reg4 = MI->getOperand(3).getReg();		              \
-        unsigned reg5 = MI->getOperand(4).getReg();		              \
-								              \
-        MBB.erase(MI);						              \
-								              \
-	if (reg1 == reg3) {					   	      \
-	  BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))	   	      \
-	    .addReg(reg4)						      \
-	    .addReg(reg5);						      \
-	  BuildMI(MBB, I, dl, TII->get(opcode))				      \
-	    .addReg(reg1)						      \
-	    .addReg(reg2);						      \
-	} else if (reg1 == reg2) {					      \
-	  BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))		      \
-	    .addReg(reg4)						      \
-	    .addReg(reg5);						      \
-	  BuildMI(MBB, I, dl, TII->get(vc4util::reverseCmovConditon(opcode))) \
-	    .addReg(reg1)						      \
-	    .addReg(reg3);						      \
-	} else {							      \
-	  BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))		      \
-	    .addReg(reg4)						      \
-	    .addReg(reg5);						      \
-	  BuildMI(MBB, I, dl, TII->get(opcode))				      \
-	    .addReg(reg1)						      \
-	    .addReg(reg2);						      \
- 	  BuildMI(MBB, I, dl, TII->get(vc4util::reverseCmovConditon(opcode))) \
-	    .addReg(reg1)						      \
-	    .addReg(reg3);						      \
-	}								      \
-									      \
+        unsigned reg1 = MI->getOperand(0).getReg();			            \
+        unsigned reg2 = MI->getOperand(1).getReg();		                    \
+        unsigned reg3 = MI->getOperand(2).getReg();		                    \
+        unsigned reg4 = MI->getOperand(3).getReg();		                    \
+        unsigned reg5 = MI->getOperand(4).getReg();		                    \
+								                    \
+        MBB.erase(MI);						                    \
+								                    \
+	if (reg1 == reg3) {					   	            \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))	   	            \
+	    .addReg(reg4)						            \
+	    .addReg(reg5);						            \
+	  BuildMI(MBB, I, dl, TII->get(opcode), reg1)		   	            \
+	    .addReg(reg2);						            \
+	} else if (reg1 == reg2) {					            \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))		            \
+	    .addReg(reg4)						            \
+	    .addReg(reg5);						            \
+	  BuildMI(MBB, I, dl, TII->get(vc4util::reverseCmovConditon(opcode)), reg1) \
+	    .addReg(reg3);						            \
+	} else {							            \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))		            \
+	    .addReg(reg4)						            \
+	    .addReg(reg5);						            \
+	  BuildMI(MBB, I, dl, TII->get(opcode), reg1)			            \
+	    .addReg(reg2);						            \
+ 	  BuildMI(MBB, I, dl, TII->get(vc4util::reverseCmovConditon(opcode)), reg1) \
+	    .addReg(reg3);						            \
+	}								            \
+									            \
         Changed = true;
 
 #define	F_SELECT_CC(opcode) \
-        unsigned reg1 = MI->getOperand(0).getReg();		              \
-        unsigned reg2 = MI->getOperand(1).getReg();		              \
-        unsigned reg3 = MI->getOperand(2).getReg();		              \
-        unsigned reg4 = MI->getOperand(3).getReg();		              \
-        unsigned reg5 = MI->getOperand(4).getReg();		              \
-								              \
-        MBB.erase(MI);						              \
-								              \
-	if (reg1 == reg3) {					              \
-	  BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))	              \
-	    .addReg(reg4)					              \
-	    .addReg(reg5);					              \
-	  BuildMI(MBB, I, dl, TII->get(opcode))			              \
-	    .addReg(reg1)					              \
-	    .addReg(reg2);					              \
-	} else if (reg1 == reg2) {				              \
-	  BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))	              \
-	     .addReg(reg4)						      \
-	     .addReg(reg5);					      	      \
-	  BuildMI(MBB, I, dl, TII->get(vc4util::reverseCmovConditon(opcode))) \
-	    .addReg(reg1)					              \
-	    .addReg(reg3);					              \
-	} else {						              \
-	  BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))	              \
-	    .addReg(reg4)					              \
-	    .addReg(reg5);					              \
-	  BuildMI(MBB, I, dl, TII->get(opcode))			              \
-	    .addReg(reg1)					              \
-	    .addReg(reg2);				   	              \
- 	  BuildMI(MBB, I, dl, TII->get(vc4util::reverseCmovConditon(opcode))) \
-	    .addReg(reg1)					              \
-	    .addReg(reg3);					              \
-	}							              \
-								              \
+        unsigned reg1 = MI->getOperand(0).getReg();		                    \
+        unsigned reg2 = MI->getOperand(1).getReg();		                    \
+        unsigned reg3 = MI->getOperand(2).getReg();		                    \
+        unsigned reg4 = MI->getOperand(3).getReg();		                    \
+        unsigned reg5 = MI->getOperand(4).getReg();		                    \
+								                    \
+        MBB.erase(MI);						                    \
+								                    \
+	if (reg1 == reg3) {					                    \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))	                    \
+	    .addReg(reg4)					                    \
+	    .addReg(reg5);					                    \
+	  BuildMI(MBB, I, dl, TII->get(opcode), reg1)	  		            \
+	    .addReg(reg2);					                    \
+	} else if (reg1 == reg2) {				                    \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))	                    \
+	     .addReg(reg4)						            \
+	     .addReg(reg5);					      	            \
+	  BuildMI(MBB, I, dl, TII->get(vc4util::reverseCmovConditon(opcode)), reg1) \
+	    .addReg(reg3);					                    \
+	} else {						                    \
+	  BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))	                    \
+	    .addReg(reg4)					                    \
+	    .addReg(reg5);					                    \
+	  BuildMI(MBB, I, dl, TII->get(opcode), reg1)			            \
+	    .addReg(reg2);				   	                    \
+ 	  BuildMI(MBB, I, dl, TII->get(vc4util::reverseCmovConditon(opcode)), reg1) \
+	    .addReg(reg3);					                    \
+	}							                    \
+								                    \
         Changed = true;
 
 #define SETCC_RI(opcode) \
@@ -156,11 +147,9 @@
 	BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_LI))	\
 	    .addReg(reg2)					\
 	    .addImm(Imm);					\
-	BuildMI(MBB, I, dl, TII->get(VideoCore4::MOV_FI))	\
-   	    .addReg(reg1)					\
+	BuildMI(MBB, I, dl, TII->get(VideoCore4::MOV_FI), reg1)	\
 	    .addImm(0);						\
-	BuildMI(MBB, I, dl, TII->get(opcode))			\
-	  .addReg(reg1)						\
+	BuildMI(MBB, I, dl, TII->get(opcode), reg1)		\
 	  .addImm(1);						\
 								\
         Changed = true;
@@ -175,11 +164,9 @@
 	BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))	\
 	    .addReg(reg2)					\
 	    .addReg(reg3);					\
-	BuildMI(MBB, I, dl, TII->get(VideoCore4::MOV_FI))	\
-   	    .addReg(reg1)					\
+	BuildMI(MBB, I, dl, TII->get(VideoCore4::MOV_FI), reg1) \
 	    .addImm(0);						\
-	BuildMI(MBB, I, dl, TII->get(opcode))			\
-	  .addReg(reg1)						\
+	BuildMI(MBB, I, dl, TII->get(opcode), reg1)		\
 	  .addImm(1);						\
 								\
         Changed = true;
@@ -194,11 +181,9 @@
 	BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))	\
 	    .addReg(reg2)					\
 	    .addReg(reg3);					\
-	BuildMI(MBB, I, dl, TII->get(VideoCore4::MOV_FI))	\
-   	    .addReg(reg1)					\
+	BuildMI(MBB, I, dl, TII->get(VideoCore4::MOV_FI), reg1)	\
 	    .addImm(0);						\
-	BuildMI(MBB, I, dl, TII->get(opcode))			\
-	  .addReg(reg1)						\
+	BuildMI(MBB, I, dl, TII->get(opcode), reg1)		\
 	  .addImm(1);						\
 								\
         Changed = true;
