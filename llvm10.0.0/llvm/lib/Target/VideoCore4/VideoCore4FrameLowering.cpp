@@ -128,17 +128,16 @@ MachineBasicBlock::iterator
 VideoCore4FrameLowering::eliminateCallFramePseudoInstr(MachineFunction            &MF,
 						       MachineBasicBlock          &MBB,
 						       MachineBasicBlock::iterator I) const {
-  MachineInstr               &MI  = *I;
   const VideoCore4InstrInfo  &TII = *static_cast<const VideoCore4InstrInfo*>(MF.getTarget().getMCInstrInfo());
   
   if (!hasReservedCallFrame(MF)) {
-    if (MI.getOpcode() == VideoCore4::ADJCALLSTACKDOWN) {
+    if (I->getOpcode() == VideoCore4::ADJCALLSTACKDOWN) {
       int64_t Amount = I->getOperand(0).getImm();
       Amount = -Amount;
       TII.adjustStackPtr(Amount,
 			 MBB,
 			 I);
-    } else if (MI.getOpcode() == VideoCore4::ADJCALLSTACKUP) {
+    } else if (I->getOpcode() == VideoCore4::ADJCALLSTACKUP) {
       int64_t Amount = I->getOperand(0).getImm();
       TII.adjustStackPtr(Amount,
 			 MBB,
