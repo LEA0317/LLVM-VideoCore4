@@ -656,8 +656,13 @@ let isAsCheapAsAMove = 1 in
 		     "mov\t$D, $S",
 		     [(set rc:$D, node)]>;
 
-	def MOV_FI : MOV<FR32, (i32 immU5:$S)>;
-	def MOV_RI : MOV<GR32, (i32 immU5:$S)>;
+        class MOVI<RegisterClass rc, dag node> :
+		S16<(outs rc:$D), (ins i32imm:$S),
+		     "mov\t$D, $S",
+		     [(set rc:$D, node)]>;
+
+	def MOV_FI : MOVI<FR32, (i32 immU5:$S)>;
+	def MOV_RI : MOVI<GR32, (i32 immU5:$S)>;
 
 	def MOV_F : S16<(outs FR32:$D), (ins FR32:$A),
 			 "mov\t$D, $A # fast",
