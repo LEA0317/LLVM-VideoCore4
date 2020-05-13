@@ -176,15 +176,13 @@ let Defs = [SP], Uses = [SP] in {
 			>;
 }
 
-let isCall = 1, Defs = [R0, R1] in {
+let isCall = 1, Uses = [LR], Defs = [LR, R0, R1] in {
 	def CALL : S32<(outs), (ins calltarget:$D, variable_ops),
 			"bl\t$D",
 			[(call texternalsym:$D)]>;
-        let Defs = [LR], Uses = [LR] in {
-              def CALL_R : S16<(outs), (ins GR32:$D),
-	    		        "bl\t$D",
-			        [(call GR32:$D)]>;
-	}
+        def CALL_R : S16<(outs), (ins GR32:$D),
+    		          "bl\t$D",
+			  [(call GR32:$D)]>;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -683,7 +681,7 @@ let isAsCheapAsAMove = 1 in
 
 def LEA_PC_LI : S48<(outs GR32:$D), (ins i32imm:$A),
 		     "lea\t$D, $A(%pc) # PCrel load",
-		     [(set GR32:$D, imm:$A)]>
+		     [(set GR32:$D, tglobaladdr:$A)]>
 {
 	bits<5> D;
 	bits<32> A;
