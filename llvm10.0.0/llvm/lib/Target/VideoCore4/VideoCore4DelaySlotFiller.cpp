@@ -79,7 +79,7 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
 
   // empty MBB
   if (MBB.size() == 0) return false;
-  
+
   for (MBBI = MBB.getLastNonDebugInstr();; MBBI--) {
     while (!vc4util::isEffectiveMBBI(MBBI)) {
       if (MBBI == MBB.getFirstNonDebugInstr()) {
@@ -88,10 +88,9 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
       MBBI--;
     }
     if (MBBI == MBB.getFirstNonDebugInstr()) {
-      if (MBBI == MBB.getLastNonDebugInstr()
-	  && (vc4util::isBranchMBBI(MBBI)
-	      || vc4util::isReturnMBBI(MBBI)
-	      || vc4util::isCallMBBI(MBBI))) {
+      if (vc4util::isBranchMBBI(MBBI)
+	  || vc4util::isReturnMBBI(MBBI)
+	  || vc4util::isCallMBBI(MBBI)) {
 	MachineBasicBlock::iterator I  = MBBI;
 	MachineInstr               *MI = &(*I);
 	I++;
@@ -100,8 +99,8 @@ VideoCore4DelaySlotFiller::DelaySlotFiller(MachineBasicBlock &MBB) {
 	  BuildMI(MBB, I, dl, TII->get(VideoCore4::NOP));
 	}
 	isChanged = true;
+	break;
       }
-      break;
     }
 
     // must fill delay slot
