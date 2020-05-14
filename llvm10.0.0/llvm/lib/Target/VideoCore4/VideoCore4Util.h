@@ -269,29 +269,71 @@ static unsigned BranchNotTakenOpcode[branchKindNum] = {
   llvm::VideoCore4::JMP_FCOMP_ULE_F_P
 };
 
-inline bool isCondTrueBranch(unsigned opcode) {
-  for (int i=0; i<branchKindNum; i++) {
-    if (BranchTakenOpcode[i] == opcode) return true;
+inline bool
+isRawCondBranch(unsigned opcode) {
+  switch (opcode) {
+  case llvm::VideoCore4::JMP_CC_EQ:
+  case llvm::VideoCore4::JMP_CC_NE:
+  case llvm::VideoCore4::JMP_CC_GT:
+  case llvm::VideoCore4::JMP_CC_GE:
+  case llvm::VideoCore4::JMP_CC_LT:
+  case llvm::VideoCore4::JMP_CC_LE:
+  case llvm::VideoCore4::JMP_CC_HI:
+  case llvm::VideoCore4::JMP_CC_HS:
+  case llvm::VideoCore4::JMP_CC_LO:
+  case llvm::VideoCore4::JMP_CC_LS:
+    {
+      return true;
+    }
+  default:
+    {
+      return false;
+    }
   }
+
   return false;
 }
 
-inline bool isCondFalseBranch(unsigned opcode) {
+inline bool
+isCondTrueBranch(unsigned opcode) {
+  for (int i=0; i<branchKindNum; i++) {
+    if (BranchTakenOpcode[i] == opcode) return true;
+  }
+
+  return false;
+}
+
+inline bool
+isCondFalseBranch(unsigned opcode) {
   for (int i=0; i<branchKindNum; i++) {
     if (BranchNotTakenOpcode[i] == opcode) return true;
   }
   return false;
 }
 
-inline bool isCondBranch(unsigned opcode) {
-  if (isCondTrueBranch(opcode) || isCondFalseBranch(opcode)) return true;
+inline bool
+isCondBranch(unsigned opcode) {
+  if (isCondTrueBranch(opcode)
+      || isCondTrueBranch(opcode)
+      || isRawCondBranch(opcode)) return true;
   return false;
 }
 
 inline bool
 isUnconditionalJump(unsigned opcode) {
-  return (opcode    == llvm::VideoCore4::JMP
-	  || opcode == llvm::VideoCore4::JMP_R);
+  switch (opcode) {
+  case llvm::VideoCore4::JMP:
+  case llvm::VideoCore4::JMP_R:
+    {
+      return true;
+    }
+  default:
+    {
+      return false;
+    }
+  }
+
+  return false;
 }
 
 inline bool

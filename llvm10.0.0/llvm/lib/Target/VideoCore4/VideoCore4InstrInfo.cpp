@@ -224,6 +224,38 @@ VideoCore4InstrInfo::analyzeBranch(MachineBasicBlock               &MBB,
 	  TBB = FBB = nullptr;
 	  return true;
 	}
+      } else if (vc4util::isRawBranch(SecondLastOpc)) {
+	// Transform the code
+	//
+	// L2:
+	//    bt L1
+	//    ba L2
+	// L1:
+	//    ..
+	//
+	// into
+	//
+	// L2:
+	//   bf L2                                                                                                                                                                                         
+	// L1: 
+	//   ...
+	//
+	MachineBasicBlock *TargetBB = SecondLastInst->getOperand(0).getMBB();
+	if (AllowModify
+	    && LastMBBI != MBB.end()
+	    && MBB.isLayoutSuccessor(TargetBB)) {
+	  MachineBasicBlock::iterator OldInst   = SecondLastInst;
+	  MachineBasicBlock          *BNcondMBB = LastInst->getOperand(0).getMBB();
+
+	  BuildMI(&MBB, MBB.findDebugLoc(SecondLastInst), get(vc4util::reverseBranch(SecondLastOpc)))
+	    .addMBB(BNcondMBB);
+
+	  OldInst->eraseFromParent();
+	  LastMBBI->eraseFromParent();
+
+	  TBB = FBB = nullptr;
+	  return true;
+	}
       }
     }
     TBB = FBB = nullptr;
@@ -290,4 +322,27 @@ VideoCore4InstrInfo::removeBranch(MachineBasicBlock &MBB,
   return Count;
 }
 
+MachineBasicBlock*
+VideoCore4InstrInfo::getBranchDestBlock(const MachineInstr &MI) const {
+  switch (MI.getOpcode()) {
+  default:
+    {
+      llvm_unreachable("cannot handle branch dst");
+    }
+  case VideoCore4::JMP_CC_EQ:
+  case VideoCore4::JMP_CC_NE:
+  case VideoCore4::JMP_CC_GT:
+  case VideoCore4::JMP_CC_GE:
+  case VideoCore4::JMP_CC_LT:
+  case VideoCore4::JMP_CC_LE:
+  case VideoCore4::JMP_CC_HI:
+  case VideoCore4::JMP_CC_HS:
+  case VideoCore4::JMP_CC_LO:
+  case VideoCore4::JMP_CC_LS:
+  case VideoCore4::JMP:
+    {
+      return MI.getOperand(0).getMBB();
+    }
+  }
+}
 

@@ -98,6 +98,8 @@ public:
     return 5; // ToDo(konda parameter tune)
   }
 
+  MachineBasicBlock*
+  getBranchDestBlock(const MachineInstr &MI) const override;
 
 };
 

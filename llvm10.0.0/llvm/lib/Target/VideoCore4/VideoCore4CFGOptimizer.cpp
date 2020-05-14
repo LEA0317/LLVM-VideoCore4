@@ -71,10 +71,10 @@ void
 VideoCore4CFGOptimizer::InvertAndChangeJumpTarget(MachineInstr      &MI,
 						  MachineBasicBlock *NewTarget) {
   const TargetInstrInfo *TII = MI.getParent()->getParent()->getSubtarget().getInstrInfo();
-  unsigned NewOpcode = vc4util::reverseBranchCondition(&MI);
+  unsigned NewOpcode = vc4util::reverseBranch(MI.getOpcode());
 
   MI.setDesc(TII->get(NewOpcode));
-  MI.getOperand(2).setMBB(NewTarget);
+  MI.getOperand(0).setMBB(NewTarget);
 }
 
 bool
@@ -145,8 +145,8 @@ VideoCore4CFGOptimizer::runOnMachineFunction(MachineFunction &Fn) {
 	// The target of the unconditional branch must be JumpAroundTarget.
 	// TODO: If not, we should not invert the unconditional branch.
 	MachineBasicBlock* CondBranchTarget = nullptr;
-	if (vc4util::isCondBranch(MI.getOpcode())) {
-	  CondBranchTarget = MI.getOperand(2).getMBB();
+	if (vc4util::isRawCondBranch(MI.getOpcode())) {
+	  CondBranchTarget = MI.getOperand(0).getMBB();
 	}
 	  
 	if (!LayoutSucc || (CondBranchTarget != JumpAroundTarget)) {
