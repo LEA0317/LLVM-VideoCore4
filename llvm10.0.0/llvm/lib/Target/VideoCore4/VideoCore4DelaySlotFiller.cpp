@@ -52,10 +52,6 @@ INITIALIZE_PASS(VideoCore4DelaySlotFiller,
 
 bool
 VideoCore4DelaySlotFiller::runOnMachineFunction(MachineFunction &Fn) {
-  if (skipFunction(Fn.getFunction())) {
-    return false;
-  }
-
   LLVM_DEBUG(dbgs() << ("== VideoCore4DelaySlotFiller ==\n"));
 
   bool isModified = false;

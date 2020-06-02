@@ -859,10 +859,6 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
 
 bool
 VideoCore4PseudoFixup::runOnMachineFunction(MachineFunction &F) {
-  if (skipFunction(F.getFunction())) {
-    return false;
-  }
-
   LLVM_DEBUG(dbgs() << ("== VideoCore4PseudoFixup ==\n"));
 
   bool Changed = false;
