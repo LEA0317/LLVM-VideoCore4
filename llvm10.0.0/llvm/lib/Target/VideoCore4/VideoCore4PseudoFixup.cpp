@@ -859,7 +859,10 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
 
 bool
 VideoCore4PseudoFixup::runOnMachineFunction(MachineFunction &F) {
-  LLVM_DEBUG(dbgs() << ("== VideoCore4PseudoFixup ==\n"));
+  std::string func = "== VideoCore4PseudoFixup == (";
+  func += F.getName().data();
+  func += ")\n";
+  LLVM_DEBUG(dbgs() << func);
 
   bool Changed = false;
 

@@ -83,7 +83,10 @@ VideoCore4CFGOptimizer::runOnMachineFunction(MachineFunction &Fn) {
     return false;
   }
 
-  LLVM_DEBUG(dbgs() << ("== VideoCore4CFGOptimizer ==\n"));
+  std::string func = "== VideoCore4CFGOptimizer == (";
+  func += Fn.getName().data();
+  func += ")\n";
+  LLVM_DEBUG(dbgs() << func);
   
   // Loop over all of the basic blocks.
   for (MachineFunction::iterator MBBb = Fn.begin(), MBBe = Fn.end();

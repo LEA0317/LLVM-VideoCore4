@@ -52,7 +52,10 @@ INITIALIZE_PASS(VideoCore4DelaySlotFiller,
 
 bool
 VideoCore4DelaySlotFiller::runOnMachineFunction(MachineFunction &Fn) {
-  LLVM_DEBUG(dbgs() << ("== VideoCore4DelaySlotFiller ==\n"));
+  std::string func = "== VideoCore4DelaySlotFiller == (";
+  func += Fn.getName().data();
+  func += ")\n";
+  LLVM_DEBUG(dbgs() << func);
 
   bool isModified = false;
 
