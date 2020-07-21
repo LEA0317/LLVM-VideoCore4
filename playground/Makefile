@@ -1,8 +1,8 @@
-BIN_DIR 	:= ../llvm9.0.1/llvm/build/bin
+BIN_DIR 	:= ../llvm10.0.1/llvm/build/bin
 #INC_DIR	:= 
 
 CLANG		:= $(BIN_DIR)/clang
-CLANG_FLAGS	+= -O3
+CLANG_FLAGS	+= -Ofast
 CLANG_FLAGS	+= -target videocore -mcpu=vc4
 #CLANG_FLAGS	+= -flto=thin
 
