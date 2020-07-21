@@ -218,8 +218,10 @@ bool BranchFolder::OptimizeFunction(MachineFunction &MF,
     MadeChangeThisIteration    = TailMergeBlocks(MF);
     // No need to clean up if tail merging does not change anything after the
     // block placement.
+#if 0 // konda
     if (!AfterBlockPlacement || MadeChangeThisIteration)
       MadeChangeThisIteration |= OptimizeBranches(MF);
+#endif
     if (EnableHoistCommonCode)
       MadeChangeThisIteration |= HoistCommonCode(MF);
     MadeChange |= MadeChangeThisIteration;

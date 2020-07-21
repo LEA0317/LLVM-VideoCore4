@@ -1192,9 +1192,7 @@ void TargetPassConfig::addOptimizedRegAlloc() {
 /// Add passes that optimize machine instructions after register allocation.
 void TargetPassConfig::addMachineLateOptimization() {
   // Branch folding must be run after regalloc and prolog/epilog insertion.
-#if 0 // konda
   addPass(&BranchFolderPassID);
-#endif
 
   // Tail duplication.
   // Note that duplicating tail just increases code size and degrades
