@@ -38,7 +38,7 @@ namespace llvm {
     
     bool isBlockOnlyReachableByFallthrough(const MachineBasicBlock *MBB) const;
     
-    virtual void EmitInstruction(const MachineInstr *MI);
+    void emitInstruction(const MachineInstr *MI) override;
 
     void printOperand(const MachineInstr *MI,
 		      unsigned            OpNo,

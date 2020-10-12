@@ -50,12 +50,12 @@ namespace llvm {
       return PASS_DESC;
     }
     
-    void EmitInstruction(const MachineInstr *MI);
+    void emitInstruction(const MachineInstr *MI);
   };
   
   
   //===----------------------------------------------------------------------===//
-  void VideoCore4AsmPrinter::EmitInstruction(const MachineInstr *MI) {
+  void VideoCore4AsmPrinter::emitInstruction(const MachineInstr *MI) {
     VideoCore4MCInstLower MCInstLowering(OutContext,
 					 *this);
     SmallString<256>    Str;
