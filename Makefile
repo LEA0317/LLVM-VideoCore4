@@ -1,5 +1,5 @@
 ### Makefile for VideoCore IV compiler ###
-SRC_DIR		:= $(CURDIR)/llvm11.1.0/llvm
+SRC_DIR		:= $(CURDIR)/llvm12.0.0/llvm
 BUILD_DIR	:= $(SRC_DIR)/build
 BIN_DIR		:= $(BUILD_DIR)/bin
 
