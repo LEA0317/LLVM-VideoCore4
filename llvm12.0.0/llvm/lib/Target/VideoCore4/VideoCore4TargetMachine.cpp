@@ -160,7 +160,9 @@ bool
 VideoCore4PassConfig::addPreISel() {
   addPass(createLowerSwitchPass());
   addPass(createFlattenCFGPass());
+#if 0 // workaround
   addPass(createGlobalMergePass(TM, 4095, false, true));
+#endif
   addPass(createLCSSAPass());
   return false;
 }
