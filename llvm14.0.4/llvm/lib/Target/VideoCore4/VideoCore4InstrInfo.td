@@ -54,12 +54,11 @@ def VideoCoreBR_JT : SDNode<"VideoCore4ISD::BR_JT",
 // An address of something on the stack.
 def stacked : Operand<i32>,
 		ComplexPattern<i32, 2, "SelectStacked", [frameindex], []> {
-	let PrintMethod = "printStacked";
-	let MIOperandInfo = (ops GR32, imm);
+  let PrintMethod = "printStacked";
+  let MIOperandInfo = (ops GR32, imm);
 }
 
-def addrRegImm :
-  ComplexPattern<iPTR, 2, "SelectStacked", [frameindex]>;
+def addrRegImm : ComplexPattern<iPTR, 2, "SelectStacked", [frameindex]>;
 
 def InlineJT : Operand<i32> {
 //  let PrintMethod = "printInlineJT";
@@ -98,46 +97,36 @@ def immSExt16 : PatLeaf<(i32 imm), [{
 }]>;
 
 // true if the immediate fits in a 5-bit unsigned field.
-def immU5 : PatLeaf<
-			(i32 imm),
-			[{
-				return isUInt<5>(N->getZExtValue());
-			}]
-		>;
+def immU5 : PatLeaf<(i32 imm),
+		    [{
+		      return isUInt<5>(N->getZExtValue());
+		    }]>;
 
 // true if the immediate fits in a 6-bit signed field.
-def immS6 : PatLeaf<
-			(i32 imm),
-			[{
-				return isInt<6>(N->getSExtValue());
-			}]
-		>;
+def immS6 : PatLeaf<(i32 imm),
+	   	     [{
+		       return isInt<6>(N->getSExtValue());
+		     }]>;
 
 // true if the immediate fits in a 6-bit unsigned field.
-def immU6 : PatLeaf<
-			(i32 imm),
-			[{
-				return isUInt<6>(N->getZExtValue());
-			}]
-		>;
+def immU6 : PatLeaf<(i32 imm),
+		     [{
+		       return isUInt<6>(N->getZExtValue());
+		     }]>;
 
 // true if the immediate fits in a 12-bit unsigned field.
-def immU12 : PatLeaf<
-			(i32 imm),
-			[{
-				return isUInt<12>(N->getZExtValue());
-			}]
-		>;
+def immU12 : PatLeaf<(i32 imm),
+		      [{
+		        return isUInt<12>(N->getZExtValue());
+	              }]>;
 
 // true if the immediate fits in a 16-bit unsigned field.
-def immU16 : PatLeaf<
-			(i32 imm),
-			[{
-				return isUInt<16>(N->getZExtValue());
-			}]
-		>;
+def immU16 : PatLeaf<(i32 imm),
+		      [{
+		       return isUInt<16>(N->getZExtValue());
+		      }]>;
 
-def brtarget : Operand<OtherVT>;
+def brtarget   : Operand<OtherVT>;
 def calltarget : Operand<i32>;
 
 //===----------------------------------------------------------------------===//
@@ -145,9 +134,9 @@ def calltarget : Operand<i32>;
 //===----------------------------------------------------------------------===//
 
 let hasSideEffects = 0 in
-	def NOP : VideoCore4Inst<(outs), (ins),
-	                          "nop",
-				  []>;
+  def NOP : VideoCore4Inst<(outs), (ins),
+                            "nop",
+		   	    []>;
 
 let isReturn = 1, isTerminator = 1, isBarrier = 1 in {
   def RET : S32<(outs), (ins variable_ops),
@@ -163,26 +152,21 @@ let isReturn = 1, isTerminator = 1, isBarrier = 1 in {
 // Pessimistically assume ADJCALLSTACKDOWN / ADJCALLSTACKUP will become
 // sub / add which can clobber SP.
 let Defs = [SP], Uses = [SP] in {
-	def ADJCALLSTACKDOWN : VideoCore4Inst<
-				(outs), (ins i32imm:$d, i32imm:$e),
-				"#ADJCALLSTACKDOWN $d",
-				[(callseq_start timm:$d, (i32 timm:$e))]
-			>;
-
-	def ADJCALLSTACKUP : VideoCore4Inst<
-				(outs), (ins i32imm:$a, i32imm:$b),
-				"#ADJCALLSTACKUP $a $b",
-				[(callseq_end timm:$a, timm:$b)]
-			>;
+  def ADJCALLSTACKDOWN : VideoCore4Inst<(outs), (ins i32imm:$d, i32imm:$e),
+				         "#ADJCALLSTACKDOWN $d",
+				         [(callseq_start timm:$d, (i32 timm:$e))]>;
+  def ADJCALLSTACKUP : VideoCore4Inst<(outs), (ins i32imm:$a, i32imm:$b),
+				       "#ADJCALLSTACKUP $a $b",
+			   	       [(callseq_end timm:$a, timm:$b)]>;
 }
 
 let isCall = 1, Uses = [LR], Defs = [LR, R0, R1] in {
-	def CALL : S32<(outs), (ins calltarget:$D, variable_ops),
-			"bl\t$D",
-			[(call texternalsym:$D)]>;
-        def CALL_R : S16<(outs), (ins GR32:$D),
-    		          "bl\t$D",
-			  [(call GR32:$D)]>;
+  def CALL : S32<(outs), (ins calltarget:$D, variable_ops),
+  		  "bl\t$D",
+		  [(call texternalsym:$D)]>;
+  def CALL_R : S16<(outs), (ins GR32:$D),
+  	            "bl\t$D",
+	  	   [(call GR32:$D)]>;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -190,252 +174,190 @@ let isCall = 1, Uses = [LR], Defs = [LR, R0, R1] in {
 ////////////////////////////////////////////////////////////////////////////////////
 
 multiclass ALU1_REG<string op, RegisterClass rc, dag node> {
-	let Constraints = "$D = $A" in {
-		def _R : S16<(outs rc:$D), (ins rc:$A),
-			      op,
-			      [(set (i32 rc:$D), node)]>;
-	}
+  let Constraints = "$D = $A" in {
+    def _R : S16<(outs rc:$D), (ins rc:$A),
+   	          op,
+	          [(set (i32 rc:$D), node)]>;
+  }
 }
 
 multiclass ALU1_REG_REG<string op, RegisterClass rc, dag node> {
-	def _RR : S16<(outs rc:$D), (ins rc:$A),
-		       op,
-		       [(set (i32 rc:$D), node)]>;
+  def _RR : S16<(outs rc:$D), (ins rc:$A),
+   	         op,
+	         [(set (i32 rc:$D), node)]>;
 }
 
 multiclass ALU1_REG_IMM<string op, RegisterClass rc, dag node> {
-	def _RI : S16<(outs rc:$D), (ins i32imm:$A),
-		       op,
-		       [(set (i32 rc:$D), node)]>;
+  def _RI : S16<(outs rc:$D), (ins i32imm:$A),
+  	         op,
+	         [(set (i32 rc:$D), node)]>;
 }
 
 multiclass ALU1_F_RI<string op2, string op3, PatFrag node> {
-	defm _F : ALU1_REG<op2, FR32, (node FR32:$A)>;
-	defm _F : ALU1_REG_REG<op3, FR32, (node FR32:$A)>;
+  defm _F : ALU1_REG<op2,     FR32, (node FR32:$A)>;
+  defm _F : ALU1_REG_REG<op3, FR32, (node FR32:$A)>;
 
-	defm _R : ALU1_REG<op2, GR32, (node GR32:$A)>;
-	defm _R : ALU1_REG_REG<op3, GR32, (node GR32:$A)>;
-	defm _R : ALU1_REG_IMM<op3, GR32, (node immU5:$A)>;
+  defm _R : ALU1_REG<op2,     GR32, (node GR32:$A)>;
+  defm _R : ALU1_REG_REG<op3, GR32, (node GR32:$A)>;
+  defm _R : ALU1_REG_IMM<op3, GR32, (node immU5:$A)>;
 }
 
 multiclass ALU1_FI_RI<string op2, string op3, PatFrag node> {
-	defm _F : ALU1_REG<op2, FR32, (node FR32:$A)>;
-	defm _F : ALU1_REG_REG<op3, FR32, (node FR32:$A)>;
-	defm _F : ALU1_REG_IMM<op3, FR32, (node immU5:$A)>;
+  defm _F : ALU1_REG<op2,     FR32, (node FR32:$A)>;
+  defm _F : ALU1_REG_REG<op3, FR32, (node FR32:$A)>;
+  defm _F : ALU1_REG_IMM<op3, FR32, (node immU5:$A)>;
 
-	defm _R : ALU1_REG<op2, GR32, (node GR32:$A)>;
-	defm _R : ALU1_REG_REG<op3, GR32, (node GR32:$A)>;
-	defm _R : ALU1_REG_IMM<op3, GR32, (node immU5:$A)>;
+  defm _R : ALU1_REG<op2,     GR32, (node GR32:$A)>;
+  defm _R : ALU1_REG_REG<op3, GR32, (node GR32:$A)>;
+  defm _R : ALU1_REG_IMM<op3, GR32, (node immU5:$A)>;
 }
 
 /* --- ALU two-input instruction forms -------------------------------------- */
 
 multiclass ALU2_REG_IMM<string op, RegisterClass rc, dag node> {
-	let Constraints = "$D = $A" in {
-		def _RI : S16<(outs rc:$D), (ins rc:$A, i32imm:$B),
-			       op,
-			       [(set (i32 rc:$D), node)]>;
-	}
+  let Constraints = "$D = $A" in {
+    def _RI : S16<(outs rc:$D), (ins rc:$A, i32imm:$B),
+    	           op,
+	           [(set (i32 rc:$D), node)]>;
+  }
 }
 
 multiclass ALU2_REG_IMM_PSEUDO<string op, RegisterClass rc> {
-	let Constraints = "$D = $A" in {
-		def _RI : S16<(outs rc:$D), (ins rc:$A, i32imm:$B),
-			       op,
-			       []>;
-	}
+  let Constraints = "$D = $A" in {
+    def _RI : S16<(outs rc:$D), (ins rc:$A, i32imm:$B),
+    	           op,
+	           []>;
+  }
 }
 
 multiclass ALU2_REG_REG<string op, RegisterClass rc, dag node> {
-	let Constraints = "$D = $A" in {
-		def _RR : S16<(outs rc:$D), (ins rc:$A, rc:$B),
-			       op,
-			       [(set (i32 rc:$D), node)]>;
-	}
+  let Constraints = "$D = $A" in {
+    def _RR : S16<(outs rc:$D), (ins rc:$A, rc:$B),
+  	           op,
+	           [(set (i32 rc:$D), node)]>;
+  }
 }
 
 multiclass ALU2_REG_REG_C<string op, RegisterClass rc, dag node> {
-	let isCommutable = 1 in {
-		defm _C : ALU2_REG_REG<op, rc, node>;
-	}
+  let isCommutable = 1 in {
+    defm _C : ALU2_REG_REG<op, rc, node>;
+  }
 }
 
 multiclass ALU2_REG_REG_IMM<string op, RegisterClass rc, dag node> {
-	def _RRI : S32<(outs rc:$D), (ins rc:$A, i32imm:$B),
-			op,
-			[(set (i32 rc:$D), node)]>;
+  def _RRI : S32<(outs rc:$D), (ins rc:$A, i32imm:$B),
+    	          op,
+		  [(set (i32 rc:$D), node)]>;
 }
 
 multiclass ALU2_REG_REG_REG<string op, RegisterClass rc, dag node> {
-	def _RRR : S32<(outs rc:$D), (ins rc:$A, rc:$B),
-			op,
-			[(set (i32 rc:$D), node)]>;
+  def _RRR : S32<(outs rc:$D), (ins rc:$A, rc:$B),
+ 		  op,
+		  [(set (i32 rc:$D), node)]>;
 }
 
 multiclass ALU2_REG_REG_REG_C<string op, RegisterClass rc, dag node> {
-	let isCommutable = 1 in {
-		defm _C : ALU2_REG_REG_REG<op, rc, node>;
-	}
+  let isCommutable = 1 in {
+    defm _C : ALU2_REG_REG_REG<op, rc, node>;
+  }
 }
 
 multiclass ALU2_FI_RI<string op2, string op3, PatFrag node> {
-	defm _F : ALU2_REG_IMM<op2#" # short", FR32, (node (i32 FR32:$A), (immU5:$B))>;
-	defm _F : ALU2_REG_REG<op2#" # short", FR32, (node (i32 FR32:$A), (i32 FR32:$B))>;
-	defm _R : ALU2_REG_REG_IMM<op3#" # medium", GR32, (node (i32 GR32:$A), (immU5:$B))>;
-	defm _R : ALU2_REG_REG_REG<op3#" # medium", GR32, (node (i32 GR32:$A), (i32 GR32:$B))>;
-	defm _R : ALU2_REG_IMM<op2#" # long", GR32, (node (i32 GR32:$A), (imm:$B))>;
+  defm _F : ALU2_REG_IMM<op2#" # short", FR32, (node (i32 FR32:$A), (immU5:$B))>;
+  defm _F : ALU2_REG_REG<op2#" # short", FR32, (node (i32 FR32:$A), (i32 FR32:$B))>;
+  defm _R : ALU2_REG_REG_IMM<op3#" # medium", GR32, (node (i32 GR32:$A), (immU5:$B))>;
+  defm _R : ALU2_REG_REG_REG<op3#" # medium", GR32, (node (i32 GR32:$A), (i32 GR32:$B))>;
+  defm _R : ALU2_REG_IMM<op2#" # long", GR32, (node (i32 GR32:$A), (imm:$B))>;
 }
 	
 multiclass ALU2_F_RI<string op2, string op3, PatFrag node> {
-	defm _F : ALU2_REG_REG<op2#" # short", FR32, (node (i32 FR32:$A), (i32 FR32:$B))>;
-	defm _F : ALU2_REG_REG_IMM<op3#" # medium", GR32, (node (i32 GR32:$A), (immU5:$B))>;
-	defm _R : ALU2_REG_REG_REG<op3#" # medium", GR32, (node (i32 GR32:$A), (i32 GR32:$B))>;
-	defm _R : ALU2_REG_IMM<op2#" # long", GR32, (node (i32 GR32:$A), (imm:$B))>;
+  defm _F : ALU2_REG_REG<op2#" # short", FR32, (node (i32 FR32:$A), (i32 FR32:$B))>;
+  defm _F : ALU2_REG_REG_IMM<op3#" # medium", GR32, (node (i32 GR32:$A), (immU5:$B))>;
+  defm _R : ALU2_REG_REG_REG<op3#" # medium", GR32, (node (i32 GR32:$A), (i32 GR32:$B))>;
+  defm _R : ALU2_REG_IMM<op2#" # long", GR32, (node (i32 GR32:$A), (imm:$B))>;
 }
 
 /* --- ALU instructions ----------------------------------------------------- */
 
-defm ADD : ALU2_FI_RI<
-		"add\t$D, $B",
-		"add\t$D, $A, $B",
-		PatFrag<
-			(ops node:$inA, node:$inB),
-			(add node:$inA, node:$inB)
-		>
-	>;
-defm ADD_3_LONG : ALU2_REG_REG_IMM<
-		"add\t$D, $A, $B # long",
-		GR32,
-		(add (i32 GR32:$A), imm:$B)
-	>;
+defm ADD : ALU2_FI_RI<"add\t$D, $B",
+		      "add\t$D, $A, $B",
+		      PatFrag<(ops node:$inA, node:$inB),
+			      (add node:$inA, node:$inB)>>;
 
-defm MUL : ALU2_FI_RI<
-		"mul\t$D, $B",
-		"mul\t$D, $A, $B",
-		PatFrag<
-			(ops node:$inA, node:$inB),
-			(mul node:$inA, node:$inB)
-		>
-	>;
+defm ADD_3_LONG : ALU2_REG_REG_IMM<"add\t$D, $A, $B # long",
+		                   GR32,
+		                   (add (i32 GR32:$A), imm:$B)>;
 
-defm XOR : ALU2_F_RI<
-		"eor\t$D, $B",
-		"eor\t$D, $A, $B",
-		PatFrag<
-			(ops node:$inA, node:$inB),
-			(xor node:$inA, node:$inB)
-		>
-	>;
+defm MUL : ALU2_FI_RI<"mul\t$D, $B",
+		      "mul\t$D, $A, $B",
+		      PatFrag<(ops node:$inA, node:$inB),
+			      (mul node:$inA, node:$inB)>>;
 
-defm SUB : ALU2_FI_RI<
-		"sub\t$D, $B",
-		"sub\t$D, $A, $B",
-		PatFrag<
-			(ops node:$inA, node:$inB),
-			(sub node:$inA, node:$inB)
-		>
-	>;
+defm XOR : ALU2_F_RI<"eor\t$D, $B",
+		     "eor\t$D, $A, $B",
+		     PatFrag<(ops node:$inA, node:$inB),
+			     (xor node:$inA, node:$inB)>>;
 
-defm AND : ALU2_F_RI<
-		"and\t$D, $B",
-		"and\t$D, $A, $B",
-		PatFrag<
-			(ops node:$inA, node:$inB),
-			(and node:$inA, node:$inB)
-		>
-	>;
+defm SUB : ALU2_FI_RI<"sub\t$D, $B",
+		      "sub\t$D, $A, $B",
+		      PatFrag<(ops node:$inA, node:$inB),
+			      (sub node:$inA, node:$inB)>>;
 
-defm NOT : ALU1_F_RI<
-		"not\t$D, $D",
-		"not\t$D, $A",
-		PatFrag<
-			(ops node:$in),
-			(xor node:$in, -1)
-		>
-	>;
+defm AND : ALU2_F_RI<"and\t$D, $B",
+		     "and\t$D, $A, $B",
+		     PatFrag<(ops node:$inA, node:$inB),
+			     (and node:$inA, node:$inB)>>;
 
-defm RSUB : ALU2_FI_RI<
-		"rsub\t$D, $B",
-		"rsub\t$D, $A, $B",
-		PatFrag<
-			(ops node:$inA, node:$inB),
-			(sub node:$inB, node:$inA)
-		>
-	>;
+defm NOT : ALU1_F_RI<"not\t$D, $D",
+	  	     "not\t$D, $A",
+		     PatFrag<(ops node:$in),
+			     (xor node:$in, -1)>>;
 
-defm OR : ALU2_F_RI<
-		"or\t$D, $B",
-		"or\t$D, $A, $B",
-		PatFrag<
-			(ops node:$inA, node:$inB),
-			(or node:$inA, node:$inB)
-		>
-	>;
+defm RSUB : ALU2_FI_RI<"rsub\t$D, $B",
+		       "rsub\t$D, $A, $B",
+	  	       PatFrag<(ops node:$inA, node:$inB),
+			       (sub node:$inB, node:$inA)>>;
 
-defm SHR : ALU2_FI_RI<
-		"lsr\t$D, $B",
-		"lsr\t$D, $A, $B",
-		PatFrag<
-			(ops node:$inA, node:$inB),
-			(srl node:$inA, node:$inB)
-		>
-	>;
+defm OR : ALU2_F_RI<"or\t$D, $B",
+		    "or\t$D, $A, $B",
+		    PatFrag<(ops node:$inA, node:$inB),
+			    (or node:$inA, node:$inB)>>;
 
-defm SHL : ALU2_FI_RI<
-		"lsl\t$D, $B",
-		"lsl\t$D, $A, $B",
-		PatFrag<
-			(ops node:$inA, node:$inB),
-			(shl node:$inA, node:$inB)
-		>
-	>;
+defm SHR : ALU2_FI_RI<"lsr\t$D, $B",
+		      "lsr\t$D, $A, $B",
+		      PatFrag<(ops node:$inA, node:$inB),
+			      (srl node:$inA, node:$inB)>>;
 
-defm ASR : ALU2_FI_RI<
-		"asr\t$D, $B",
-		"asr\t$D, $A, $B",
-		PatFrag<
-			(ops node:$inA, node:$inB),
-			(sra node:$inA, node:$inB)
-		>
-	>;
+defm SHL : ALU2_FI_RI<"lsl\t$D, $B",
+		      "lsl\t$D, $A, $B",
+		      PatFrag<(ops node:$inA, node:$inB),
+			      (shl node:$inA, node:$inB)>>;
 
-defm SEXT8 : ALU1_FI_RI<
-		"exts\t$D, 8",
-		"exts\t$D, $A, 8",
-		PatFrag<
-			(ops node:$in),
-			(sext_inreg node:$in, i8)
-		>
-	>;
+defm ASR : ALU2_FI_RI<"asr\t$D, $B",
+		      "asr\t$D, $A, $B",
+		      PatFrag<(ops node:$inA, node:$inB),
+		  	      (sra node:$inA, node:$inB)>>;
 
-defm SEXT16 : ALU1_FI_RI<
-		"exts\t$D, 16",
-		"exts\t$D, $A, 16",
-		PatFrag<
-			(ops node:$in),
-			(sext_inreg node:$in, i16)
-		>
-	>;
+defm SEXT8 : ALU1_FI_RI<"exts\t$D, 8",
+		        "exts\t$D, $A, 8",
+		        PatFrag<(ops node:$in),
+			        (sext_inreg node:$in, i8)>>;
 
-defm NEG : ALU1_F_RI<
-		"neg\t$D, $D",
-		"neg\t$D, $A",
-		PatFrag<
-			(ops node:$in),
-			(sub 0, node:$in)
-		>
-	>;
+defm SEXT16 : ALU1_FI_RI<"exts\t$D, 16",
+		         "exts\t$D, $A, 16",
+		         PatFrag<(ops node:$in),
+			         (sext_inreg node:$in, i16)>>;
+
+defm NEG : ALU1_F_RI<"neg\t$D, $D",
+		     "neg\t$D, $A",
+		     PatFrag<(ops node:$in),
+			     (sub 0, node:$in)>>;
 
 multiclass ADDSCALE<int n> {
-	defm _ : ALU2_F_RI<
-		"addscale\t$D, $B scale "#n,
-		"addscale\t$D, $A, $B scale "#n,
-		PatFrag<
-			(ops node:$inA, node:$inB),
-			(add node:$inA,
-						(shl node:$inB, n))
-		>
-	>;
+  defm _ : ALU2_F_RI<"addscale\t$D, $B scale "#n,
+   	             "addscale\t$D, $A, $B scale "#n,
+	             PatFrag<(ops node:$inA, node:$inB),
+	   	             (add node:$inA, (shl node:$inB, n))>>;
 }
 defm ADDs1 : ADDSCALE<1>;
 defm ADDs2 : ADDSCALE<2>;
@@ -494,153 +416,114 @@ defm DIVU_I : ALU2_REG_REG_IMM<"divu\t$D, $A, $B",
 ////////////////////////////////////////////////////////////////////////////////////
 
 /* Small fastreg loads/stores. */
-
 multiclass MEMST_F<string op, ValueType vt, PatFrag stop> {
-	def _F : S16<
-			(outs), (ins FR32:$S, FR32:$D),
-			"st"#op#"\t$S, ($D)",
-			[(stop (vt FR32:$S), (iPTR FR32:$D))]
-		>;
+  def _F : S16<(outs), (ins FR32:$S, FR32:$D),
+                "st"#op#"\t$S, ($D)",
+	        [(stop (vt FR32:$S), (iPTR FR32:$D))]>;
 }
 
 multiclass MEMLD_F<string op, ValueType vt, PatFrag ldop> {
-	def _F : S16<
-			(outs FR32:$D), (ins FR32:$S),
-			"ld"#op#"\t$D, ($S)",
-			[(set (vt FR32:$D), (ldop (iPTR FR32:$S)))]
-		>;
+  def _F : S16<(outs FR32:$D), (ins FR32:$S),
+  	        "ld"#op#"\t$D, ($S)",
+	        [(set (vt FR32:$D), (ldop (iPTR FR32:$S)))]>;
 }
 
 multiclass MEM_F<string op, ValueType vt, PatFrag stop, PatFrag ldop> {
-	defm _ST : MEMST_F<op, vt, stop>;
-	defm _LD : MEMLD_F<op, vt, ldop>;
+  defm _ST : MEMST_F<op, vt, stop>;
+  defm _LD : MEMLD_F<op, vt, ldop>;
 }
 
-defm MEM8     : MEM_F<"b", i32, truncstorei8, zextloadi8>;
+defm MEM8     : MEM_F<"b",   i32, truncstorei8, zextloadi8>;
 defm MEM8E_LD : MEMLD_F<"b", i32, extloadi8>;
 
-defm MEM16     : MEM_F<"h", i32, truncstorei16, zextloadi16>;
+defm MEM16     : MEM_F<"h",    i32, truncstorei16, zextloadi16>;
 defm MEM16S_LD : MEMLD_F<"cc", i32, sextloadi16>;
-defm MEM16E_LD : MEMLD_F<"h", i32, extloadi16>;
+defm MEM16E_LD : MEMLD_F<"h",  i32, extloadi16>;
 
 defm MEM32  : MEM_F<"", i32, store, load>;
 defm MEM32F : MEM_F<"", f32, store, load>;
 
 /* Indexed loads/stores. */
-
 multiclass MEMST_R_I<string op, ValueType vt, PatFrag stop, PatFrag scale> {
-	def _R : S32<
-			(outs), (ins GR32:$S, GR32:$A, GR32:$B),
-			"st"#op#"\t$S, ($A, $B)",
-			[(stop (vt GR32:$S),
-				(iPTR (scale (i32 GR32:$A), (i32 GR32:$B))))]
-		>;
-
-	def _I : S32<
-			(outs), (ins GR32:$S, GR32:$A, i32imm:$B),
-			"st"#op#"\t$S, $B ($A) # s12-bit displacement",
-			[(stop (vt GR32:$S),
-				(iPTR (add (i32 GR32:$A), immU12:$B)))]
-		>;
-
-	def _LI : S32<
-			(outs), (ins GR32:$S, IR32:$A, i32imm:$B),
-			"st"#op#"\t$S, $B ($A) # s16-bit displacement",
-			[(stop (vt GR32:$S),
-				(iPTR (add (i32 IR32:$A), immU16:$B)))]
-		>;
+  def _R : S32<(outs), (ins GR32:$S, GR32:$A, GR32:$B),
+		"st"#op#"\t$S, ($A, $B)",
+		[(stop (vt GR32:$S),
+		(iPTR (scale (i32 GR32:$A), (i32 GR32:$B))))]>;
+  def _I : S32<(outs), (ins GR32:$S, GR32:$A, i32imm:$B),
+		"st"#op#"\t$S, $B ($A) # s12-bit displacement",
+		[(stop (vt GR32:$S),
+		(iPTR (add (i32 GR32:$A), immU12:$B)))]>;
+  def _LI : S32<(outs), (ins GR32:$S, IR32:$A, i32imm:$B),
+		 "st"#op#"\t$S, $B ($A) # s16-bit displacement",
+		 [(stop (vt GR32:$S),
+		 (iPTR (add (i32 IR32:$A), immU16:$B)))]>;
 }
 
 multiclass MEMLD_R_I<string op, ValueType vt, PatFrag ldop, PatFrag scale> {
-	def _R : S32<
-			(outs GR32:$D), (ins GR32:$A, GR32:$B),
-			"ld"#op#"\t$D, ($A, $B)",
-			[(set (vt GR32:$D),
-				(ldop (iPTR (scale (i32 GR32:$A), (i32 GR32:$B)))))]
-		>;
+  def _R : S32<(outs GR32:$D), (ins GR32:$A, GR32:$B),
+		"ld"#op#"\t$D, ($A, $B)",
+		[(set (vt GR32:$D),
+		(ldop (iPTR (scale (i32 GR32:$A), (i32 GR32:$B)))))]>;
 
-	def _I : S32<
-			(outs GR32:$D), (ins GR32:$A, i32imm:$B),
-			"ld"#op#"\t$D, $B ($A) # s12-bit displacement",
-			[(set (vt GR32:$D),
-				(ldop (iPTR (add (i32 GR32:$A), immU12:$B))))]
-		>;
+  def _I : S32<(outs GR32:$D), (ins GR32:$A, i32imm:$B),
+		"ld"#op#"\t$D, $B ($A) # s12-bit displacement",
+		[(set (vt GR32:$D),
+		(ldop (iPTR (add (i32 GR32:$A), immU12:$B))))]>;
 
-	def _LI : S32<
-			(outs GR32:$D), (ins IR32:$A, i32imm:$B),
-			"ld"#op#"\t$D, $B ($A) # s16-bit displacement",
-			[(set (vt GR32:$D),
-				(ldop (iPTR (add (i32 IR32:$A), immU16:$B))))]
-		>;
+  def _LI : S32<(outs GR32:$D), (ins IR32:$A, i32imm:$B),
+		"ld"#op#"\t$D, $B ($A) # s16-bit displacement",
+		[(set (vt GR32:$D),
+		(ldop (iPTR (add (i32 IR32:$A), immU16:$B))))]>;
 }
 
-multiclass MEM_R_I<string op, ValueType vt, PatFrag stop, PatFrag ldop,
-			PatFrag scale> {
-	defm _LD : MEMLD_R_I<op, vt, ldop, scale>;
-	defm _ST : MEMST_R_I<op, vt, stop, scale>;
+multiclass MEM_R_I<string op, ValueType vt, PatFrag stop, PatFrag ldop, PatFrag scale> {
+  defm _LD : MEMLD_R_I<op, vt, ldop, scale>;
+  defm _ST : MEMST_R_I<op, vt, stop, scale>;
 }
 
-def memb_frag : PatFrag<
-				(ops node:$inA, node:$inB),
-				(add node:$inA, node:$inB)
-			>;
-defm MEM8     : MEM_R_I<"b", i32, truncstorei8, zextloadi8, memb_frag>;
-defm MEM8E_LD : MEMLD_R_I<"b", i32, extloadi8, memb_frag>;
+def memb_frag : PatFrag<(ops node:$inA, node:$inB),
+			(add node:$inA, node:$inB)>;
+defm MEM8     : MEM_R_I<"b",   i32, truncstorei8, zextloadi8, memb_frag>;
+defm MEM8E_LD : MEMLD_R_I<"b", i32, extloadi8,    memb_frag>;
 
-def memh_frag : PatFrag<
-				(ops node:$inA, node:$inB),
-				(add node:$inA, (shl node:$inB, 1))
-			>;
-defm MEM16     : MEM_R_I<"h", i32, truncstorei16, zextloadi16, memh_frag>;
-defm MEM16S_LD : MEMLD_R_I<"cc", i32, sextloadi16, memh_frag>;
-defm MEM16E_LD : MEMLD_R_I<"cc", i32, extloadi16, memh_frag>;
+def memh_frag : PatFrag<(ops node:$inA, node:$inB),
+			(add node:$inA, (shl node:$inB, 1))>;
+defm MEM16     : MEM_R_I<"h",    i32, truncstorei16, zextloadi16, memh_frag>;
+defm MEM16S_LD : MEMLD_R_I<"cc", i32, sextloadi16,   memh_frag>;
+defm MEM16E_LD : MEMLD_R_I<"cc", i32, extloadi16,    memh_frag>;
 
 defm MEM32 : MEM_R_I<"", i32, store, load,
-			PatFrag<
-				(ops node:$inA, node:$inB),
-				(add node:$inA, (shl node:$inB, 2))
-			>
-		>;
+		     PatFrag<
+		     (ops node:$inA, node:$inB),
+		     (add node:$inA, (shl node:$inB, 2))>>;
 
 /* Stack frame loads/stores. */
 
 multiclass MEMFRAME<string op, ValueType vt> {
-	def _LD : S32<
-			(outs GR32:$D), (ins stacked:$A),
-			"ld"#op#"\t$D, $A",
-			[(set (vt GR32:$D), (load (iPTR stacked:$A)))]
-		>;
+  def _LD : S32<(outs GR32:$D), (ins stacked:$A),
+		"ld"#op#"\t$D, $A",
+		[(set (vt GR32:$D), (load (iPTR stacked:$A)))]>;
 
-	def _ST : S32<
-			(outs), (ins GR32:$A, stacked:$B),
-			"st"#op#"\t$A, $B",
-			[(store (vt GR32:$A), (iPTR stacked:$B))]
-		>;
+  def _ST : S32<(outs), (ins GR32:$A, stacked:$B),
+		"st"#op#"\t$A, $B",
+		[(store (vt GR32:$A), (iPTR stacked:$B))]>;
 }
 
-def PUSH : S32<
-			(outs), (ins PUSHPOP_START_REGS:$StartReg, GR32:$EndReg),
-			"push\t$StartReg-$EndReg",
-			[]
-		>;
+def PUSH : S32<(outs), (ins PUSHPOP_START_REGS:$StartReg, GR32:$EndReg),
+		"push\t$StartReg-$EndReg",
+		[]>;
 
-def PUSH_LR : S32<
-			(outs), (ins PUSHPOP_START_REGS:$StartReg, GR32:$EndReg),
-			"push\t$StartReg-$EndReg, %lr",
-			[]
-		>;
+def PUSH_LR : S32<(outs), (ins PUSHPOP_START_REGS:$StartReg, GR32:$EndReg),
+		   "push\t$StartReg-$EndReg, %lr",
+                   []>;
 
-def POP : S32<
-			(outs), (ins PUSHPOP_START_REGS:$StartReg, GR32:$EndReg),
-			"pop\t$StartReg-$EndReg",
-			[]
-		>;
+def POP : S32<(outs), (ins PUSHPOP_START_REGS:$StartReg, GR32:$EndReg),
+	       "pop\t$StartReg-$EndReg",
+	       []>;
 
-def POP_PC : S32<
-			(outs), (ins PUSHPOP_START_REGS:$StartReg, GR32:$EndReg),
-			"push\t$StartReg-$EndReg, %pc",
-			[]
-		>;
+def POP_PC : S32<(outs), (ins PUSHPOP_START_REGS:$StartReg, GR32:$EndReg),
+		  "push\t$StartReg-$EndReg, %pc",
+		  []>;
 
 defm MEMFRAME  : MEMFRAME<"", i32>;
 defm MEMFRAMEF : MEMFRAME<"", f32>;
