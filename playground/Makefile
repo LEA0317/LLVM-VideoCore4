@@ -1,4 +1,4 @@
-BIN_DIR 	:= ../llvm12.0.1/llvm/build/bin
+BIN_DIR 	:= ../llvm14.0.4/llvm/build/bin
 #INC_DIR	:= 
 
 CLANG		:= $(BIN_DIR)/clang
