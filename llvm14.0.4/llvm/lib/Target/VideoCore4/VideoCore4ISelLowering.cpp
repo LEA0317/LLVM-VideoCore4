@@ -147,17 +147,17 @@ VideoCore4TargetLowering::LowerVAARG(SDValue       Op,
   EVT          PtrVT     = VAListPtr.getValueType();
   const Value *SV        = cast<SrcValueSDNode>(Node->getOperand(2))->getValue();
   SDLoc        dl(Node);
-  SDValue VAList = DAG.getLoad(PtrVT,
-			       dl,
-			       InChain,
-			       VAListPtr,
-			       MachinePointerInfo(SV));
+  SDValue      VAList = DAG.getLoad(PtrVT,
+				    dl,
+				    InChain,
+				    VAListPtr,
+				    MachinePointerInfo(SV));
   // Increment the pointer, VAList, to the next vararg
-  SDValue nextPtr = DAG.getNode(ISD::ADD,
-				dl,
-				PtrVT,
-				VAList,
-				DAG.getIntPtrConstant(VT.getSizeInBits() / 8, dl));
+  SDValue      nextPtr = DAG.getNode(ISD::ADD,
+				     dl,
+				     PtrVT,
+				     VAList,
+				     DAG.getIntPtrConstant(VT.getSizeInBits() / 8, dl));
   // Store the incremented VAList to the legalized pointer
   InChain = DAG.getStore(VAList.getValue(1),
 			 dl,
@@ -203,7 +203,7 @@ VideoCore4TargetLowering::LowerBR_JT(SDValue       Op,
   SDValue Chain = Op.getOperand(0);
   SDValue Table = Op.getOperand(1);
   SDValue Index = Op.getOperand(2);
-  SDLoc dl(Op);
+  SDLoc   dl(Op);
   
   JumpTableSDNode *JT       = cast<JumpTableSDNode>(Table);
   //unsigned         JTI      = JT->getIndex();
@@ -367,7 +367,7 @@ VideoCore4TargetLowering::LowerCCCArguments(SDValue                             
 	}
       case MVT::i32:
       case MVT::f32:
-	unsigned VReg = RegInfo.createVirtualRegister(&VideoCore4::GR32RegClass);
+	Register VReg = RegInfo.createVirtualRegister(&VideoCore4::GR32RegClass);
 	RegInfo.addLiveIn(VA.getLocReg(),
 			  VReg);
 	ArgIn = DAG.getCopyFromReg(Chain,
@@ -390,9 +390,8 @@ VideoCore4TargetLowering::LowerCCCArguments(SDValue                             
       int FI = MFI.CreateFixedObject(ObjSize,
 				     LRSaveSize + VA.getLocMemOffset(),
 				     true);
-      
       // Create the SelectionDAG nodes corresponding to a load
-      //from this parameter
+      // from this parameter
       SDValue FIN = DAG.getFrameIndex(FI,
 				      MVT::i32);
       ArgIn = DAG.getLoad(VA.getLocVT(),
@@ -430,7 +429,7 @@ VideoCore4TargetLowering::LowerCCCArguments(SDValue                             
 	offset -= StackSlotSize;
 	SDValue FIN = DAG.getFrameIndex(FI, MVT::i32);
 	// Move argument from phys reg -> virt reg
-	unsigned VReg = RegInfo.createVirtualRegister(&VideoCore4::GR32RegClass);
+	Register VReg = RegInfo.createVirtualRegister(&VideoCore4::GR32RegClass);
 	RegInfo.addLiveIn(ArgRegs[i], VReg);
 	SDValue Val = DAG.getCopyFromReg(Chain,
 					 dl,
@@ -466,13 +465,13 @@ VideoCore4TargetLowering::LowerCCCArguments(SDValue                             
 	 ArgDE = ArgData.end();
        ArgDI != ArgDE; ++ArgDI) {
     if (ArgDI->Flags.isByVal() && ArgDI->Flags.getByValSize()) {
-      unsigned Size     = ArgDI->Flags.getByValSize();
+      unsigned Size      = ArgDI->Flags.getByValSize();
       Align    Alignment = std::max(Align(StackSlotSize),
 				ArgDI->Flags.getNonZeroByValAlign());
       // Create a new object on the stack and copy the pointee into it.
-      int     FI  = MFI.CreateStackObject(Size,
-					  Alignment,
-					  false);
+      int FI  = MFI.CreateStackObject(Size,
+				      Alignment,
+				      false);
       SDValue FIN = DAG.getFrameIndex(FI,
 				      MVT::i32);
       InVals.push_back(FIN);
@@ -535,7 +534,7 @@ VideoCore4TargetLowering::LowerReturn(SDValue                                Cha
   for (unsigned i = 0; i != RVLocs.size(); ++i) {
     CCValAssign &VA = RVLocs[i];
     assert(VA.isRegLoc() && "Can only return in registers!");
-    
+
     Chain = DAG.getCopyToReg(Chain,
 			     dl,
 			     VA.getLocReg(),
@@ -602,7 +601,6 @@ __LowerCallResult(SDValue                             Chain,
 
 #if 0
   // Copy results out of memory.
-  
   for (unsigned i = 0, e = ResultMemLocs.size(); i != e; ++i) {
     int offset = ResultMemLocs[i].first;
     unsigned index = ResultMemLocs[i].second;
@@ -684,23 +682,29 @@ VideoCore4TargetLowering::LowerCCCCallTo(SDValue                                
     default: llvm_unreachable("Unknown loc info!");
     case CCValAssign::Full: break;
     case CCValAssign::SExt:
-      Arg = DAG.getNode(ISD::SIGN_EXTEND,
-			dl,
-			VA.getLocVT(),
-			Arg);
-      break;
+      {
+	Arg = DAG.getNode(ISD::SIGN_EXTEND,
+			  dl,
+			  VA.getLocVT(),
+			  Arg);
+	break;
+      }
     case CCValAssign::ZExt:
-      Arg = DAG.getNode(ISD::ZERO_EXTEND,
-			dl,
-			VA.getLocVT(),
-			Arg);
-      break;
+      {
+	Arg = DAG.getNode(ISD::ZERO_EXTEND,
+			  dl,
+			  VA.getLocVT(),
+			  Arg);
+	break;
+      }
     case CCValAssign::AExt:
-      Arg = DAG.getNode(ISD::ANY_EXTEND,
-			dl,
-			VA.getLocVT(),
-			Arg);
-      break;
+      {
+	Arg = DAG.getNode(ISD::ANY_EXTEND,
+			  dl,
+			  VA.getLocVT(),
+			  Arg);
+	break;
+      }
     }
 
     // Arguments that can be passed on register must be kept at
@@ -710,9 +714,10 @@ VideoCore4TargetLowering::LowerCCCCallTo(SDValue                                
     } else {
       assert(VA.isMemLoc());
       
-      if (StackPtr.getNode() == 0)
+      if (StackPtr.getNode() == 0) {
 	StackPtr = DAG.getCopyFromReg(Chain, dl, VideoCore4::SP, getPointerTy(DAG.getDataLayout()));
-      
+      }
+
       SDValue PtrOff = DAG.getNode(ISD::ADD,
 				   dl,
 				   getPointerTy(DAG.getDataLayout()),
@@ -773,14 +778,15 @@ VideoCore4TargetLowering::LowerCCCCallTo(SDValue                                
     Ops.push_back(DAG.getRegister(RegsToPass[i].first,
                                   RegsToPass[i].second.getValueType()));
 
-  if (InFlag.getNode())
+  if (InFlag.getNode()) {
     Ops.push_back(InFlag);
+  }
 
-  Chain  = DAG.getNode(VideoCore4ISD::CALL,
-		       dl,
-		       NodeTys,
-		       ArrayRef<SDValue>(&Ops[0],
-					 Ops.size()));
+  Chain = DAG.getNode(VideoCore4ISD::CALL,
+		      dl,
+		      NodeTys,
+		      ArrayRef<SDValue>(&Ops[0],
+					Ops.size()));
   InFlag = Chain.getValue(1);
 
   // Create the CALLSEQ_END node.

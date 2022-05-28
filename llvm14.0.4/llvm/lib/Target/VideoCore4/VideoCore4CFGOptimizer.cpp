@@ -70,26 +70,25 @@ INITIALIZE_PASS(VideoCore4CFGOptimizer,
 void
 VideoCore4CFGOptimizer::InvertAndChangeJumpTarget(MachineInstr      &MI,
 						  MachineBasicBlock *NewTarget) {
-  const TargetInstrInfo *TII = MI.getParent()->getParent()->getSubtarget().getInstrInfo();
-  unsigned NewOpcode = vc4util::reverseBranch(MI.getOpcode());
+  const TargetInstrInfo *TII       = MI.getParent()->getParent()->getSubtarget().getInstrInfo();
+  unsigned               NewOpcode = vc4util::reverseBranch(MI.getOpcode());
 
   MI.setDesc(TII->get(NewOpcode));
   MI.getOperand(0).setMBB(NewTarget);
 }
 
 bool
-VideoCore4CFGOptimizer::runOnMachineFunction(MachineFunction &Fn) {
-  if (skipFunction(Fn.getFunction())) {
+VideoCore4CFGOptimizer::runOnMachineFunction(MachineFunction &F) {
+  if (skipFunction(F.getFunction())) {
     return false;
   }
 
-  std::string func = "== VideoCore4CFGOptimizer == (";
-  func += Fn.getName().data();
-  func += ")\n";
-  LLVM_DEBUG(dbgs() << func);
+  LLVM_DEBUG(dbgs() << "== VideoCore4CFGOptimizer == ("
+	     << F.getName()
+	     << ")\n");
   
   // Loop over all of the basic blocks.
-  for (MachineFunction::iterator MBBb = Fn.begin(), MBBe = Fn.end();
+  for (MachineFunction::iterator MBBb = F.begin(), MBBe = F.end();
        MBBb != MBBe; ++MBBb) {
     MachineBasicBlock *MBB = &*MBBb;
 
@@ -97,7 +96,7 @@ VideoCore4CFGOptimizer::runOnMachineFunction(MachineFunction &Fn) {
     MachineBasicBlock::iterator MII = MBB->getFirstTerminator();
     if (MII != MBB->end()) {
       MachineInstr &MI  = *MII;
-      int           Opc = MI.getOpcode();
+      unsigned      Opc = MI.getOpcode();
       if (vc4util::isCondBranch(Opc)) {
 	//
 	// (Case 1) Transform the code if the following condition occurs:

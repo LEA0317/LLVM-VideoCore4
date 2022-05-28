@@ -162,7 +162,7 @@ void VideoCore4DAGToDAGISel::Select(SDNode *N) {
 						    SetCC.getOperand(0), TestAgainst),
 			     0);
 
-      switch(CC) {
+      switch (CC) {
       case ISD::CondCode::SETUGT: Opc = VideoCore4::JMP_CC_HI; break;
       case ISD::CondCode::SETUGE: Opc = VideoCore4::JMP_CC_HS; break;
       case ISD::CondCode::SETULT: Opc = VideoCore4::JMP_CC_LO; break;

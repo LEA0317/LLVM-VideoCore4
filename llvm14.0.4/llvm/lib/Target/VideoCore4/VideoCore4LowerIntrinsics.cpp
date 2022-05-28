@@ -79,7 +79,6 @@ VideoCore4LowerIntrinsics::expandMemIntrinsicUses(Function &F) {
 	  Changed = true;
 	  Memcpy->eraseFromParent();
 	}
-	
 	break;
       }
     case Intrinsic::memmove:
@@ -90,7 +89,6 @@ VideoCore4LowerIntrinsics::expandMemIntrinsicUses(Function &F) {
 	  Changed = true;
 	  Memmove->eraseFromParent();
 	}
-	
 	break;
       }
     case Intrinsic::memset:
@@ -100,8 +98,7 @@ VideoCore4LowerIntrinsics::expandMemIntrinsicUses(Function &F) {
 	  expandMemSetAsLoop(Memset);
 	  Changed = true;
 	  Memset->eraseFromParent();
-	}
-	
+	}	
 	break;
       }
     default:

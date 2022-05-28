@@ -28,26 +28,26 @@ class VideoCore4TargetLowering;
 class VideoCore4TargetMachine;
 
 class VideoCore4TTIImpl : public BasicTTIImplBase<VideoCore4TTIImpl> {
-  using BaseT = BasicTTIImplBase<VideoCore4TTIImpl>;
+  using  BaseT = BasicTTIImplBase<VideoCore4TTIImpl>;
   friend BaseT;
 
-  const VideoCore4Subtarget *ST;
+  const VideoCore4Subtarget      *ST;
   const VideoCore4TargetLowering *TLI;
 
-  const VideoCore4Subtarget *getST() const { return ST; }
+  const VideoCore4Subtarget      *getST()  const { return ST; }
   const VideoCore4TargetLowering *getTLI() const { return TLI; }
 
 public:
   explicit VideoCore4TTIImpl(const VideoCore4TargetMachine *TM, const Function &F)
-      : BaseT(TM, F.getParent()->getDataLayout()), ST(TM->getSubtargetImpl()),
-        TLI(ST->getTargetLowering()) {}
+    : BaseT(TM, F.getParent()->getDataLayout()), ST(TM->getSubtargetImpl()),
+      TLI(ST->getTargetLowering()) {}
 
   // Provide value semantics. MSVC requires that we spell all of these out.
   VideoCore4TTIImpl(const VideoCore4TTIImpl &Arg)
-      : BaseT(static_cast<const BaseT &>(Arg)), ST(Arg.ST), TLI(Arg.TLI) {}
+    : BaseT(static_cast<const BaseT &>(Arg)), ST(Arg.ST), TLI(Arg.TLI) {}
   VideoCore4TTIImpl(VideoCore4TTIImpl &&Arg)
-      : BaseT(std::move(static_cast<BaseT &>(Arg))), ST(std::move(Arg.ST)),
-        TLI(std::move(Arg.TLI)) {}
+    : BaseT(std::move(static_cast<BaseT &>(Arg))), ST(std::move(Arg.ST)),
+      TLI(std::move(Arg.TLI)) {}
 };
 
 } // end namespace llvm

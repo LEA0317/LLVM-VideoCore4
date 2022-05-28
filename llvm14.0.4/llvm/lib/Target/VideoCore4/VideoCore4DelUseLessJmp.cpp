@@ -53,6 +53,10 @@ namespace {
       if (skipFunction(F.getFunction())) {
 	return false;
       }
+
+      LLVM_DEBUG(dbgs() << "== VideoCore4DelUseLessJmp == ("
+		 << F.getName()
+		 << ")\n");
   
       bool Changed = false;
       

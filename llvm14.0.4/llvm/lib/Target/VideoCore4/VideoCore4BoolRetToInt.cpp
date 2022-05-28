@@ -76,7 +76,7 @@ class VideoCore4BoolRetToInt : public FunctionPass {
       // Operands of CallInst are skipped because they may not be Bool type,
       // and their positions are defined by ABI.
       if (CurrUser && !isa<CallInst>(Curr))
-       for (auto &Op : CurrUser->operands())
+	for (auto &Op : CurrUser->operands())
           if (Defs.insert(Op).second)
             WorkList.push_back(Op);
     }
@@ -132,12 +132,10 @@ class VideoCore4BoolRetToInt : public FunctionPass {
     for (const PHINode *P : Promotable) {
       // Condition 2 and 3
       auto IsValidUser = [] (const Value *V) -> bool {
-        return isa<ReturnInst>(V) || isa<CallInst>(V) || isa<PHINode>(V) ||
-        isa<DbgInfoIntrinsic>(V);
+        return isa<ReturnInst>(V) || isa<CallInst>(V) || isa<PHINode>(V) || isa<DbgInfoIntrinsic>(V);
       };
       auto IsValidOperand = [] (const Value *V) -> bool {
-        return isa<Constant>(V) || isa<Argument>(V) || isa<CallInst>(V) ||
-        isa<PHINode>(V);
+        return isa<Constant>(V) || isa<Argument>(V) || isa<CallInst>(V) || isa<PHINode>(V);
       };
       const auto &Users = P->users();
       const auto &Operands = P->operands();
@@ -158,7 +156,7 @@ class VideoCore4BoolRetToInt : public FunctionPass {
 
       for (const PHINode *P : Promotable) {
         // Condition 4 and 5
-        const auto &Users = P->users();
+        const auto &Users    = P->users();
         const auto &Operands = P->operands();
         if (!llvm::all_of(Users, IsPromotable) ||
             !llvm::all_of(Operands, IsPromotable))
@@ -179,8 +177,13 @@ class VideoCore4BoolRetToInt : public FunctionPass {
   }
 
   bool runOnFunction(Function &F) override {
-    if (skipFunction(F))
+    if (skipFunction(F.getFunction())) {
       return false;
+    }
+
+    LLVM_DEBUG(dbgs() << "== VideoCore4BoolRetToInt == ("
+	       << F.getName()
+	       << ")\n");
 
     auto *TPC = getAnalysisIfAvailable<TargetPassConfig>();
     if (!TPC)

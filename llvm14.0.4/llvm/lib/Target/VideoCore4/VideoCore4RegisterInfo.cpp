@@ -77,7 +77,7 @@ VideoCore4RegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator II,
   int      frameIndex = MI.getOperand(FIOperandNum).getIndex();
   uint64_t stackSize  = MF.getFrameInfo().getStackSize();
   int64_t  spOffset   = MF.getFrameInfo().getObjectOffset(frameIndex);
-  unsigned reg        = getFrameRegister(MF);
+  Register reg        = getFrameRegister(MF);
   int64_t  offset     = spOffset + (int64_t)stackSize;
 
   MI.getOperand(FIOperandNum).ChangeToRegister(reg,

@@ -27,6 +27,7 @@
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Support/ErrorHandling.h"
 #include "llvm/ADT/SmallString.h"
+
 using namespace llvm;
 
 void VideoCore4MCInstLower::Lower(const MachineInstr *MI,
@@ -56,15 +57,14 @@ void VideoCore4MCInstLower::Lower(const MachineInstr *MI,
     case MachineOperand::MO_FPImmediate:
       {
 	APFloat val = MO.getFPImm()->getValueAPF();
-	//MCOp = MCOperand::CreateFPImm(MO.getFPImm());
 	MCOp = MCOperand::createImm(*val.bitcastToAPInt().getRawData());
 	break;
       }
       
     case MachineOperand::MO_MachineBasicBlock:
       {
-	const MCSymbol* symbol = MO.getMBB()->getSymbol();
-	const MCSymbolRefExpr* MCSym = MCSymbolRefExpr::create(symbol, MC);
+	const MCSymbol*        symbol = MO.getMBB()->getSymbol();
+	const MCSymbolRefExpr* MCSym  = MCSymbolRefExpr::create(symbol, MC);
 	//const MCExpr* ME = MCSymbolRefExpr::Create(symbol, MCSymbolRefExpr::VK_None, MC);
 	MCOp = MCOperand::createExpr(MCSym);
 	break;
@@ -72,8 +72,8 @@ void VideoCore4MCInstLower::Lower(const MachineInstr *MI,
       
     case MachineOperand::MO_GlobalAddress:
       {
-	const MCSymbol* symbol = AP.getSymbol(MO.getGlobal());
-	const MCSymbolRefExpr* MCSym = MCSymbolRefExpr::create(symbol, MC);
+	const MCSymbol*        symbol = AP.getSymbol(MO.getGlobal());
+	const MCSymbolRefExpr* MCSym  = MCSymbolRefExpr::create(symbol, MC);
 	//const MCExpr* ME = MCSymbolRefExpr::Create(symbol, MCSymbolRefExpr::VK_None, MC);
 	MCOp = MCOperand::createExpr(MCSym);
 	break;

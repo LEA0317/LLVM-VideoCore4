@@ -11,4 +11,4 @@
 
 using namespace llvm;
 
-void VideoCore4MachineFunctionInfo::anchor() { }
+void VideoCore4MachineFunctionInfo::anchor() {}

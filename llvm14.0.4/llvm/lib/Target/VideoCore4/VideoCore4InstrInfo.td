@@ -17,8 +17,8 @@ def bitcast_fpimm_to_i32 : SDNodeXForm<fpimm, [{
   return CurDAG->getTargetConstant(N->getValueAPF().bitcastToAPInt().getZExtValue(), SDLoc(N), MVT::i32);
 }]>;
 
-def retflag       : SDNode<"VideoCore4ISD::RET_FLAG", SDTNone,
-                           [SDNPHasChain, SDNPOptInGlue, SDNPVariadic]>;
+def retflag : SDNode<"VideoCore4ISD::RET_FLAG", SDTNone,
+                      [SDNPHasChain, SDNPOptInGlue, SDNPVariadic]>;
 
 def callseq_start : SDNode<"ISD::CALLSEQ_START",
 			    SDCallSeqStart<[SDTCisVT<0, i32>]>,
@@ -516,14 +516,14 @@ multiclass MEM_F<string op, ValueType vt, PatFrag stop, PatFrag ldop> {
 	defm _LD : MEMLD_F<op, vt, ldop>;
 }
 
-defm MEM8 : MEM_F<"b", i32, truncstorei8, zextloadi8>;
+defm MEM8     : MEM_F<"b", i32, truncstorei8, zextloadi8>;
 defm MEM8E_LD : MEMLD_F<"b", i32, extloadi8>;
 
-defm MEM16 : MEM_F<"h", i32, truncstorei16, zextloadi16>;
+defm MEM16     : MEM_F<"h", i32, truncstorei16, zextloadi16>;
 defm MEM16S_LD : MEMLD_F<"cc", i32, sextloadi16>;
 defm MEM16E_LD : MEMLD_F<"h", i32, extloadi16>;
 
-defm MEM32 : MEM_F<"", i32, store, load>;
+defm MEM32  : MEM_F<"", i32, store, load>;
 defm MEM32F : MEM_F<"", f32, store, load>;
 
 /* Indexed loads/stores. */
@@ -584,14 +584,14 @@ def memb_frag : PatFrag<
 				(ops node:$inA, node:$inB),
 				(add node:$inA, node:$inB)
 			>;
-defm MEM8 : MEM_R_I<"b", i32, truncstorei8, zextloadi8, memb_frag>;
+defm MEM8     : MEM_R_I<"b", i32, truncstorei8, zextloadi8, memb_frag>;
 defm MEM8E_LD : MEMLD_R_I<"b", i32, extloadi8, memb_frag>;
 
 def memh_frag : PatFrag<
 				(ops node:$inA, node:$inB),
 				(add node:$inA, (shl node:$inB, 1))
 			>;
-defm MEM16 : MEM_R_I<"h", i32, truncstorei16, zextloadi16, memh_frag>;
+defm MEM16     : MEM_R_I<"h", i32, truncstorei16, zextloadi16, memh_frag>;
 defm MEM16S_LD : MEMLD_R_I<"cc", i32, sextloadi16, memh_frag>;
 defm MEM16E_LD : MEMLD_R_I<"cc", i32, extloadi16, memh_frag>;
 
@@ -642,7 +642,7 @@ def POP_PC : S32<
 			[]
 		>;
 
-defm MEMFRAME : MEMFRAME<"", i32>;
+defm MEMFRAME  : MEMFRAME<"", i32>;
 defm MEMFRAMEF : MEMFRAME<"", f32>;
 
 /* --- Moves and specials --------------------------------------------------- */
@@ -683,11 +683,11 @@ def LEA_PC_LI : S48<(outs GR32:$D), (ins i32imm:$A),
 		     "lea\t$D, $A(%pc) # PCrel load",
 		     [(set GR32:$D, tglobaladdr:$A)]>
 {
-	bits<5> D;
+	bits<5>  D;
 	bits<32> A;
 	let Inst{47-37} = 0b11100101000;
 	let Inst{36-32} = D;
-	let Inst{31-0} = A;
+	let Inst{31-0}  = A;
 
 	let Uses = [PC];
 }
@@ -952,7 +952,6 @@ def SETCC_HS_RI_P : SETCC_RI_P<"uge">;
 def SETCC_LO_RI_P : SETCC_RI_P<"ult">;
 def SETCC_LS_RI_P : SETCC_RI_P<"ule">;
 
-
 def F_SETCC_OEQ_RR_P : F_SETCC_RR_P<"oeq">;
 def F_SETCC_ONE_RR_P : F_SETCC_RR_P<"one">;
 def F_SETCC_OGT_RR_P : F_SETCC_RR_P<"ogt">;
@@ -1084,7 +1083,6 @@ def : Pat<(brcond (i32 (setult (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
 def : Pat<(brcond (i32 (setule (f32 GR32:$lhs), (f32 GR32:$rhs))), bb:$dst),
           (JMP_FCOMP_ULE_P (f32 GR32:$lhs), (f32 GR32:$rhs), bb:$dst)>;
 
-
 // int selectcc patterns
 def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (i32 FR32:$T), (i32 FR32:$F), SETEQ),
           (SELECT_EQ_P (i32 FR32:$T), (i32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
@@ -1126,7 +1124,6 @@ def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (f32 FR32:$T), (f32 FR32:$
           (FSELECT_LO_P (f32 FR32:$T), (f32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
 def : Pat<(selectcc (i32 FR32:$lhs), (i32 FR32:$rhs), (f32 FR32:$T), (f32 FR32:$F), SETULE),
           (FSELECT_LS_P (f32 FR32:$T), (f32 FR32:$F), (i32 FR32:$lhs), (i32 FR32:$rhs))>;
-
 
 // float selectcc patterns
 def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (i32 GR32:$T), (i32 GR32:$F), SETOEQ),
@@ -1177,7 +1174,6 @@ def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$
           (F_FSELECT_ULT_P (f32 GR32:$T), (f32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
 def : Pat<(selectcc (f32 GR32:$lhs), (f32 GR32:$rhs), (f32 GR32:$T), (f32 GR32:$F), SETULE),
           (F_FSELECT_ULE_P (f32 GR32:$T), (f32 GR32:$F), (f32 GR32:$lhs), (f32 GR32:$rhs))>;
-
 
 /* --- Floating point arithmetic -------------------------------------------- */
 

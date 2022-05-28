@@ -49,15 +49,17 @@ extern "C" void LLVMInitializeVideoCore4Target() {
 static Reloc::Model
 getEffectiveRelocModel(bool                   isJIT,
                        Optional<Reloc::Model> RM) {
-  if (!RM.hasValue() || isJIT)
+  if (!RM.hasValue() || isJIT) {
     return Reloc::Static;
+  }
   return *RM;
 }
 
 static CodeModel::Model
 getVideoCore4EffectiveCodeModel(Optional<CodeModel::Model> CM) {
-  if (CM)
+  if (CM) {
     return *CM;
+  }
   return CodeModel::Small;
 }
 

@@ -12,7 +12,7 @@
 
 using namespace llvm;
 
-void VideoCore4ELFTargetObjectFile::Initialize(MCContext &Ctx,
+void VideoCore4ELFTargetObjectFile::Initialize(MCContext           &Ctx,
 					       const TargetMachine &TM) {
   TargetLoweringObjectFileELF::Initialize(Ctx, TM);
   InitializeELF(TM.Options.UseInitArray);

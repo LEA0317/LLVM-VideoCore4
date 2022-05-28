@@ -138,7 +138,7 @@ VideoCore4InstrInfo::analyzeBranch(MachineBasicBlock               &MBB,
 				   MachineBasicBlock              *&TBB,
 				   MachineBasicBlock              *&FBB,
 				   SmallVectorImpl<MachineOperand> &Cond,
-				   bool AllowModify) const {
+				   bool                             AllowModify) const {
   MachineBasicBlock::iterator I = MBB.getLastNonDebugInstr();
   if (I == MBB.end()) {
     return false;

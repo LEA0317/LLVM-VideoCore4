@@ -81,7 +81,7 @@ VideoCore4FrameLowering::emitPrologue(MachineFunction   &MF,
   
   determineFrameLayout(MF);
 
-  const VideoCore4InstrInfo    &TII = *static_cast<const VideoCore4InstrInfo*>(MF.getTarget().getMCInstrInfo());
+  const VideoCore4InstrInfo &TII = *static_cast<const VideoCore4InstrInfo*>(MF.getTarget().getMCInstrInfo());
 
   MachineBasicBlock::iterator MI = MBB.begin();
   DebugLoc dl = MI != MBB.end() ? MI->getDebugLoc() : DebugLoc();
@@ -109,9 +109,9 @@ VideoCore4FrameLowering::restoreCalleeSavedRegisters(MachineBasicBlock          
 void
 VideoCore4FrameLowering::emitEpilogue(MachineFunction   &MF,
 				      MachineBasicBlock &MBB) const {
-  MachineFrameInfo             &MFI  = MF.getFrameInfo();  
-  const VideoCore4InstrInfo    &TII  = *static_cast<const VideoCore4InstrInfo*>(MF.getTarget().getMCInstrInfo());
-  MachineBasicBlock::iterator   MBBI = MBB.getLastNonDebugInstr();
+  MachineFrameInfo            &MFI  = MF.getFrameInfo();  
+  const VideoCore4InstrInfo   &TII  = *static_cast<const VideoCore4InstrInfo*>(MF.getTarget().getMCInstrInfo());
+  MachineBasicBlock::iterator  MBBI = MBB.getLastNonDebugInstr();
 
   int stacksize = (int) MFI.getStackSize();
   TII.adjustStackPtr(stacksize, MBB, MBBI);
@@ -148,5 +148,3 @@ VideoCore4FrameLowering::eliminateCallFramePseudoInstr(MachineFunction          
   }
   return MBB.erase(I);
 }
-
-

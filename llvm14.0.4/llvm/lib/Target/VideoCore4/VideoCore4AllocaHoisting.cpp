@@ -43,12 +43,20 @@ public:
 } // namespace
 
 bool
-VideoCore4AllocaHoisting::runOnFunction(Function &function) {
+VideoCore4AllocaHoisting::runOnFunction(Function &F) {
+  if (skipFunction(F.getFunction())) {
+    return false;
+  }
+
+  LLVM_DEBUG(dbgs() << "== AllocaHoisting == ("
+             << F.getName()
+             << ")\n");
+
   bool               functionModified    = false;
-  Function::iterator I                   = function.begin();
+  Function::iterator I                   = F.begin();
   Instruction       *firstTerminatorInst = (I++)->getTerminator();
 
-  for (Function::iterator E = function.end(); I != E; ++I) {
+  for (Function::iterator E = F.end(); I != E; ++I) {
     for (BasicBlock::iterator BI = I->begin(), BE = I->end(); BI != BE;) {
       AllocaInst *allocaInst = dyn_cast<AllocaInst>(BI++);
       if (allocaInst && isa<ConstantInt>(allocaInst->getArraySize())) {

@@ -26,8 +26,8 @@ def CC_VideoCore4 : CallingConv<[
   // Promote i8 arguments to i32.
   CCIfType<[i16], CCPromoteToType<i32>>,
 
-	// The first 6 integer or float arguments of non-varargs functions are passed
-	// in integer registers.
+  // The first 6 integer or float arguments of non-varargs functions are passed
+  // in integer registers.
   CCIfType<[i32, f32], CCAssignToReg<[R0, R1, R2, R3, R4, R5]>>,
 
   // Integer or float values get stored in stack slots that are 4 bytes in
@@ -39,5 +39,5 @@ def CC_VideoCore4 : CallingConv<[
 // Callee-saved register lists.
 //===----------------------------------------------------------------------===//
 
-def CSR: CalleeSavedRegs<(add (sequence "R%u", 6, 23), LR, R27, R29)>;
+def CSR:    CalleeSavedRegs<(add (sequence "R%u", 6, 23), LR, R27, R29)>;
 def CSR_FP: CalleeSavedRegs<(sub CSR, R6)>;
