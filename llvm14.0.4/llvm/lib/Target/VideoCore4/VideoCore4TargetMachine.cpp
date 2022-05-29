@@ -132,7 +132,6 @@ VideoCore4TargetMachine::getTargetTransformInfo(const Function &F) {
   return TargetTransformInfo(VideoCore4TTIImpl(this, F));
 }
 
-
 TargetPassConfig *VideoCore4TargetMachine::createPassConfig(PassManagerBase &PM) {
   return new VideoCore4PassConfig(*this, PM);
 }

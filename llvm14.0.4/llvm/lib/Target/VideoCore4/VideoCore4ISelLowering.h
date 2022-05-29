@@ -53,7 +53,7 @@ namespace llvm {
     create(const VideoCore4TargetMachine &TM);
     
     /// LowerOperation - Provide custom lowering hooks for some operations.
-    virtual SDValue LowerOperation(SDValue Op,
+    virtual SDValue LowerOperation(SDValue       Op,
 				   SelectionDAG &DAG) const override;
 
     /// getTargetNodeName - This method returns the name of a target specific

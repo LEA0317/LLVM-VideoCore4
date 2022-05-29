@@ -78,8 +78,8 @@ VideoCore4TargetLowering::VideoCore4TargetLowering(const VideoCore4TargetMachine
 
   setOperationAction(ISD::FSQRT, MVT::f32, Legal);
   setOperationAction(ISD::FDIV,  MVT::f32, Legal);
-  setOperationAction(ISD::FLOG2,  MVT::f32, Legal);
-  setOperationAction(ISD::FEXP2,  MVT::f32, Legal);
+  setOperationAction(ISD::FLOG2, MVT::f32, Legal);
+  setOperationAction(ISD::FEXP2, MVT::f32, Legal);
 
   setOperationAction(ISD::SINT_TO_FP, MVT::i32, Legal);
   setOperationAction(ISD::UINT_TO_FP, MVT::i32, Expand);
@@ -101,14 +101,14 @@ VideoCore4TargetLowering::VideoCore4TargetLowering(const VideoCore4TargetMachine
   setOperationAction(ISD::SUBC, MVT::i32, Expand);
   setOperationAction(ISD::SUBE, MVT::i32, Expand);
   
-  setOperationAction(ISD::ConstantFP,    MVT::f32, Legal);
+  setOperationAction(ISD::ConstantFP, MVT::f32, Legal);
   
-  setOperationAction(ISD::UDIV,          MVT::i32, Legal);
-  setOperationAction(ISD::SDIV,          MVT::i32, Legal);
+  setOperationAction(ISD::UDIV, MVT::i32, Legal);
+  setOperationAction(ISD::SDIV, MVT::i32, Legal);
   
   //setOperationAction(ISD::MULHU,         MVT::i32, Expand);
-  setOperationAction(ISD::UREM,          MVT::i32, Expand);
-  setOperationAction(ISD::UDIVREM,       MVT::i32, Expand);
+  setOperationAction(ISD::UREM,    MVT::i32, Expand);
+  setOperationAction(ISD::UDIVREM, MVT::i32, Expand);
   
   setOperationAction(ISD::BR_JT, MVT::Other, Custom);
   
@@ -178,7 +178,7 @@ VideoCore4TargetLowering::LowerVASTART(SDValue       Op,
   SDLoc dl(Op);
   // vastart stores the address of the VarArgsFrameIndex slot into the
   // memory location argument
-  
+
   MachineFunction               &MF  = DAG.getMachineFunction();
   VideoCore4MachineFunctionInfo *XFI = MF.getInfo<VideoCore4MachineFunctionInfo>();
   
@@ -467,11 +467,11 @@ VideoCore4TargetLowering::LowerCCCArguments(SDValue                             
     if (ArgDI->Flags.isByVal() && ArgDI->Flags.getByValSize()) {
       unsigned Size      = ArgDI->Flags.getByValSize();
       Align    Alignment = std::max(Align(StackSlotSize),
-				ArgDI->Flags.getNonZeroByValAlign());
+				    ArgDI->Flags.getNonZeroByValAlign());
       // Create a new object on the stack and copy the pointee into it.
-      int FI  = MFI.CreateStackObject(Size,
-				      Alignment,
-				      false);
+      int FI = MFI.CreateStackObject(Size,
+				     Alignment,
+				     false);
       SDValue FIN = DAG.getFrameIndex(FI,
 				      MVT::i32);
       InVals.push_back(FIN);
@@ -553,14 +553,13 @@ VideoCore4TargetLowering::LowerReturn(SDValue                                Cha
   // Add the flag if we have it.
   if (Flag.getNode())
     RetOps.push_back(Flag);
-  
+
   return DAG.getNode(VideoCore4ISD::RET_FLAG,
 		     dl,
 		     MVT::Other,
 		     ArrayRef<SDValue>(&RetOps[0],
 				       RetOps.size()));
 }
-
 
 /// LowerCallResult - Lower the result values of a call into the
 /// appropriate copies out of appropriate physical registers.
@@ -596,7 +595,7 @@ __LowerCallResult(SDValue                             Chain,
       InVals.push_back(SDValue());
     }
   }
-  
+
   SmallVector<SDValue, 5> MemOpChains;
 
 #if 0
@@ -713,7 +712,7 @@ VideoCore4TargetLowering::LowerCCCCallTo(SDValue                                
       RegsToPass.push_back(std::make_pair(VA.getLocReg(), Arg));
     } else {
       assert(VA.isMemLoc());
-      
+
       if (StackPtr.getNode() == 0) {
 	StackPtr = DAG.getCopyFromReg(Chain, dl, VideoCore4::SP, getPointerTy(DAG.getDataLayout()));
       }
@@ -724,7 +723,7 @@ VideoCore4TargetLowering::LowerCCCCallTo(SDValue                                
 				   StackPtr,
 				   DAG.getIntPtrConstant(VA.getLocMemOffset(),
 							 dl));
-      
+
       MemOpChains.push_back(DAG.getStore(Chain,
 					 dl,
 					 Arg,
@@ -800,7 +799,7 @@ VideoCore4TargetLowering::LowerCCCCallTo(SDValue                                
                              InFlag,
 			     dl);
   InFlag = Chain.getValue(1);
-  
+
   // Handle result values, copying them out of physregs into vregs that we
   // return.
   return __LowerCallResult(Chain, InFlag, RVLocs, dl, DAG, InVals);

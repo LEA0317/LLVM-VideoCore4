@@ -40,7 +40,6 @@ VideoCore4InstrInfo::create(VideoCore4Subtarget &STI) {
   return new llvm::VideoCore4InstrInfo(STI);
 }
 
-
 void
 VideoCore4InstrInfo::copyPhysReg(MachineBasicBlock          &MBB,
 				 MachineBasicBlock::iterator I,
@@ -107,7 +106,7 @@ VideoCore4InstrInfo::loadRegFromStackSlot(MachineBasicBlock          &MBB,
 							MachineMemOperand::MOStore,
 							MFI.getObjectSize(FI),
 							MFI.getObjectAlign(FI));
-  
+
   BuildMI(MBB, I, DL, get(VideoCore4::MEM32_LD_LI), DestReg)
     .addFrameIndex(FI)
     .addImm(0)
@@ -166,7 +165,7 @@ VideoCore4InstrInfo::analyzeBranch(MachineBasicBlock               &MBB,
     }
     return true; // Can't handle indirect branch.
   }
-  
+
   // Get the instruction before it if it is a terminator.
   MachineInstr *SecondLastInst = &*I;
   unsigned      SecondLastOpc  = SecondLastInst->getOpcode();
@@ -204,7 +203,7 @@ VideoCore4InstrInfo::analyzeBranch(MachineBasicBlock               &MBB,
 	// into
 	//
 	// L2:
-	//   bf L2                                                                                                                                                                                         
+	//   bf L2
 	// L1: 
 	//   ...
 	//
@@ -213,7 +212,7 @@ VideoCore4InstrInfo::analyzeBranch(MachineBasicBlock               &MBB,
 	    && LastMBBI != MBB.end()
 	    && MBB.isLayoutSuccessor(TargetBB)) {
 	  MachineBasicBlock *BNcondMBB = LastInst->getOperand(0).getMBB();
-	  
+
 	  BuildMI(&MBB, MBB.findDebugLoc(SecondLastInst), get(vc4util::BranchNotTakenOpcode[i]))
 	    .addReg(SecondLastInst->getOperand(0).getReg())
 	    .addReg(SecondLastInst->getOperand(1).getReg())
@@ -237,7 +236,7 @@ VideoCore4InstrInfo::analyzeBranch(MachineBasicBlock               &MBB,
 	// into
 	//
 	// L2:
-	//   bf L2                                                                                                                                                                                         
+	//   bf L2                            
 	// L1: 
 	//   ...
 	//
@@ -305,8 +304,8 @@ VideoCore4InstrInfo::insertBranch(MachineBasicBlock       &MBB,
 unsigned
 VideoCore4InstrInfo::removeBranch(MachineBasicBlock &MBB,
 				  int               *BytesRemoved) const {
-  MachineBasicBlock::iterator I = MBB.end();
-  unsigned Count = 0;
+  MachineBasicBlock::iterator I     = MBB.end();
+  unsigned                    Count = 0;
   while (I != MBB.begin()) {
     --I;
 

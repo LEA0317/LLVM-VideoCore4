@@ -66,7 +66,7 @@ public:
 			      StringRef FS);
 
   unsigned stackAlignment() const { return 4; }                                                                             
-  bool useAA() const override { return true; }
+  bool     useAA() const override { return true; }
 
   VideoCore4Subtarget&
   initializeSubtargetDependencies(StringRef            CPU,

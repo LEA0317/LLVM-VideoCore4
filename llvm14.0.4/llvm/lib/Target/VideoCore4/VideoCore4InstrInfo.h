@@ -100,7 +100,6 @@ public:
 
   MachineBasicBlock*
   getBranchDestBlock(const MachineInstr &MI) const override;
-
 };
 
 }

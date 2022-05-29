@@ -43,7 +43,7 @@ namespace {
 
     bool
     runOnMachineFunction(MachineFunction &Fn) override;
-    
+
     StringRef
     getPassName() const override {
       return PASS_DESC;
@@ -55,7 +55,7 @@ namespace {
     }
 
   private:
-    void InvertAndChangeJumpTarget(MachineInstr &, MachineBasicBlock *);
+    void InvertAndChangeJumpTarget(MachineInstr&, MachineBasicBlock*);
   };
 
   char VideoCore4CFGOptimizer::ID = 0;
@@ -155,8 +155,7 @@ VideoCore4CFGOptimizer::runOnMachineFunction(MachineFunction &F) {
 	  continue;
 	}
 	
-	if ((NumSuccs == 2) && LayoutSucc && (LayoutSucc->pred_size() == 1)) {
-	  
+	if ((NumSuccs == 2) && LayoutSucc && (LayoutSucc->pred_size() == 1)) {	  
 	  // Ensure that BB2 has one instruction -- an unconditional jump.
 	  if ((LayoutSucc->size() == 1) &&
 	      vc4util::isUnconditionalJump(LayoutSucc->front().getOpcode())) {

@@ -37,7 +37,7 @@ namespace llvm {
 namespace {
   struct VideoCore4PseudoFixup : public MachineFunctionPass {
     explicit VideoCore4PseudoFixup() 
-        : MachineFunctionPass(ID) {
+      : MachineFunctionPass(ID) {
       initializeVideoCore4PseudoFixupPass(*PassRegistry::getPassRegistry());
     }
 
@@ -195,13 +195,13 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
     auto SETCC_RI = [&MBB, MI, TII, I, dl, &Changed](unsigned opc) {
       Register reg1 = MI->getOperand(0).getReg();
       Register reg2 = MI->getOperand(1).getReg();
-      int      Imm  = MI->getOperand(2).getImm();
+      int32_t  imm  = MI->getOperand(2).getImm();
 
       MBB.erase(MI);
 
       BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_LI))
 	.addReg(reg2)
-	.addImm(Imm);
+	.addImm(imm);
       BuildMI(MBB, I, dl, TII->get(VideoCore4::MOV_FI), reg1)
 	.addImm(0);
       BuildMI(MBB, I, dl, TII->get(opc), reg1)

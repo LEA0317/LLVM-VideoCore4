@@ -137,10 +137,9 @@ class VideoCore4BoolRetToInt : public FunctionPass {
       auto IsValidOperand = [] (const Value *V) -> bool {
         return isa<Constant>(V) || isa<Argument>(V) || isa<CallInst>(V) || isa<PHINode>(V);
       };
-      const auto &Users = P->users();
+      const auto &Users    = P->users();
       const auto &Operands = P->operands();
-      if (!llvm::all_of(Users, IsValidUser) ||
-          !llvm::all_of(Operands, IsValidOperand))
+      if (!llvm::all_of(Users, IsValidUser) || !llvm::all_of(Operands, IsValidOperand))
         ToRemove.push_back(P);
     }
 
@@ -158,9 +157,8 @@ class VideoCore4BoolRetToInt : public FunctionPass {
         // Condition 4 and 5
         const auto &Users    = P->users();
         const auto &Operands = P->operands();
-        if (!llvm::all_of(Users, IsPromotable) ||
-            !llvm::all_of(Operands, IsPromotable))
-          ToRemove.push_back(P);
+        if (!llvm::all_of(Users, IsPromotable) || !llvm::all_of(Operands, IsPromotable))
+	  ToRemove.push_back(P);
       }
     }
 
@@ -169,7 +167,7 @@ class VideoCore4BoolRetToInt : public FunctionPass {
 
   typedef DenseMap<Value *, Value *> B2IMap;
 
- public:
+public:
   static char ID;
 
   VideoCore4BoolRetToInt() : FunctionPass(ID) {
@@ -199,8 +197,7 @@ class VideoCore4BoolRetToInt : public FunctionPass {
       for (auto &I : BB) {
         if (auto *R = dyn_cast<ReturnInst>(&I))
           if (F.getReturnType()->isIntegerTy(1))
-            Changed |=
-              runOnUse(R->getOperandUse(0), PromotablePHINodes, Bool2IntMap);
+            Changed |= runOnUse(R->getOperandUse(0), PromotablePHINodes, Bool2IntMap);
 
         if (auto *CI = dyn_cast<CallInst>(&I))
           for (auto &U : CI->operands())
@@ -225,8 +222,7 @@ class VideoCore4BoolRetToInt : public FunctionPass {
     // CallInst. Potentially, bitwise operations (AND, OR, XOR, NOT) and sign
     // extension could also be handled in the future.
     for (Value *V : Defs)
-      if (!isa<PHINode>(V) && !isa<Constant>(V) &&
-          !isa<Argument>(V) && !isa<CallInst>(V))
+      if (!isa<PHINode>(V) && !isa<Constant>(V) && !isa<Argument>(V) && !isa<CallInst>(V))
         return false;
 
     for (Value *V : Defs)
@@ -251,9 +247,9 @@ class VideoCore4BoolRetToInt : public FunctionPass {
           Second->setOperand(i, BoolToIntMap[First->getOperand(i)]);
     }
 
-    Value *IntRetVal = BoolToIntMap[U];
-    Type *Int1Ty     = Type::getInt1Ty(U->getContext());
-    auto *I          = cast<Instruction>(U.getUser());
+    Value *IntRetVal  = BoolToIntMap[U];
+    Type  *Int1Ty     = Type::getInt1Ty(U->getContext());
+    auto  *I          = cast<Instruction>(U.getUser());
     Value *BackToBool = new TruncInst(IntRetVal, Int1Ty, "backToBool", I);
     U.set(BackToBool);
 

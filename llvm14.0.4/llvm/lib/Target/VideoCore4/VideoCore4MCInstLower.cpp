@@ -41,18 +41,24 @@ void VideoCore4MCInstLower::Lower(const MachineInstr *MI,
     MCOperand MCOp;
     switch (MO.getType()) {
     default:
-      //MI->dump();
-      llvm_unreachable("unknown operand type");
+      {
+	//MI->dump();
+	llvm_unreachable("unknown operand type");
+      }
       
     case MachineOperand::MO_Register:
-      // Ignore all implicit register operands.
-      if (MO.isImplicit()) continue;
-      MCOp = MCOperand::createReg(MO.getReg());
-      break;
+      {
+	// Ignore all implicit register operands.
+	if (MO.isImplicit()) continue;
+	MCOp = MCOperand::createReg(MO.getReg());
+	break;
+      }
       
     case MachineOperand::MO_Immediate:
-      MCOp = MCOperand::createImm(MO.getImm());
-      break;
+      {
+	MCOp = MCOperand::createImm(MO.getImm());
+	break;
+      }
 
     case MachineOperand::MO_FPImmediate:
       {

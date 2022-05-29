@@ -84,7 +84,7 @@ VideoCore4FrameLowering::emitPrologue(MachineFunction   &MF,
   const VideoCore4InstrInfo &TII = *static_cast<const VideoCore4InstrInfo*>(MF.getTarget().getMCInstrInfo());
 
   MachineBasicBlock::iterator MI = MBB.begin();
-  DebugLoc dl = MI != MBB.end() ? MI->getDebugLoc() : DebugLoc();
+  DebugLoc                    dl = MI != MBB.end() ? MI->getDebugLoc() : DebugLoc();
   
   int stacksize = (int) MFI.getStackSize();
   TII.adjustStackPtr(-stacksize, MBB, MI);
@@ -109,9 +109,9 @@ VideoCore4FrameLowering::restoreCalleeSavedRegisters(MachineBasicBlock          
 void
 VideoCore4FrameLowering::emitEpilogue(MachineFunction   &MF,
 				      MachineBasicBlock &MBB) const {
-  MachineFrameInfo            &MFI  = MF.getFrameInfo();  
-  const VideoCore4InstrInfo   &TII  = *static_cast<const VideoCore4InstrInfo*>(MF.getTarget().getMCInstrInfo());
-  MachineBasicBlock::iterator  MBBI = MBB.getLastNonDebugInstr();
+  MachineFrameInfo           &MFI  = MF.getFrameInfo();  
+  const VideoCore4InstrInfo  &TII  = *static_cast<const VideoCore4InstrInfo*>(MF.getTarget().getMCInstrInfo());
+  MachineBasicBlock::iterator MBBI = MBB.getLastNonDebugInstr();
 
   int stacksize = (int) MFI.getStackSize();
   TII.adjustStackPtr(stacksize, MBB, MBBI);
@@ -128,7 +128,7 @@ MachineBasicBlock::iterator
 VideoCore4FrameLowering::eliminateCallFramePseudoInstr(MachineFunction            &MF,
 						       MachineBasicBlock          &MBB,
 						       MachineBasicBlock::iterator I) const {
-  const VideoCore4InstrInfo  &TII = *static_cast<const VideoCore4InstrInfo*>(MF.getTarget().getMCInstrInfo());
+  const VideoCore4InstrInfo &TII = *static_cast<const VideoCore4InstrInfo*>(MF.getTarget().getMCInstrInfo());
   
   if (!hasReservedCallFrame(MF)) {
     if (I->getOpcode() == VideoCore4::ADJCALLSTACKDOWN) {

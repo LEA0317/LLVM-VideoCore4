@@ -72,7 +72,7 @@ VideoCore4AllocaHoisting::runOnFunction(Function &F) {
 char VideoCore4AllocaHoisting::ID = 0;
 
 namespace llvm {
-  void initializeVideoCore4AllocaHoistingPass(PassRegistry &);
+  void initializeVideoCore4AllocaHoistingPass(PassRegistry&);
 }
 
 INITIALIZE_PASS(VideoCore4AllocaHoisting,

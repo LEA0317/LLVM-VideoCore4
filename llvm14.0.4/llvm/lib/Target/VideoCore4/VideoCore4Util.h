@@ -10,12 +10,11 @@
 #include <iostream>
 
 namespace vc4util {
-
   const int branchKindNum = 22;
   const int numDelayslot  = 3;
 
   inline std::string
-  getRegisterName(unsigned reg) {
+  getRegisterName(llvm::Register reg) {
     switch (reg) {
     case llvm::VideoCore4::R0:
       return "r0";
@@ -337,30 +336,28 @@ namespace vc4util {
   }
 
   inline bool
-  isCallOpcode(unsigned opcode) {
+  isCall(unsigned opcode) {
     return (opcode    == llvm::VideoCore4::CALL
 	    || opcode == llvm::VideoCore4::CALL_R);
   }
 
   inline bool
   isCallMBBI(llvm::MachineBasicBlock::iterator MBBI) {
-    unsigned opcode = MBBI->getOpcode();
-    return isCallOpcode(opcode);
+    return isCall(MBBI->getOpcode());
   }
  
   inline bool
-  isReturnOpcode(unsigned opcode) {
+  isReturn(unsigned opcode) {
     return (opcode == llvm::VideoCore4::RET);
   }
 
   inline bool
   isReturnMBBI(llvm::MachineBasicBlock::iterator MBBI) {
-    unsigned opcode = MBBI->getOpcode();
-    return isReturnOpcode(opcode);
+    return isReturn(MBBI->getOpcode());
   }
 
   inline bool
-  isCmpOpcode(unsigned opcode) {
+  isCmp(unsigned opcode) {
     switch (opcode) {
     case llvm::VideoCore4::CMP_F:
     case llvm::VideoCore4::CMP_G:
@@ -379,12 +376,11 @@ namespace vc4util {
 
   inline bool
   isCmpMBBI(llvm::MachineBasicBlock::iterator MBBI) {
-    unsigned opcode = MBBI->getOpcode();
-    return isCmpOpcode(opcode);
+    return isCmp(MBBI->getOpcode());
   }
 
   inline bool
-  isBranchOpcode(unsigned opcode) {
+  isBranch(unsigned opcode) {
     if (isCondBranch(opcode)
 	|| isUnconditionalJump(opcode)
 	|| isRawBranch(opcode)) return true;
@@ -393,8 +389,7 @@ namespace vc4util {
 
   inline bool
   isBranchMBBI(llvm::MachineBasicBlock::iterator MBBI) {
-    unsigned opcode = MBBI->getOpcode(); 
-    return isBranchOpcode(opcode);
+    return isBranch(MBBI->getOpcode());
   }
 
   inline unsigned
@@ -477,8 +472,8 @@ namespace vc4util {
   inline unsigned int
   HasDataDepForDelaySlot(const llvm::MachineInstr *MI,
 			 const llvm::MachineInstr *Other) {
-    if (isCallOpcode(MI->getOpcode())
-	|| isReturnOpcode(MI->getOpcode())) return UINT_MAX;
+    if (isCall(MI->getOpcode())
+	|| isReturn(MI->getOpcode())) return UINT_MAX;
       
     for (const auto &MO_Use : MI->uses()) {
       if (!MO_Use.isReg()) continue;

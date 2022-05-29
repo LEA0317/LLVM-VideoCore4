@@ -63,7 +63,6 @@ VideoCore4RegisterInfo::getPointerRegClass(const MachineFunction &MF,
   return nullptr;
 }
 
-
 void
 VideoCore4RegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator II,
 					    int                         SPAdj,
@@ -117,5 +116,4 @@ VideoCore4RegisterInfo::getRegPressureLimit(const TargetRegisterClass *RC,
       return 4;
     }
   }
-
 }
