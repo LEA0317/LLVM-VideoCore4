@@ -348,6 +348,7 @@ multiclass ADDSCALE<int n> {
 	             PatFrag<(ops node:$inA, node:$inB),
 	   	             (add node:$inA, (shl node:$inB, n))>>;
 }
+
 defm ADDs1 : ADDSCALE<1>;
 defm ADDs2 : ADDSCALE<2>;
 defm ADDs3 : ADDSCALE<3>; // actually an ALU2_FI_R instruction
@@ -655,10 +656,10 @@ let isTerminator = 1, isBranch = 1 in {
   /* Likewise, for floats. */
   let Defs = [SR], isCodeGenOnly = 1 in {
     class JMP_FCOMP_P<string cond> : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
- 	                                               "#cond",
+ 	                                               "#cond#",
 	                                               []>;
     class JMP_FCOMP_F_P<string cond> : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-  	                                                 "#cond",
+  	                                                 "#cond#",
 	                                                 []>;
     // True
     def JMP_FCOMP_OEQ_P : JMP_FCOMP_P<"oeq">;
@@ -696,16 +697,16 @@ let isCodeGenOnly = 1, Uses = [SR] in {
 
   let Constraints = "$d = $f" in {
     class SELECT_P<string cond> : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-  	 	                                    "#cond",
+  	 	                                    "#cond#",
 			                            []>;
     class FSELECT_P<string cond> : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	  	   	                             "#cond",
+	  	   	                             "#cond#",
 			                             []>;
     class F_SELECT_P<string cond> : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	  	 	                              "#cond",
+	  	 	                              "#cond#",
 			                              []>;
     class F_FSELECT_P<string cond> : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	  	 	                               "#cond",
+	  	 	                               "#cond#",
 			                               []>;
     // int select
     def SELECT_EQ_P : SELECT_P<"eq">;
