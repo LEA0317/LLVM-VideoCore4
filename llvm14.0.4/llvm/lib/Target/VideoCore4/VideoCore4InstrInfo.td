@@ -553,10 +553,10 @@ let isTerminator = 1, isBranch = 1 in {
 
   let Defs = [SR], isCodeGenOnly = 1 in {
     class JMP_COMP_P<string cond> : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-  	 	                                      "#cond#",
+  	 	                                      !strconcat(cond,""),
 		                                      []>;
     class JMP_COMP_F_P<string cond> : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-	 	                                        "#cond#",
+       	 	                                        !strconcat(cond,""),
 		                                        []>;
     // True
     def JMP_COMP_EQ_P : JMP_COMP_P<"eq">;
@@ -586,10 +586,10 @@ let isTerminator = 1, isBranch = 1 in {
   /* Likewise, for floats. */
   let Defs = [SR], isCodeGenOnly = 1 in {
     class JMP_FCOMP_P<string cond> : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
- 	                                               "#cond#",
+       	 	                                       !strconcat(cond,""),
 	                                               []>;
     class JMP_FCOMP_F_P<string cond> : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb, brtarget:$dst),
-  	                                                 "#cond#",
+       	 	                                         !strconcat(cond,""),
 	                                                 []>;
     // True
     def JMP_FCOMP_OEQ_P : JMP_FCOMP_P<"oeq">;
@@ -627,16 +627,16 @@ let isCodeGenOnly = 1, Uses = [SR] in {
 
   let Constraints = "$d = $f" in {
     class SELECT_P<string cond> : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-  	 	                                    "#cond#",
+     	 	                                    !strconcat(cond,""),
 			                            []>;
     class FSELECT_P<string cond> : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
-	  	   	                             "#cond#",
+     	 	                                     !strconcat(cond,""),
 			                             []>;
     class F_SELECT_P<string cond> : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	  	 	                              "#cond#",
+     	 	                                      !strconcat(cond,""),
 			                              []>;
     class F_FSELECT_P<string cond> : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$t, GR32:$f, GR32:$lhs, GR32:$rhs),
-	  	 	                               "#cond#",
+     	 	                                       !strconcat(cond,""),
 			                               []>;
     // int select
     def SELECT_EQ_P : SELECT_P<"eq">;
@@ -719,13 +719,13 @@ let isCodeGenOnly = 1, Uses = [SR] in {
 }
 
 class SETCC_RR_P<string cond> : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),
-    	 	                                  "#cond#",
+   	 	                                  !strconcat(cond,""),
 		 	                          []>;
 class SETCC_RI_P<string cond> : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, i32imm:$b),
-    	 	                                  "#cond#",
+   	 	                                  !strconcat(cond,""),
 		 	                          []>;
 class F_SETCC_RR_P<string cond> : VideoCore4Pseudo<(outs GR32:$d), (ins GR32:$a, GR32:$b),
-    	 	                                    "#cond#",
+   	 	                                    !strconcat(cond,""),
 		 	                            []>;
 def SETCC_EQ_RR_P : SETCC_RR_P<"eq">;
 def SETCC_NE_RR_P : SETCC_RR_P<"ne">;

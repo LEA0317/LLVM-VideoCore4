@@ -136,6 +136,7 @@ void VideoCore4DAGToDAGISel::Select(SDNode *N) {
 				     CurDAG->getRegister(VideoCore4::SP,
 							 MVT::i32));
       }
+      (void)*res;
       return;
     }
   case ISD::BRCOND:
