@@ -36,6 +36,7 @@ namespace llvm {
   FunctionPass *createVideoCore4DelJmpPass(void);
   FunctionPass *createVideoCore4CFGOptPass(void);
   FunctionPass *createVideoCore4DelaySlotFillerPass(void);
+  FunctionPass *createVideoCore4RPPass(void);
 
   void initializeVideoCore4LowerIntrinsicsPass(PassRegistry&);
   void initializeVideoCore4BoolRetToIntPass(PassRegistry&);
@@ -44,6 +45,7 @@ namespace llvm {
   void initializeVideoCore4PseudoFixupPass(PassRegistry&);
   void initializeVideoCore4DelJmpPass(PassRegistry&);
   void initializeVideoCore4CFGOptimizerPass(PassRegistry&);
+  void initializeVideoCore4RPPass(PassRegistry&);
 } // end namespace llvm;
 
 #endif

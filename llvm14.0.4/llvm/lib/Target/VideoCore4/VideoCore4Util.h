@@ -13,6 +13,73 @@ namespace vc4util {
   const int branchKindNum = 22;
   const int numDelayslot  = 3;
 
+  static inline bool
+  isLiveOutReg(llvm::MachineBasicBlock* MBB,
+               llvm::Register           Reg) {
+    for (llvm::MachineBasicBlock::succ_iterator SI = MBB->succ_begin(), SIE = MBB->succ_end(); SI != SIE; SI++) {
+      for (llvm::MachineBasicBlock::livein_iterator LI = (*SI)->livein_begin(); LI != (*SI)->livein_end(); LI++) {
+	llvm::Register LiveOut = (llvm::Register)LI->PhysReg;
+
+        if (Reg == LiveOut) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  // ToDo
+  static inline
+  bool isSchedulingBoundary(unsigned opc) {
+    switch (opc) {
+    case llvm::VideoCore4::RET:
+    case llvm::VideoCore4::CALL:
+    case llvm::VideoCore4::CALL_R:
+    case llvm::VideoCore4::BR_JT:
+    case llvm::VideoCore4::JMP:
+    case llvm::VideoCore4::JMP_R:
+    case llvm::VideoCore4::JMP_CC_EQ:
+    case llvm::VideoCore4::JMP_CC_NE:
+    case llvm::VideoCore4::JMP_CC_GT:
+    case llvm::VideoCore4::JMP_CC_GE:
+    case llvm::VideoCore4::JMP_CC_LT:
+    case llvm::VideoCore4::JMP_CC_LE:
+    case llvm::VideoCore4::JMP_CC_HI:
+    case llvm::VideoCore4::JMP_CC_HS:
+    case llvm::VideoCore4::JMP_CC_LO:
+    case llvm::VideoCore4::JMP_CC_LS:
+    case llvm::VideoCore4::JMP_TRUE_P:
+    case llvm::VideoCore4::JMP_COMP_EQ_P:
+    case llvm::VideoCore4::JMP_COMP_NE_P:
+    case llvm::VideoCore4::JMP_COMP_GT_P:
+    case llvm::VideoCore4::JMP_COMP_GE_P:
+    case llvm::VideoCore4::JMP_COMP_LT_P:
+    case llvm::VideoCore4::JMP_COMP_LE_P:
+    case llvm::VideoCore4::JMP_COMP_HI_P:
+    case llvm::VideoCore4::JMP_COMP_HS_P:
+    case llvm::VideoCore4::JMP_COMP_LO_P:
+    case llvm::VideoCore4::JMP_COMP_LS_P:
+    case llvm::VideoCore4::JMP_COMP_EQ_F_P:
+    case llvm::VideoCore4::JMP_COMP_NE_F_P:
+    case llvm::VideoCore4::JMP_COMP_GT_F_P:
+    case llvm::VideoCore4::JMP_COMP_GE_F_P:
+    case llvm::VideoCore4::JMP_COMP_LT_F_P:
+    case llvm::VideoCore4::JMP_COMP_LE_F_P:
+    case llvm::VideoCore4::JMP_COMP_HI_F_P:
+    case llvm::VideoCore4::JMP_COMP_HS_F_P:
+    case llvm::VideoCore4::JMP_COMP_LO_F_P:
+    case llvm::VideoCore4::JMP_COMP_LS_F_P:
+      {
+	return true;
+      }
+    default:
+      {
+	return false;
+      }
+    }
+    return false;
+  }
+
   inline std::string
   getRegisterName(llvm::Register reg) {
     switch (reg) {

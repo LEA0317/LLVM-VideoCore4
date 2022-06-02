@@ -44,6 +44,7 @@ extern "C" void LLVMInitializeVideoCore4Target() {
   initializeVideoCore4DelaySlotFillerPass(*PR);
   initializeVideoCore4AllocaHoistingPass(*PR);
   initializeVideoCore4LowerIntrinsicsPass(*PR);
+  initializeVideoCore4RPPass(*PR);
 }
 
 static Reloc::Model
@@ -221,6 +222,10 @@ VideoCore4PassConfig::addPreRegAlloc() {
 void
 VideoCore4PassConfig::addPreEmitPass() {
   addPass(createVideoCore4CFGOptPass());
+
+#if 0 // ToDo
+  addPass(createVideoCore4RPPass());
+#endif
 
   addPass(createVideoCore4DelaySlotFillerPass());
   return;

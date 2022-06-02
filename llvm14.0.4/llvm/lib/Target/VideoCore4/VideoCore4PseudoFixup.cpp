@@ -100,6 +100,7 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       MBB.erase(MI);
 
       if (reg1 == reg2) {
+	// do nothing (optimize)
       } else {
 	BuildMI(MBB, I, dl, TII->get(VideoCore4::MOV_R), reg1)
 	  .addReg(reg2);
