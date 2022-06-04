@@ -44,7 +44,7 @@ def VCrcp   : SDNode<"VideoCore4ISD::RCP",   SDTFPUnaryOp, []>;
 // An address of something in memory.
 // def addr : ComplexPattern<iPTR, 1, "SelectAddr", [], []>;
 
-def GlobalWrapper : SDNode<"VideoCore4ISD::GLOBAL", SDTIntUnaryOp>;
+def GlobalWrapper  : SDNode<"VideoCore4ISD::GLOBAL", SDTIntUnaryOp>;
 def VideoCoreBR_JT : SDNode<"VideoCore4ISD::BR_JT",
                              SDTypeProfile<0, 2, [SDTCisVT<0, i32>, SDTCisVT<1, i32>]>,
                              [SDNPHasChain]>;
@@ -110,7 +110,7 @@ let hasSideEffects = 0 in {
                             "nop",
 		   	    []>;
 }
-let isReturn = 1, isTerminator = 1, isBarrier = 1 in {
+let isReturn = 1, isTerminator = 1, isBarrier = 1, Uses=[LR] in {
   def RET : S32<(outs), (ins variable_ops),
 		 "b\t%lr",
 		 [(retflag)]>;

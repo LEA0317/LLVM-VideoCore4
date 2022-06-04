@@ -10,13 +10,14 @@
 #include "VideoCore4.h"
 #include "llvm/IR/Module.h"
 #include "llvm/Support/TargetRegistry.h"
+
 using namespace llvm;
 
 Target llvm::TheVideoCore4Target;
 
-extern "C" void LLVMInitializeVideoCore4TargetInfo() {
+extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeVideoCore4TargetInfo() {
   RegisterTarget<Triple::videocore, /*HasJIT=*/true> X(TheVideoCore4Target,
-                                                       "videocore",
-                                                       "VideoCore LittleEndian",
-                                                       "VideoCore");
+                                                       "vc4",
+                                                       "VideoCore4 LittleEndian",
+                                                       "VideoCore4");
 }

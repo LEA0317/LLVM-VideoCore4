@@ -7,6 +7,12 @@
 //
 //===----------------------------------------------------------------------===//
 
+class Format<bits<16> val> {
+  bits<16> Value = val;
+}
+
+def VC4: Format<0>;
+
 // Generic VideoCore4 instruction
 class VideoCore4Inst<dag            outs,
                      dag            ins,
@@ -15,7 +21,10 @@ class VideoCore4Inst<dag            outs,
      		     InstrItinClass itin=IIPseudo> : Instruction {
   field bits<80> Inst;
 
-  let Namespace = "VideoCore4";
+  let Namespace        = "VideoCore4";
+  let DecoderNamespace = "VideoCore4";
+
+  Format Form = VC4;
 
   dag OutOperandList = outs;
   dag InOperandList  = ins;

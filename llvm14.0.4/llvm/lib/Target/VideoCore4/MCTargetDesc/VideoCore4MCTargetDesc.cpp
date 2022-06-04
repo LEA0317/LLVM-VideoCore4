@@ -81,9 +81,9 @@ static MCAsmInfo*
 createVideoCore4MCAsmInfo(const MCRegisterInfo  &MRI,
 			  const Triple          &TT,
 			  const MCTargetOptions &Optionsconst) {
-  MCAsmInfo       *MAI  = new VideoCore4MCAsmInfo(MRI, TT);
-  unsigned         SP   = MRI.getDwarfRegNum(VideoCore4::SP,
-                                             true);
+  MCAsmInfo *MAI = new VideoCore4MCAsmInfo(TT);
+  MCRegister SP  = MRI.getDwarfRegNum(VideoCore4::SP,
+				      true);
   MCCFIInstruction Inst = MCCFIInstruction::createDefCfaRegister(nullptr,
 								 SP);
   MAI->addInitialFrameState(Inst);
@@ -111,4 +111,12 @@ extern "C" void LLVMInitializeVideoCore4TargetMC() {
   // Register the MCInstPrinter.
   TargetRegistry::RegisterMCInstPrinter(TheVideoCore4Target,
                                         createVideoCore4MCInstPrinter);
+
+  // Register the MC Code Emitter
+  TargetRegistry::RegisterMCCodeEmitter(TheVideoCore4Target,
+                                        createVideoCore4MCCodeEmitter);
+
+  // Register the asm backend.
+  TargetRegistry::RegisterMCAsmBackend(TheVideoCore4Target,
+                                       createVideoCore4AsmBackend);
 }

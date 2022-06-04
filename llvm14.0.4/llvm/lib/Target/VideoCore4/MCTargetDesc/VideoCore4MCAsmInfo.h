@@ -1,8 +1,8 @@
-//===-- VideoCore4MCAsmInfo.h - VideoCore4 asm properties ----------*- C++ -*--===//
+//===-- VideoCore4MCAsmInfo.h - VideoCore4 Asm Info ------------------------*- C++ -*--===//
 //
 //                     The LLVM Compiler Infrastructure
 //
-// This file is distributed under the University of Illinois Open Source 
+// This file is distributed under the University of Illinois Open Source
 // License. See LICENSE.TXT for details.
 //
 //===----------------------------------------------------------------------===//
@@ -11,23 +11,20 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef VIDEOCORE4TARGETASMINFO_H
-#define VIDEOCORE4TARGETASMINFO_H
+#ifndef LLVM_LIB_TARGET_VIDEOCORE4MCASMINFO_H
+#define LLVM_LIB_TARGET_VIDEOCORE4MCASMINFO_H
 
-#include "llvm/MC/MCAsmInfo.h"
-#include "llvm/MC/MCRegisterInfo.h"
-#include "llvm/ADT/Triple.h"
+#include "llvm/MC/MCAsmInfoELF.h"
 
 namespace llvm {
-  class StringRef;
+  class Triple;
 
-  class VideoCore4MCAsmInfo : public MCAsmInfo {
-    virtual void anchor();
+  class VideoCore4MCAsmInfo : public MCAsmInfoELF {
+    void anchor() override;
   public:
-    explicit VideoCore4MCAsmInfo(const MCRegisterInfo &MRI,
-				 const Triple         &TT);
+    explicit VideoCore4MCAsmInfo(const Triple &TheTriple);
   };
 
 } // namespace llvm
-
 #endif
+

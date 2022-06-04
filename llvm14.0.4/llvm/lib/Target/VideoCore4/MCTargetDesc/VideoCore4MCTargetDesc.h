@@ -14,11 +14,32 @@
 #ifndef VideoCore4MCTARGETDESC_H
 #define VideoCore4MCTARGETDESC_H
 
+#include "llvm/MC/MCTargetOptions.h"
+
+#include <memory>
+
 namespace llvm {
-class Target;
+  class MCAsmBackend;
+  class MCSubtargetInfo;
+  class Target;
+  class MCCodeEmitter;
+  class MCContext;
+  class MCRegisterInfo;
+  class MCInstrInfo;
+  class MCObjectTargetWriter;
 
-extern Target TheVideoCore4Target;
+  extern Target TheVideoCore4Target;
 
+  MCCodeEmitter *createVideoCore4MCCodeEmitter(const MCInstrInfo    &MCII,
+					       const MCRegisterInfo &MRI,
+					       MCContext            &Ctx);
+
+  MCAsmBackend *createVideoCore4AsmBackend(const Target          &T,
+					   const MCSubtargetInfo &STI,
+					   const MCRegisterInfo  &MRI,
+					   const MCTargetOptions &Option);
+
+  std::unique_ptr<MCObjectTargetWriter> createVideoCore4ELFObjectWriter(uint8_t OSABI);
 } // End llvm namespace
 
 // Defines symbolic names for VideoCore4 registers.
