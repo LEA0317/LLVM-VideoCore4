@@ -258,26 +258,26 @@ namespace vc4util {
   inline unsigned
   reverseCmovConditon(unsigned opcode) {
     switch (opcode) {
-    case llvm::VideoCore4::CMOV_EQ_RR_P:
-      return llvm::VideoCore4::CMOV_NE_RR_P;
-    case llvm::VideoCore4::CMOV_NE_RR_P:
-      return llvm::VideoCore4::CMOV_EQ_RR_P;
-    case llvm::VideoCore4::CMOV_GT_RR_P:
-      return llvm::VideoCore4::CMOV_LE_RR_P;
-    case llvm::VideoCore4::CMOV_GE_RR_P:
-      return llvm::VideoCore4::CMOV_LT_RR_P;
-    case llvm::VideoCore4::CMOV_LT_RR_P:
-      return llvm::VideoCore4::CMOV_GE_RR_P;
-    case llvm::VideoCore4::CMOV_LE_RR_P:
-      return llvm::VideoCore4::CMOV_GT_RR_P;
-    case llvm::VideoCore4::CMOV_HI_RR_P:
-      return llvm::VideoCore4::CMOV_LS_RR_P;
-    case llvm::VideoCore4::CMOV_HS_RR_P:
-      return llvm::VideoCore4::CMOV_LO_RR_P;
-    case llvm::VideoCore4::CMOV_LO_RR_P:
-      return llvm::VideoCore4::CMOV_HS_RR_P;
-    case llvm::VideoCore4::CMOV_LS_RR_P:
-      return llvm::VideoCore4::CMOV_HI_RR_P;
+    case llvm::VideoCore4::CMOV_EQ_RR:
+      return llvm::VideoCore4::CMOV_NE_RR;
+    case llvm::VideoCore4::CMOV_NE_RR:
+      return llvm::VideoCore4::CMOV_EQ_RR;
+    case llvm::VideoCore4::CMOV_GT_RR:
+      return llvm::VideoCore4::CMOV_LE_RR;
+    case llvm::VideoCore4::CMOV_GE_RR:
+      return llvm::VideoCore4::CMOV_LT_RR;
+    case llvm::VideoCore4::CMOV_LT_RR:
+      return llvm::VideoCore4::CMOV_GE_RR;
+    case llvm::VideoCore4::CMOV_LE_RR:
+      return llvm::VideoCore4::CMOV_GT_RR;
+    case llvm::VideoCore4::CMOV_HI_RR:
+      return llvm::VideoCore4::CMOV_LS_RR;
+    case llvm::VideoCore4::CMOV_HS_RR:
+      return llvm::VideoCore4::CMOV_LO_RR;
+    case llvm::VideoCore4::CMOV_LO_RR:
+      return llvm::VideoCore4::CMOV_HS_RR;
+    case llvm::VideoCore4::CMOV_LS_RR:
+      return llvm::VideoCore4::CMOV_HI_RR;
     default:
       llvm_unreachable("cannot handle this conditional mov");
     }

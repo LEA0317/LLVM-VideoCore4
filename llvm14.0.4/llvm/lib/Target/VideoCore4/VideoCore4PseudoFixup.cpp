@@ -350,202 +350,202 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       }
     case VideoCore4::SELECT_EQ_P:
       {
-	SELECT_CC(VideoCore4::CMOV_EQ_RR_P);
+	SELECT_CC(VideoCore4::CMOV_EQ_RR);
 	break;
       }
     case VideoCore4::SELECT_NE_P:
       {
-	SELECT_CC(VideoCore4::CMOV_NE_RR_P);
+	SELECT_CC(VideoCore4::CMOV_NE_RR);
 	break;
       }
     case VideoCore4::SELECT_GT_P:
       {
-	SELECT_CC(VideoCore4::CMOV_GT_RR_P);
+	SELECT_CC(VideoCore4::CMOV_GT_RR);
 	break;
       }
     case VideoCore4::SELECT_GE_P:
       {
-	SELECT_CC(VideoCore4::CMOV_GE_RR_P);
+	SELECT_CC(VideoCore4::CMOV_GE_RR);
 	break;
       }
     case VideoCore4::SELECT_LT_P:
       {
-	SELECT_CC(VideoCore4::CMOV_LT_RR_P);
+	SELECT_CC(VideoCore4::CMOV_LT_RR);
 	break;
       }
     case VideoCore4::SELECT_LE_P:
       {
-	SELECT_CC(VideoCore4::CMOV_LE_RR_P);
+	SELECT_CC(VideoCore4::CMOV_LE_RR);
 	break;
       }
     case VideoCore4::SELECT_HI_P:
       {
-	SELECT_CC(VideoCore4::CMOV_HI_RR_P);
+	SELECT_CC(VideoCore4::CMOV_HI_RR);
 	break;
       }
     case VideoCore4::SELECT_HS_P:
       {
-	SELECT_CC(VideoCore4::CMOV_HS_RR_P);
+	SELECT_CC(VideoCore4::CMOV_HS_RR);
 	break;
       }
     case VideoCore4::SELECT_LO_P:
       {
-	SELECT_CC(VideoCore4::CMOV_LO_RR_P);
+	SELECT_CC(VideoCore4::CMOV_LO_RR);
 	break;
       }
     case VideoCore4::SELECT_LS_P:
       {
-	SELECT_CC(VideoCore4::CMOV_LS_RR_P);
+	SELECT_CC(VideoCore4::CMOV_LS_RR);
 	break;
       }
     case VideoCore4::FSELECT_EQ_P:
       {
-	SELECT_CC(VideoCore4::CMOV_EQ_RR_P);
+	SELECT_CC(VideoCore4::CMOV_EQ_RR);
 	break;
       }
     case VideoCore4::FSELECT_NE_P:
       {
-	SELECT_CC(VideoCore4::CMOV_NE_RR_P);
+	SELECT_CC(VideoCore4::CMOV_NE_RR);
 	break;
       }
     case VideoCore4::FSELECT_GT_P:
       {
-	SELECT_CC(VideoCore4::CMOV_GT_RR_P);
+	SELECT_CC(VideoCore4::CMOV_GT_RR);
 	break;
       }
     case VideoCore4::FSELECT_GE_P:
       {
-	SELECT_CC(VideoCore4::CMOV_GE_RR_P);
+	SELECT_CC(VideoCore4::CMOV_GE_RR);
 	break;
       }
     case VideoCore4::FSELECT_LT_P:
       {
-	SELECT_CC(VideoCore4::CMOV_LT_RR_P);
+	SELECT_CC(VideoCore4::CMOV_LT_RR);
 	break;
       }
     case VideoCore4::FSELECT_LE_P:
       {
-	SELECT_CC(VideoCore4::CMOV_LE_RR_P);
+	SELECT_CC(VideoCore4::CMOV_LE_RR);
 	break;
       }
     case VideoCore4::FSELECT_HI_P:
       {
-	SELECT_CC(VideoCore4::CMOV_HI_RR_P);
+	SELECT_CC(VideoCore4::CMOV_HI_RR);
 	break;
       }
     case VideoCore4::FSELECT_HS_P:
       {
-	SELECT_CC(VideoCore4::CMOV_HS_RR_P);
+	SELECT_CC(VideoCore4::CMOV_HS_RR);
 	break;
       }
     case VideoCore4::FSELECT_LO_P:
       {
-	SELECT_CC(VideoCore4::CMOV_LO_RR_P);
+	SELECT_CC(VideoCore4::CMOV_LO_RR);
 	break;
       }
     case VideoCore4::FSELECT_LS_P:
       {
-	SELECT_CC(VideoCore4::CMOV_LS_RR_P);
+	SELECT_CC(VideoCore4::CMOV_LS_RR);
 	break;
       }
     case VideoCore4::SETCC_EQ_RI_P:
       {
-	SETCC_RI(VideoCore4::CMOV_EQ_RI_P);
+	SETCC_RI(VideoCore4::CMOV_EQ_RI);
 	break;
       }
     case VideoCore4::SETCC_NE_RI_P:
       {
-	SETCC_RI(VideoCore4::CMOV_NE_RI_P);
+	SETCC_RI(VideoCore4::CMOV_NE_RI);
 	break;
       }
     case VideoCore4::SETCC_GT_RI_P:
       {
-	SETCC_RI(VideoCore4::CMOV_GT_RI_P);
+	SETCC_RI(VideoCore4::CMOV_GT_RI);
 	break;
       }
     case VideoCore4::SETCC_GE_RI_P:
       {
-	SETCC_RI(VideoCore4::CMOV_GE_RI_P);
+	SETCC_RI(VideoCore4::CMOV_GE_RI);
 	break;
       }
     case VideoCore4::SETCC_LT_RI_P:
       {
-	SETCC_RI(VideoCore4::CMOV_LT_RI_P);
+	SETCC_RI(VideoCore4::CMOV_LT_RI);
 	break;
       }
     case VideoCore4::SETCC_LE_RI_P:
       {
-	SETCC_RI(VideoCore4::CMOV_LE_RI_P);
+	SETCC_RI(VideoCore4::CMOV_LE_RI);
 	break;
       }
     case VideoCore4::SETCC_HI_RI_P:
       {
-	SETCC_RI(VideoCore4::CMOV_HI_RI_P);
+	SETCC_RI(VideoCore4::CMOV_HI_RI);
 	break;
       }
     case VideoCore4::SETCC_HS_RI_P:
       {
-	SETCC_RI(VideoCore4::CMOV_HS_RI_P);
+	SETCC_RI(VideoCore4::CMOV_HS_RI);
 	break;
       }
     case VideoCore4::SETCC_LO_RI_P:
       {
-	SETCC_RI(VideoCore4::CMOV_LO_RI_P);
+	SETCC_RI(VideoCore4::CMOV_LO_RI);
 	break;
       }
     case VideoCore4::SETCC_LS_RI_P:
       {
-	SETCC_RI(VideoCore4::CMOV_LS_RI_P);
+	SETCC_RI(VideoCore4::CMOV_LS_RI);
 	break;
       }
     case VideoCore4::SETCC_EQ_RR_P:
       {
-	SETCC_RR(VideoCore4::CMOV_EQ_RR_P);
+	SETCC_RR(VideoCore4::CMOV_EQ_RR);
 	break;
       }
     case VideoCore4::SETCC_NE_RR_P:
       {
-	SETCC_RR(VideoCore4::CMOV_NE_RR_P);
+	SETCC_RR(VideoCore4::CMOV_NE_RR);
 	break;
       }
     case VideoCore4::SETCC_GT_RR_P:
       {
-	SETCC_RR(VideoCore4::CMOV_GT_RR_P);
+	SETCC_RR(VideoCore4::CMOV_GT_RR);
 	break;
       }
     case VideoCore4::SETCC_GE_RR_P:
       {
-	SETCC_RR(VideoCore4::CMOV_GE_RR_P);
+	SETCC_RR(VideoCore4::CMOV_GE_RR);
 	break;
       }
     case VideoCore4::SETCC_LT_RR_P:
       {
-	SETCC_RR(VideoCore4::CMOV_LT_RR_P);
+	SETCC_RR(VideoCore4::CMOV_LT_RR);
 	break;
       }
     case VideoCore4::SETCC_LE_RR_P:
       {
-	SETCC_RR(VideoCore4::CMOV_LE_RR_P);
+	SETCC_RR(VideoCore4::CMOV_LE_RR);
 	break;
       }
     case VideoCore4::SETCC_HI_RR_P:
       {
-	SETCC_RR(VideoCore4::CMOV_HI_RR_P);
+	SETCC_RR(VideoCore4::CMOV_HI_RR);
 	break;
       }
     case VideoCore4::SETCC_HS_RR_P:
       {
-	SETCC_RR(VideoCore4::CMOV_HS_RR_P);
+	SETCC_RR(VideoCore4::CMOV_HS_RR);
 	break;
       }
     case VideoCore4::SETCC_LO_RR_P:
       {
-	SETCC_RR(VideoCore4::CMOV_LO_RR_P);
+	SETCC_RR(VideoCore4::CMOV_LO_RR);
 	break;
       }
     case VideoCore4::SETCC_LS_RR_P:
       {
-	SETCC_RR(VideoCore4::CMOV_LS_RR_P);
+	SETCC_RR(VideoCore4::CMOV_LS_RR);
 	break;
       }
     case VideoCore4::JMP_FCOMP_OEQ_P:
@@ -670,182 +670,182 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       }
     case VideoCore4::F_SELECT_OEQ_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_EQ_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_EQ_RR);
 	break;
       }
     case VideoCore4::F_SELECT_ONE_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_NE_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_NE_RR);
 	break;
       }
     case VideoCore4::F_SELECT_OGT_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_GT_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_GT_RR);
 	break;
       }
     case VideoCore4::F_SELECT_OGE_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_GE_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_GE_RR);
 	break;
       }
     case VideoCore4::F_SELECT_OLT_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_LT_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_LT_RR);
 	break;
       }
     case VideoCore4::F_SELECT_OLE_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_LE_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_LE_RR);
 	break;
       }
     case VideoCore4::F_SELECT_UEQ_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_EQ_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_EQ_RR);
 	break;
       }
     case VideoCore4::F_SELECT_UNE_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_NE_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_NE_RR);
 	break;
       }
     case VideoCore4::F_SELECT_UGT_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_GT_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_GT_RR);
 	break;
       }
     case VideoCore4::F_SELECT_UGE_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_GE_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_GE_RR);
 	break;
       }
     case VideoCore4::F_SELECT_ULT_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_LT_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_LT_RR);
 	break;
       }
     case VideoCore4::F_SELECT_ULE_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_LE_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_LE_RR);
 	break;
       }
     case VideoCore4::F_FSELECT_OEQ_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_EQ_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_EQ_RR);
 	break;
       }
     case VideoCore4::F_FSELECT_ONE_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_NE_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_NE_RR);
 	break;
       }
     case VideoCore4::F_FSELECT_OGT_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_GT_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_GT_RR);
 	break;
       }
     case VideoCore4::F_FSELECT_OGE_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_GE_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_GE_RR);
 	break;
       }
     case VideoCore4::F_FSELECT_OLT_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_LT_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_LT_RR);
 	break;
       }
     case VideoCore4::F_FSELECT_OLE_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_LE_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_LE_RR);
 	break;
       }
     case VideoCore4::F_FSELECT_UEQ_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_EQ_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_EQ_RR);
 	break;
       }
     case VideoCore4::F_FSELECT_UNE_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_NE_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_NE_RR);
 	break;
       }
     case VideoCore4::F_FSELECT_UGT_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_GT_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_GT_RR);
 	break;
       }
     case VideoCore4::F_FSELECT_UGE_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_GE_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_GE_RR);
 	break;
       }
     case VideoCore4::F_FSELECT_ULT_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_LT_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_LT_RR);
 	break;
       }
     case VideoCore4::F_FSELECT_ULE_P:
       {
-	F_SELECT_CC(VideoCore4::CMOV_LE_RR_P);
+	F_SELECT_CC(VideoCore4::CMOV_LE_RR);
 	break;
       }
     case VideoCore4::F_SETCC_OEQ_RR_P:
       {
-	F_SETCC_RR(VideoCore4::CMOV_EQ_RR_P);
+	F_SETCC_RR(VideoCore4::CMOV_EQ_RR);
 	break;
       }
     case VideoCore4::F_SETCC_ONE_RR_P:
       {
-	F_SETCC_RR(VideoCore4::CMOV_NE_RR_P);
+	F_SETCC_RR(VideoCore4::CMOV_NE_RR);
 	break;
       }
     case VideoCore4::F_SETCC_OGT_RR_P:
       {
-	F_SETCC_RR(VideoCore4::CMOV_GT_RR_P);
+	F_SETCC_RR(VideoCore4::CMOV_GT_RR);
 	break;
       }
     case VideoCore4::F_SETCC_OGE_RR_P:
       {
-	F_SETCC_RR(VideoCore4::CMOV_GE_RR_P);
+	F_SETCC_RR(VideoCore4::CMOV_GE_RR);
 	break;
       }
     case VideoCore4::F_SETCC_OLT_RR_P:
       {
-	F_SETCC_RR(VideoCore4::CMOV_LT_RR_P);
+	F_SETCC_RR(VideoCore4::CMOV_LT_RR);
 	break;
       }
     case VideoCore4::F_SETCC_OLE_RR_P:
       {
-	F_SETCC_RR(VideoCore4::CMOV_LE_RR_P);
+	F_SETCC_RR(VideoCore4::CMOV_LE_RR);
 	break;
       }
     case VideoCore4::F_SETCC_UEQ_RR_P:
       {
-	F_SETCC_RR(VideoCore4::CMOV_EQ_RR_P);
+	F_SETCC_RR(VideoCore4::CMOV_EQ_RR);
 	break;
       }
     case VideoCore4::F_SETCC_UNE_RR_P:
       {
-	F_SETCC_RR(VideoCore4::CMOV_NE_RR_P);
+	F_SETCC_RR(VideoCore4::CMOV_NE_RR);
 	break;
       }
     case VideoCore4::F_SETCC_UGT_RR_P:
       {
-	F_SETCC_RR(VideoCore4::CMOV_GT_RR_P);
+	F_SETCC_RR(VideoCore4::CMOV_GT_RR);
 	break;
       }
     case VideoCore4::F_SETCC_UGE_RR_P:
       {
-	F_SETCC_RR(VideoCore4::CMOV_GE_RR_P);
+	F_SETCC_RR(VideoCore4::CMOV_GE_RR);
 	break;
       }
     case VideoCore4::F_SETCC_ULT_RR_P:
       {
-	F_SETCC_RR(VideoCore4::CMOV_LT_RR_P);
+	F_SETCC_RR(VideoCore4::CMOV_LT_RR);
 	break;
       }
     case VideoCore4::F_SETCC_ULE_RR_P:
       {
-	F_SETCC_RR(VideoCore4::CMOV_LE_RR_P);
+	F_SETCC_RR(VideoCore4::CMOV_LE_RR);
 	break;
       }
     case VideoCore4::ITOFCONV_P:

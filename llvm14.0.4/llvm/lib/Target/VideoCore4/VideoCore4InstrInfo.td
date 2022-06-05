@@ -327,9 +327,9 @@ defm MAX_RR : ALU2_REG_REG_REG<"max\t$D, $A, $B",
 defm MIN_RR : ALU2_REG_REG_REG<"min\t$D, $A, $B",
 	                        GR32,
 	                        (smin (i32 GR32:$A), (i32 GR32:$B))>;
-def CTLZ_P : VideoCore4Pseudo<(outs GR32:$rD), (ins GR32:$rA),
-    	     		       "clz\t$rD, $rA",
-			       [(set (i32 GR32:$rD), (ctlz (i32 GR32:$rA)))]>;
+def CTLZ_R : S32<(outs GR32:$rD), (ins GR32:$rA), // FIXME (instruction length?)
+    	          "clz\t$rD, $rA",
+	          [(set (i32 GR32:$rD), (ctlz (i32 GR32:$rA)))]>;
 
 /*
 defm DIV_I : ALU2_REG_REG_IMM<
@@ -689,33 +689,33 @@ let isCodeGenOnly = 1, Uses = [SR] in {
     def F_FSELECT_ULE_P : F_FSELECT_P<"ule">;
   }
 
-  class CMOV_RR_P<string cond> : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t),
-    	 	                                   "mov"#cond#"\t$d, $t",
-		 	                           []>;
-  class CMOV_RI_P<string cond> : VideoCore4Pseudo<(outs FR32:$d), (ins i32imm:$t),
-    	 	                                   "mov"#cond#"\t$d, $t",
-		 	                           []>;
-  def CMOV_EQ_RR_P : CMOV_RR_P<"eq">;
-  def CMOV_NE_RR_P : CMOV_RR_P<"ne">;
-  def CMOV_GT_RR_P : CMOV_RR_P<"gt">;
-  def CMOV_GE_RR_P : CMOV_RR_P<"ge">;
-  def CMOV_LT_RR_P : CMOV_RR_P<"lt">;
-  def CMOV_LE_RR_P : CMOV_RR_P<"le">;
-  def CMOV_HI_RR_P : CMOV_RR_P<"hi">;
-  def CMOV_HS_RR_P : CMOV_RR_P<"cc">;
-  def CMOV_LO_RR_P : CMOV_RR_P<"cs">;
-  def CMOV_LS_RR_P : CMOV_RR_P<"ls">;
+  class CMOV_RR<string cond> : S32<(outs FR32:$d), (ins FR32:$t), // FIXME (instruction length?)
+    	 	                    "mov"#cond#"\t$d, $t",
+		 	            []>;
+  class CMOV_RI<string cond> : S32<(outs FR32:$d), (ins i32imm:$t), // FIXME (instruction length?)
+    	 	                    "mov"#cond#"\t$d, $t",
+		 	            []>;
+  def CMOV_EQ_RR : CMOV_RR<"eq">;
+  def CMOV_NE_RR : CMOV_RR<"ne">;
+  def CMOV_GT_RR : CMOV_RR<"gt">;
+  def CMOV_GE_RR : CMOV_RR<"ge">;
+  def CMOV_LT_RR : CMOV_RR<"lt">;
+  def CMOV_LE_RR : CMOV_RR<"le">;
+  def CMOV_HI_RR : CMOV_RR<"hi">;
+  def CMOV_HS_RR : CMOV_RR<"cc">;
+  def CMOV_LO_RR : CMOV_RR<"cs">;
+  def CMOV_LS_RR : CMOV_RR<"ls">;
 
-  def CMOV_EQ_RI_P : CMOV_RI_P<"eq">;
-  def CMOV_NE_RI_P : CMOV_RI_P<"ne">;
-  def CMOV_GT_RI_P : CMOV_RI_P<"gt">;
-  def CMOV_GE_RI_P : CMOV_RI_P<"ge">;
-  def CMOV_LT_RI_P : CMOV_RI_P<"lt">;
-  def CMOV_LE_RI_P : CMOV_RI_P<"le">;
-  def CMOV_HI_RI_P : CMOV_RI_P<"hi">;
-  def CMOV_HS_RI_P : CMOV_RI_P<"cc">;
-  def CMOV_LO_RI_P : CMOV_RI_P<"cs">;
-  def CMOV_LS_RI_P : CMOV_RI_P<"ls">;
+  def CMOV_EQ_RI : CMOV_RI<"eq">;
+  def CMOV_NE_RI : CMOV_RI<"ne">;
+  def CMOV_GT_RI : CMOV_RI<"gt">;
+  def CMOV_GE_RI : CMOV_RI<"ge">;
+  def CMOV_LT_RI : CMOV_RI<"lt">;
+  def CMOV_LE_RI : CMOV_RI<"le">;
+  def CMOV_HI_RI : CMOV_RI<"hi">;
+  def CMOV_HS_RI : CMOV_RI<"cc">;
+  def CMOV_LO_RI : CMOV_RI<"cs">;
+  def CMOV_LS_RI : CMOV_RI<"ls">;
 }
 
 class SETCC_RR_P<string cond> : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$a, FR32:$b),

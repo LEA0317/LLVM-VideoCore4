@@ -58,7 +58,8 @@ VideoCore4MCCodeEmitter::EmitInstruction(APInt        Val,
 					 raw_ostream &OS) const {
   switch (Size) {
   default:
-    report_fatal_error("invalid instruction length");
+    break;
+    //report_fatal_error("invalid instruction length");
   case 2: {
     for (unsigned i = 0; i < Size; ++i) {
       unsigned Shift = i * 8;
@@ -110,7 +111,8 @@ VideoCore4MCCodeEmitter::encodeInstruction(const MCInst             &MI,
   // this switch statement is redundant. but may be useful later
   switch (Size) {
   default:
-    report_fatal_error("invalid instruction length");
+    break;
+    //report_fatal_error("invalid instruction length");
   case 2: {
     EmitInstruction(Binary,
 		    Size,
