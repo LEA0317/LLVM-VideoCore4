@@ -63,6 +63,16 @@ public:
 			     APInt                    &Inst,
 			     APInt                    &Scratch,
 			     const MCSubtargetInfo    &STI) const;
+
+  unsigned getExprOpValue(const MCExpr             *Expr,
+			  SmallVectorImpl<MCFixup> &Fixups,
+                          const MCSubtargetInfo    &STI) const;
+
+  void getMachineOpValue(const MCInst             &MI,
+                         const MCOperand          &MO,
+                         APInt                    &op,
+                         SmallVectorImpl<MCFixup> &Fixups,
+                         const MCSubtargetInfo    &STI) const;
 }; // class VideoCore4MCCodeEmitter
 } // namespace llvm.
 

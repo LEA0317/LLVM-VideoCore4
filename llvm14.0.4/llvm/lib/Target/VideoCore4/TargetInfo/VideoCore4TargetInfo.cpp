@@ -17,7 +17,7 @@ Target llvm::TheVideoCore4Target;
 
 extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeVideoCore4TargetInfo() {
   RegisterTarget<Triple::videocore, /*HasJIT=*/true> X(TheVideoCore4Target,
-                                                       "vc4",
+                                                       "videocore",
                                                        "VideoCore4 LittleEndian",
                                                        "VideoCore4");
 }

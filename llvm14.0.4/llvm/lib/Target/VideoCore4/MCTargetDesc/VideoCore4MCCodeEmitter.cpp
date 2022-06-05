@@ -13,6 +13,8 @@
 //
 
 #include "VideoCore4MCCodeEmitter.h"
+#include "VideoCore4MCExpr.h"
+#include "VideoCore4FixupKinds.h"
 
 #include "llvm/ADT/APFloat.h"
 #include "llvm/MC/MCCodeEmitter.h"
@@ -33,9 +35,8 @@
 
 #define DEBUG_TYPE "mccodeemitter"
 
-#define GET_INSTRMAP_INFO
+#define GET_INSTRINFO_ENUM
 #include "VideoCore4GenInstrInfo.inc"
-#undef GET_INSTRMAP_INFO
 
 namespace llvm {
   MCCodeEmitter *createVideoCore4MCCodeEmitter(const MCInstrInfo    &MCII,
@@ -97,6 +98,9 @@ VideoCore4MCCodeEmitter::encodeInstruction(const MCInst             &MI,
   APInt              Scratch(Size*8, 0);
 
 #if 0
+  MI->dump();
+#endif
+
   getBinaryCodeForInstr(MI,
 			Fixups,
 			Binary,
@@ -126,7 +130,95 @@ VideoCore4MCCodeEmitter::encodeInstruction(const MCInst             &MI,
     break;
   }
   }
-#endif
 }
 
-//#include "VideoCore4GenMCCodeEmitter.inc"
+void
+VideoCore4MCCodeEmitter::getMachineOpValue(const MCInst             &MI,
+					   const MCOperand          &MO,
+					   APInt                    &op,
+					   SmallVectorImpl<MCFixup> &Fixups,
+					   const MCSubtargetInfo    &STI) const {
+#if 0 // konda
+  MI.dump();
+#endif
+
+  if (MO.isReg()) {
+    MCRegister Reg   = MO.getReg();
+    unsigned   RegNo = Ctx.getRegisterInfo()->getEncodingValue(Reg);
+    op = APInt(64*8, RegNo);
+    return;
+  } else if (MO.isImm()) {
+    op = APInt(64*8, static_cast<unsigned>(MO.getImm()));
+    return;
+  } else if (MO.isSFPImm()) {
+    op = APInt(64*8, static_cast<unsigned>(APFloat(bit_cast<float>(MO.getSFPImm())).bitcastToAPInt().getHiBits(32).getLimitedValue()));
+    return;
+  }
+  // MO must be an Expr.
+
+  assert(MO.isExpr());
+  op = APInt(64*8, getExprOpValue(MO.getExpr(),
+                                  Fixups,
+                                  STI));
+  return;
+}
+
+unsigned
+VideoCore4MCCodeEmitter::getExprOpValue(const MCExpr             *Expr,
+					SmallVectorImpl<MCFixup> &Fixups,
+					const MCSubtargetInfo    &STI) const {
+#if 0 // konda
+  Expr->dump();
+#endif
+  MCExpr::ExprKind Kind = Expr->getKind();
+  if (Kind == MCExpr::Constant) {
+    return cast<MCConstantExpr>(Expr)->getValue();
+  }
+
+  if (Kind == MCExpr::Binary) {
+    unsigned Res = getExprOpValue(cast<MCBinaryExpr>(Expr)->getLHS(), Fixups, STI);
+    Res += getExprOpValue(cast<MCBinaryExpr>(Expr)->getRHS(), Fixups, STI);
+    return Res;
+  }
+
+  if (Kind == MCExpr::Target) {
+    const VideoCore4MCExpr *VideoCore4Expr = cast<VideoCore4MCExpr>(Expr);
+
+    VideoCore4::Fixups FixupKind = VideoCore4::Fixups(0);
+    switch (VideoCore4Expr->getKind()) {
+    default:
+      break;
+    } // switch
+    Fixups.push_back(MCFixup::create(0,
+				     Expr,
+				     MCFixupKind(FixupKind)));
+    return 0;
+  }
+
+  if (Kind == MCExpr::SymbolRef) {
+    VideoCore4::Fixups FixupKind = VideoCore4::Fixups(0);
+
+    switch(cast<MCSymbolRefExpr>(Expr)->getKind()) {
+    default:
+      {
+	llvm_unreachable("Unknown fixup kind!");
+	break;
+      }
+    case MCSymbolRefExpr::VK_None:
+      {
+	FixupKind = VideoCore4::fixup_VideoCore4_32;
+	break;
+      }
+    }
+    
+    Fixups.push_back(MCFixup::create(0,
+				     Expr,
+				     MCFixupKind(FixupKind)));
+    return 0;
+  }
+    
+  // All of the information is in the fixup.
+  return 0;
+}
+
+#include "VideoCore4GenMCCodeEmitter.inc"

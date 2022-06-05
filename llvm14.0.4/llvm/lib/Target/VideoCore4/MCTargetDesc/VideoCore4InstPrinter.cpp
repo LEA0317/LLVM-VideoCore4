@@ -13,6 +13,7 @@
 
 #include "VideoCore4.h"
 #include "VideoCore4InstPrinter.h"
+
 #include "llvm/MC/MCInst.h"
 #include "llvm/MC/MCAsmInfo.h"
 #include "llvm/MC/MCExpr.h"
@@ -27,9 +28,9 @@ using namespace llvm;
 #include "VideoCore4GenAsmWriter.inc"
 
 void
-VideoCore4InstPrinter::printInst(const MCInst         *MI,
-				 uint64_t              Address,
-				 StringRef             Annot,
+VideoCore4InstPrinter::printInst(const MCInst          *MI,
+				 uint64_t               Address,
+				 StringRef              Annot,
 				 const MCSubtargetInfo &STI,
 				 raw_ostream           &O) {
   printInstruction(MI, Address, O);
@@ -59,11 +60,12 @@ VideoCore4InstPrinter::printOperand(const MCInst *MI,
   }
 }
 
-void VideoCore4InstPrinter::printStacked(const MCInst *MI, unsigned OpNo,
-                                       raw_ostream &O, const char *Modifier) {
+void VideoCore4InstPrinter::printStacked(const MCInst *MI,
+					 unsigned      OpNo,
+					 raw_ostream  &O,
+					 const char   *Modifier) {
   assert((Modifier == 0 || Modifier[0] == 0) && "No modifiers supported");
-  const MCOperand& Base = MI->getOperand(OpNo);
+  const MCOperand& Base   = MI->getOperand(OpNo);
   const MCOperand& Offset = MI->getOperand(OpNo+1);
-
-	O << Offset.getImm() << " (" << getRegisterName(Base.getReg()) << ")";
+  O << Offset.getImm() << " (" << getRegisterName(Base.getReg()) << ")";
 }

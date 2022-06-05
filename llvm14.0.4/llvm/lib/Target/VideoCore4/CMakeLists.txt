@@ -8,7 +8,7 @@ tablegen(LLVM VideoCore4GenAsmWriter.inc -gen-asm-writer)
 tablegen(LLVM VideoCore4GenDAGISel.inc -gen-dag-isel)
 tablegen(LLVM VideoCore4GenCallingConv.inc -gen-callingconv)
 tablegen(LLVM VideoCore4GenSubtargetInfo.inc -gen-subtarget)
-##tablegen(LLVM VideoCore4GenMCCodeEmitter.inc -gen-emitter)
+tablegen(LLVM VideoCore4GenMCCodeEmitter.inc -gen-emitter)
 
 add_public_tablegen_target(VideoCore4CommonTableGen)
 

@@ -487,8 +487,8 @@ let isAsCheapAsAMove = 1 in
 def LEA_PC_LI : S48<(outs GR32:$D), (ins i32imm:$A),
 		     "lea\t$D, $A(%pc)",
 		     [(set GR32:$D, tglobaladdr:$A)]> {
-  bits<5>  D;
-  bits<32> A;
+  bits<5>           D;
+  bits<32>          A;
   let Inst{47-37} = 0b11100101000;
   let Inst{36-32} = D;
   let Inst{31-0}  = A;

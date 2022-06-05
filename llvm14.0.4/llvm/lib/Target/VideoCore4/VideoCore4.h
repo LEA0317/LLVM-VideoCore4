@@ -20,10 +20,8 @@
 
 namespace llvm {
   class VideoCore4TargetMachine;
-  class VideoCore4AsmPrinter;
   class FunctionPass;
   class ModulePass;
-  class formatted_raw_ostream;
 
   ModulePass *createVideoCore4LowerIntrinsicsPass(void);
   
