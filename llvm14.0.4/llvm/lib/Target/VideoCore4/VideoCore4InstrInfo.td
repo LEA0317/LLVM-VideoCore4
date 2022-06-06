@@ -1041,3 +1041,6 @@ def : Pat<(i32 (bitconvert (f32 fpimm:$in))),
           (MOV_LI (bitcast_fpimm_to_i32 f32:$in))>;
 def : Pat<(i32 (bitconvert (i32 imm:$in))),
           (MOV_LI imm:$in)>;
+
+// instruction aliases
+def : InstAlias<"nop", (ADD_R_RI TMP, 0)>;
