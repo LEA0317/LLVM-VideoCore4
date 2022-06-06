@@ -116,7 +116,7 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
 
 	MBB.erase(MI);
 
-	BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))
+	BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))
 	  .addReg(reg1)
 	  .addReg(reg2);
 	BuildMI(MBB, I, dl, TII->get(opc))
@@ -169,19 +169,19 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
       MBB.erase(MI);
 
       if (reg1 == reg3) {
-	BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))
+	BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))
 	  .addReg(reg4)
 	  .addReg(reg5);
 	BuildMI(MBB, I, dl, TII->get(opc), reg1)
 	  .addReg(reg2);
       } else if (reg1 == reg2) {
-	BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))
+	BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))
 	  .addReg(reg4)
 	  .addReg(reg5);
 	BuildMI(MBB, I, dl, TII->get(vc4util::reverseCmovConditon(opc)), reg1)
 	  .addReg(reg3);
       } else {
-	BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))
+	BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))
 	  .addReg(reg4)
 	  .addReg(reg5);
 	BuildMI(MBB, I, dl, TII->get(opc), reg1)
@@ -236,7 +236,7 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
 
       MBB.erase(MI);
 
-      BuildMI(MBB, I, dl, TII->get(VideoCore4::FCMP_P))
+      BuildMI(MBB, I, dl, TII->get(VideoCore4::CMP_F))
 	.addReg(reg2)
 	.addReg(reg3);
       BuildMI(MBB, I, dl, TII->get(VideoCore4::MOV_FI), reg1)

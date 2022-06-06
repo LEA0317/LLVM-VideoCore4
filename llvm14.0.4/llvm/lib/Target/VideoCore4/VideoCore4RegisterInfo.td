@@ -21,13 +21,12 @@ class GRegAlias<string n, VideoCore4Reg R> : VideoCore4Reg<n> {
   let Num = R.Num;
 }
 
-
 //===----------------------------------------------------------------------===//
 //  Registers
 //===----------------------------------------------------------------------===//
 
 foreach i = 0-31 in {
-	def R#i : VideoCore4Reg<"r"#i>;
+  def R#i : VideoCore4Reg<"r"#i>;
 }
 def TMP : GRegAlias<"tmp", R23>;
 def GP  : GRegAlias<"gp",  R24>;

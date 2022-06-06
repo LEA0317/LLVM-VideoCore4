@@ -14,6 +14,7 @@
 
 #include "VideoCore4AsmBackend.h"
 #include "VideoCore4MCTargetDesc.h"
+#include "VideoCore4FixupKinds.h"
 
 #include "llvm/MC/MCAsmBackend.h"
 #include "llvm/MC/MCAssembler.h"
@@ -31,6 +32,7 @@
 using namespace llvm;
 
 // Prepare value for the target space for it
+#if 0
 static unsigned
 adjustFixupValue(const MCFixup &Fixup,
 		 uint64_t       Value,
@@ -45,6 +47,7 @@ adjustFixupValue(const MCFixup &Fixup,
   }
   return Value;
 }
+#endif
 
 std::unique_ptr<llvm::MCObjectTargetWriter>
 VideoCore4AsmBackend::createObjectTargetWriter() const {
@@ -62,7 +65,9 @@ VideoCore4AsmBackend::applyFixup(const MCAssembler     &Asm,
 				 uint64_t               Value,
 				 bool                   IsResolved,
 				 const MCSubtargetInfo *STI) const {
+#if 0
   MCFixupKind Kind = Fixup.getKind();
+#endif
 
   if (!Value) {
     return; // Doesn't change encoding.
@@ -75,12 +80,13 @@ VideoCore4AsmBackend::getFixupKindInfo(MCFixupKind Kind) const {
     return MCAsmBackend::getFixupKindInfo(Kind);
   }
 
-  const static MCFixupKindInfo Infos[0] =
+  const static MCFixupKindInfo Infos[VideoCore4::NumTargetFixupKinds] =
     {
       // This table *must* be in same the order of fixup_* kinds in
       // VideoCore4FixupKinds.h.
       //
       // name                        offset  bits  flags
+      { "fixup_VideoCore4_32",           32,   32,     0 },
     };
   assert(unsigned(Kind - FirstTargetFixupKind) < getNumFixupKinds() &&
          "Invalid kind!");

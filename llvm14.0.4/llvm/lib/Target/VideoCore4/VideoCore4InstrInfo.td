@@ -621,10 +621,6 @@ let isTerminator = 1, isBranch = 1 in {
 }
 
 let isCodeGenOnly = 1, Uses = [SR] in {
-  def FCMP_P : VideoCore4Pseudo<(outs), (ins FR32:$ra, FR32:$rb),
-	                         "",
-		                 []>;
-
   let Constraints = "$d = $f" in {
     class SELECT_P<string cond> : VideoCore4Pseudo<(outs FR32:$d), (ins FR32:$t, FR32:$f, FR32:$lhs, FR32:$rhs),
      	 	                                    !strconcat(cond,""),
