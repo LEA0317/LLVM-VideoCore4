@@ -478,10 +478,6 @@ let isAsCheapAsAMove = 1 in
   def MOV_LI : S48<(outs GR32:$D), (ins i32imm:$A),
   	       	    "mov\t$D, $A",
 	            [(set GR32:$D, imm:$A)]>;
-
-  def MOVF_LI : S48<(outs GR32:$D), (ins f32imm:$A),
-	             "mov\t$D, $A",
-	             [(set GR32:$D, fpimm:$A)]>;
 }
 
 def LEA_PC_LI : S48<(outs GR32:$D), (ins i32imm:$A),
@@ -1031,12 +1027,17 @@ def FRSQRT : S32<(outs GR32:$rD), (ins GR32:$rA),
 def FRCP : S32<(outs GR32:$rD), (ins GR32:$rA),
 	        "rcp\t{$rD, $rA}",
 	        [(set (f32 GR32:$rD), (VCrcp (f32 GR32:$rA)))]>;
-			 
 def : Pat<(fabs (f32 GR32:$rA)),
           (FMAXABSrr (f32 $rA), (FSUBrr (f32 TMP), (f32 TMP)))>;
-
 def : Pat<(fneg (f32 GR32:$rA)),
           (FSUBrr (FSUBrr (f32 TMP), (f32 TMP)), (f32 $rA))>;
-
 def : Pat<(call tglobaladdr:$dst),
           (CALL $dst)>;
+
+// i32 imm (should isel pseudo instr at firsr?)
+def : Pat<(i32 imm:$in),
+          (MOV_LI imm:$in)>;
+def : Pat<(i32 (bitconvert (f32 fpimm:$in))),
+          (MOV_LI (bitcast_fpimm_to_i32 f32:$in))>;
+def : Pat<(i32 (bitconvert (i32 imm:$in))),
+          (MOV_LI imm:$in)>;
