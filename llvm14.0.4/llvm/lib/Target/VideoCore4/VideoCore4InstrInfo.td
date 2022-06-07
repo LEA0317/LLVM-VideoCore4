@@ -106,7 +106,7 @@ def calltarget : Operand<i32>;
 //===----------------------------------------------------------------------===//
 
 let hasSideEffects = 0 in {
-  def NOP : S64<(outs), (ins), // ToDo: For now, using ALU(etc.) instruction as a nop. but check for short instructions. and add encodings
+  def NOP : S16<(outs), (ins),
                  "nop",
 	         []>;
 }
@@ -327,8 +327,8 @@ defm MAX_RR : ALU2_REG_REG_REG<"max\t$D, $A, $B",
 defm MIN_RR : ALU2_REG_REG_REG<"min\t$D, $A, $B",
 	                        GR32,
 	                        (smin (i32 GR32:$A), (i32 GR32:$B))>;
-def CTLZ_R : S64<(outs GR32:$rD), (ins GR32:$rA), // ToDo (add encoding)
-    	          "clz\t$rD, $rA",
+def CTLZ_R : S32<(outs GR32:$rD), (ins GR32:$rA), // FIXME
+                  "clz\t$rD, $rA",
 	          [(set (i32 GR32:$rD), (ctlz (i32 GR32:$rA)))]>;
 
 /*

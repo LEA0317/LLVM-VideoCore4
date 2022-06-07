@@ -13,8 +13,9 @@
 // VideoCore4 Return Value Calling Convention
 //===----------------------------------------------------------------------===//
 def RetCC_VideoCore4 : CallingConv<[
-  // i32 and f32 are returned in registers R0, R1
-  CCIfType<[i32, f32], CCAssignToReg<[R0, R1]>>
+  // i32 and f32 are returned in registers R0
+  CCIfType<[i32, f32], CCAssignToReg<[R0]>>,
+  CCIfType<[i32, f32], CCAssignToStack<4, 4>>
 ]>;
 
 //===----------------------------------------------------------------------===//
@@ -39,5 +40,5 @@ def CC_VideoCore4 : CallingConv<[
 // Callee-saved register lists.
 //===----------------------------------------------------------------------===//
 
-def CSR:    CalleeSavedRegs<(add (sequence "R%u", 6, 23), LR, R27, R29)>;
+def CSR:    CalleeSavedRegs<(add R6, R7, LR, R27, R29)>;
 def CSR_FP: CalleeSavedRegs<(sub CSR, R6)>;
