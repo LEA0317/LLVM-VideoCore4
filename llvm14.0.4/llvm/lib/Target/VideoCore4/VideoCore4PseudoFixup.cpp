@@ -865,6 +865,22 @@ VideoCore4PseudoFixup::runOnMachineBasicBlock(MachineBasicBlock &MBB) {
     }
   }
 
+  // for debug 
+  for (MachineBasicBlock::iterator I = MBB.begin(); I != MBB.end();) {
+    MachineInstr *MI = &(*I);
+    I++;
+    DebugLoc dl     = MI->getDebugLoc();
+    unsigned Opcode = MI->getOpcode();
+
+    switch (Opcode) {
+    default:
+      {
+	MI->dump();
+	break;
+      }
+    }
+  }
+
   return Changed;
 }
 

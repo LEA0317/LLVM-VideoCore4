@@ -86,11 +86,15 @@ VideoCore4AsmBackend::getFixupKindInfo(MCFixupKind Kind) const {
       // VideoCore4FixupKinds.h.
       //
       // name                        offset  bits  flags
-      { "fixup_VideoCore4_32",           32,   32,     0 },
+      { "fixup_VideoCore4_32",            0,    0,     0 }, // FIXME
     };
+#if 0
   assert(unsigned(Kind - FirstTargetFixupKind) < getNumFixupKinds() &&
          "Invalid kind!");
   return Infos[Kind - FirstTargetFixupKind];
+#else
+  return Infos[0];
+#endif
 }
 
 /// WriteNopData - Write an (optimal) nop sequence of Count bytes

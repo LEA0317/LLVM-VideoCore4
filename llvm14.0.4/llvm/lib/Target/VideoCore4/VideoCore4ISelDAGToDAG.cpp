@@ -151,11 +151,10 @@ void VideoCore4DAGToDAGISel::Select(SDNode *N) {
 
       if (ConstantSDNode *CSN = dyn_cast<ConstantSDNode>(TestAgainst)) {
         Opc         = VideoCore4::CMP_LI;
-        TestAgainst = getI32Imm(CSN, CSN->getZExtValue() );
+        TestAgainst = getI32Imm(CSN, CSN->getZExtValue());
       } else {
-        Opc = VideoCore4::CMP_F;
+        Opc  = VideoCore4::CMP_F;
       }
-
       SDValue Glue = SDValue(CurDAG->getMachineNode(Opc,
 						    dl,
 						    MVT::Glue,

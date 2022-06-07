@@ -98,8 +98,8 @@ VideoCore4MCCodeEmitter::encodeInstruction(const MCInst             &MI,
   APInt              Binary(Size*8, 0);
   APInt              Scratch(Size*8, 0);
 
-#if 0
-  MI->dump();
+#if 1 // debug
+  MI.dump();
 #endif
 
   getBinaryCodeForInstr(MI,
@@ -212,7 +212,6 @@ VideoCore4MCCodeEmitter::getExprOpValue(const MCExpr             *Expr,
 	break;
       }
     }
-    
     Fixups.push_back(MCFixup::create(0,
 				     Expr,
 				     MCFixupKind(FixupKind)));
