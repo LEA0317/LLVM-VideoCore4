@@ -66,16 +66,14 @@ class VideoCore4Pseudo<dag       outs,
   let isPseudo      = 1;
 }
 
-class VC4_OP4_S16<bits<4>   opcode,
-                  dag       outs,
-                  dag       ins,
-                  string    asmstr,
-                  list<dag> pattern> :
-      S16<opcode,
-          outs, ins,
-          asmstr,
-          pattern> {
-  // I don't know the actual encoding so far
+class S16_OP4<bits<4>   opcode,
+              dag       outs,
+	      dag       ins,
+              string    asmstr,
+              list<dag> pattern,
+	      InstrItinClass itin> :
+      VideoCore4Inst<outs, ins, asmstr, pattern, itin> {
+  // I don't know the actual encoding for now
   bits<5> rd;
   bits<5> ra;
 
@@ -86,16 +84,14 @@ class VC4_OP4_S16<bits<4>   opcode,
   let Inst{15}    = 0;
 }
 
-class VC4_OP5_S16<bits<5>   opcode,
-                  dag       outs,
-                  dag       ins,
-                  string    asmstr,
-                  list<dag> pattern> :
-      S16<opcode,
-          outs, ins,
-          asmstr,
-          pattern> {
-  // I don't know the actual encoding so far
+class S16_OP5<bits<5>   opcode,
+              dag       outs,
+	      dag       ins,
+              string    asmstr,
+              list<dag> pattern,
+	     InstrItinClass itin> :
+      VideoCore4Inst<outs, ins, asmstr, pattern, itin> {
+  // I don't know the actual encoding for now
   bits<5> rd;
   bits<5> ra;
 
@@ -105,20 +101,18 @@ class VC4_OP5_S16<bits<5>   opcode,
   let Inst{15}    = 0;
 }
 
-class VC4_OP6_S16<bits<6>   opcode,
-                  dag       outs,
-                  dag       ins,
-                  string    asmstr,
-                  list<dag> pattern> :
-      S16<opcode,
-          outs, ins,
-          asmstr,
-          pattern> {
-  // I don't know the actual encoding so far
+class S16_OP6<bits<6>   opcode,
+              dag       outs,
+	      dag       ins,
+              string    asmstr,
+              list<dag> pattern,
+	      InstrItinClass itin> :
+      VideoCore4Inst<outs, ins, asmstr, pattern, itin> {
+  // I don't know the actual encoding for now
   bits<5> rd;
   bits<5> ra;
 
   let Inst{4-0}   = rd;
   let Inst{9-5}   = ra;
-  let Inst{16-10} = opcode;
+  let Inst{15-10} = opcode;
 }
