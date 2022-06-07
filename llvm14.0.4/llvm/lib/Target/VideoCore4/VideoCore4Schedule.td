@@ -10,17 +10,17 @@
 //===----------------------------------------------------------------------===//
 // Functional units across VideoCore4 chips sets. 
 //===----------------------------------------------------------------------===//
-def ADD : FuncUnit;
-def MUL : FuncUnit;
+// temporal
+def ALU : FuncUnit;
+def LSU : FuncUnit;
 def SFU : FuncUnit;
 
 //===----------------------------------------------------------------------===//
 // Instruction Itinerary classes used for VideoCore4
 //===----------------------------------------------------------------------===//
-def IIALU    : InstrItinClass;
-def IIMUL    : InstrItinClass;
-def IILSU    : InstrItinClass;
-def IISFU    : InstrItinClass;
+def IIAlu    : InstrItinClass;
+def IILsu    : InstrItinClass;
+def IISfu    : InstrItinClass;
 def IIPseudo : InstrItinClass;
 
 //===----------------------------------------------------------------------===//
@@ -28,12 +28,11 @@ def IIPseudo : InstrItinClass;
 //===----------------------------------------------------------------------===/
 
 // FIX ME
-def VC4GenericItineraries : ProcessorItineraries<[MUL, ADD, SFU], [], [
-  InstrItinData<IIALU   , [InstrStage<4,  [MUL]>]>,
-  InstrItinData<IILSU   , [InstrStage<4,  [MUL, ADD]>]>,
-  InstrItinData<IIMUL   , [InstrStage<4,  [MUL]>]>,
-  InstrItinData<IISFU   , [InstrStage<16, [SFU]>]>,
-  InstrItinData<IIPseudo, [InstrStage<4,  [MUL], 0>, InstrStage<4, [ADD]>]>
+def VC4GenericItineraries : ProcessorItineraries<[ALU, LSU, SFU], [], [
+  InstrItinData<IIAlu   , [InstrStage<4,  [ALU]>]>,
+  InstrItinData<IILsu   , [InstrStage<4,  [ALU, LSU]>]>,
+  InstrItinData<IISfu   , [InstrStage<16, [SFU]>]>,
+  InstrItinData<IIPseudo, [InstrStage<4,  [ALU], 0>, InstrStage<4, [ALU]>]>
 ]>;
 
 // FIX ME

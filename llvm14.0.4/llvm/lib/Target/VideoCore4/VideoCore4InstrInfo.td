@@ -105,11 +105,56 @@ def calltarget : Operand<i32>;
 // Instruction list..
 //===----------------------------------------------------------------------===//
 
-let hasSideEffects = 0 in {
-  def NOP : S16<(outs), (ins),
-                 "nop",
-	         []>;
+class VC4_OP4_S16<bits<4>        opcode,
+                  string         instr_asm,
+                  InstrItinClass itin   = IIAlu,
+                  bit            isComm = 0> :
+      S16_OP4<opcode, (outs GR32:$rd), (ins GR32:$ra),
+	      !strconcat(instr_asm, "\tGR32:$rd, GR32:$ra"),
+              [], itin>
+{
+  let isReMaterializable = 1;
+  let isCommutable       = isComm;
 }
+
+class VC4_OP4_S16_F<bits<4>        opcode,
+                    string         instr_asm,
+                    InstrItinClass itin   = IIAlu,
+                    bit            isComm = 0> :
+      S16_OP4<opcode, (outs FR32:$rd), (ins FR32:$ra),
+	      !strconcat(instr_asm, "\tFR32:$rd, FR32:$ra"),
+              [], itin>
+{
+  let isReMaterializable = 1;
+  let isCommutable       = isComm;
+}
+
+class VC4_OP4_S16_F_NOP<bits<4>        opcode,
+                        string         instr_asm,
+                        InstrItinClass itin   = IIAlu,
+                        bit            isComm = 0> :
+      S16_OP4<opcode, (outs), (ins),
+	      !strconcat(instr_asm, ""),
+              [], itin>
+{
+  let Inst{4-0}          = 0;
+  let Inst{9-5}          = 0;
+  let isReMaterializable = 1;
+  let isCommutable       = isComm;
+}
+
+
+
+
+
+
+
+let hasSideEffects = 0 in {
+  def NOP : VC4_OP4_S16_F_NOP <0b0000, "nop", IIAlu, 0>;
+}
+def MOV_G : VC4_OP4_S16 <0b0000, "mov", IIAlu, 0>;
+
+
 let isReturn = 1, isTerminator = 1, isBarrier = 1, Uses=[LR] in {
   def RET : S32<(outs), (ins variable_ops),
 		 "b\t%lr",
