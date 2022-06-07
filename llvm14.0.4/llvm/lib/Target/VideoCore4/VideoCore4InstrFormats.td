@@ -80,43 +80,43 @@ class VC4_ALU<dag       outs,
           asmstr,
           pattern>
 {
-  bits<4> sig;
-  bits<3> unpack;
-  bits<1> pm;
-  bits<4> pack;
-  bits<3> cond_add;
-  bits<3> cond_mul;
-  bits<1> sf;
-  bits<1> ws;
-  bits<6> waddr_add;
-  bits<6> waddr_mul;
-  bits<3> op_mul;
-  bits<5> op_add;
-  bits<6> raddr_a;
-  bits<6> raddr_b;
-  bits<3> add_a;
-  bits<3> add_b;
-  bits<3> mul_a;
   bits<3> mul_b;
+  bits<3> mul_a;
+  bits<3> add_b;
+  bits<3> add_a;
+  bits<6> raddr_b;
+  bits<6> raddr_a;
+  bits<5> op_add;
+  bits<3> op_mul;
+  bits<6> waddr_mul;
+  bits<6> waddr_add;
+  bits<1> ws;
+  bits<1> sf;
+  bits<3> cond_mul;
+  bits<3> cond_add;
+  bits<4> pack;
+  bits<1> pm;
+  bits<3> unpack;
+  bits<4> sig;
 
-  let Inst{3-0}   = sig;
-  let Inst{6-4}   = unpack;
-  let Inst{7}     = pm;
-  let Inst{11-8}  = pack;
-  let Inst{14-12} = cond_add;
-  let Inst{17-15} = cond_mul;
-  let Inst{18}    = sf;
-  let Inst{19}    = ws;
-  let Inst{25-20} = waddr_add;
-  let Inst{31-26} = waddr_mul;
-  let Inst{34-32} = op_mul;
-  let Inst{39-35} = op_add;
-  let Inst{45-40} = raddr_a;
-  let Inst{51-46} = raddr_b;
-  let Inst{54-52} = add_a;
-  let Inst{57-55} = add_b;
-  let Inst{60-58} = mul_a;
-  let Inst{63-61} = mul_b;
+  let Inst{2-0}   = mul_b;
+  let Inst{5-3}   = mul_a;
+  let Inst{8-6}   = add_b;
+  let Inst{11-9}  = add_a;
+  let Inst{17-12} = raddr_b;
+  let Inst{23-18} = raddr_a;
+  let Inst{28-24} = op_add;
+  let Inst{31-29} = op_mul;
+  let Inst{37-32} = waddr_mul;
+  let Inst{43-38} = waddr_add;
+  let Inst{44}    = ws;
+  let Inst{45}    = sf;
+  let Inst{48-46} = cond_mul;
+  let Inst{51-49} = cond_add;
+  let Inst{55-52} = pack;
+  let Inst{56}    = pm;
+  let Inst{59-57} = unpack;
+  let Inst{63-60} = sig;
 }
 
 class VC4_ALU_IMM<dag       outs,
@@ -127,7 +127,92 @@ class VC4_ALU_IMM<dag       outs,
           asmstr,
           pattern>
 {
+  bits<3> mul_b;
+  bits<3> mul_a;
+  bits<3> add_b;
+  bits<3> add_a;
+  bits<6> small_immed;
+  bits<6> raddr_a;
+  bits<5> op_add;
+  bits<3> op_mul;
+  bits<6> waddr_mul;
+  bits<6> waddr_add;
+  bits<1> ws;
+  bits<1> sf;
+  bits<3> cond_mul;
+  bits<3> cond_add;
+  bits<4> pack;
+  bits<1> pm;
+  bits<3> unpack;
   bits<4> sig;
+
+  let Inst{2-0}   = mul_b;
+  let Inst{5-3}   = mul_a;
+  let Inst{8-6}   = add_b;
+  let Inst{11-9}  = add_a;
+  let Inst{17-12} = small_immed;
+  let Inst{23-18} = raddr_a;
+  let Inst{28-24} = op_add;
+  let Inst{31-29} = op_mul;
+  let Inst{37-32} = waddr_mul;
+  let Inst{43-38} = waddr_add;
+  let Inst{44}    = ws;
+  let Inst{45}    = sf;
+  let Inst{48-46} = cond_mul;
+  let Inst{51-49} = cond_add;
+  let Inst{55-52} = pack;
+  let Inst{56}    = pm;
+  let Inst{59-57} = unpack;
+  let Inst{63-60} = sig;
+}
+
+class VC4_BRANCH<dag       outs,
+                 dag       ins,
+                 string    asmstr,
+                 list<dag> pattern> :
+      S64<outs, ins,
+          asmstr,
+          pattern>
+{
+// anyway
+  bits<3> mul_b;
+  bits<3> mul_a;
+  bits<3> add_b;
+  bits<3> add_a;
+  bits<6> small_immed;
+  bits<6> raddr_a;
+  bits<5> op_add;
+  bits<3> op_mul;
+  bits<6> waddr_mul;
+  bits<6> waddr_add;
+  bits<1> ws;
+  bits<1> sf;
+  bits<3> cond_mul;
+  bits<3> cond_add;
+  bits<4> pack;
+  bits<1> pm;
+  bits<3> unpack;
+  bits<4> sig;
+  let Inst{2-0}   = mul_b;
+  let Inst{5-3}   = mul_a;
+  let Inst{8-6}   = add_b;
+  let Inst{11-9}  = add_a;
+  let Inst{17-12} = small_immed;
+  let Inst{23-18} = raddr_a;
+  let Inst{28-24} = op_add;
+  let Inst{31-29} = op_mul;
+  let Inst{37-32} = waddr_mul;
+  let Inst{43-38} = waddr_add;
+  let Inst{44}    = ws;
+  let Inst{45}    = sf;
+  let Inst{48-46} = cond_mul;
+  let Inst{51-49} = cond_add;
+  let Inst{55-52} = pack;
+  let Inst{56}    = pm;
+  let Inst{59-57} = unpack;
+  let Inst{63-60} = sig;
+
+bits<4> sig;
   bits<3> unpack;
   bits<1> pm;
   bits<4> pack;
