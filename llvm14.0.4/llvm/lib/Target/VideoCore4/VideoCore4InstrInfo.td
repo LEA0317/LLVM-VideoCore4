@@ -118,11 +118,13 @@ class VC4_2_OP4_S16_G<bits<4>        opcode,
 }
 class VC4_2_OP4_S16_USE_G<bits<4>        opcode,
                           string         instr_asm,
-                          InstrItinClass itin = IIAlu> :
+                          InstrItinClass itin   = IIAlu,
+                          bit            isComm = 0> :
       S16_OP4<opcode, (outs), (ins GR32:$rd, GR32:$ra),
 	      !strconcat(instr_asm, "\t$rd, $ra"),
               [], itin>
 {
+  let isCommutable = isComm;
 }
 class VC4_3_OP4_S16_G<bits<4>        opcode,
                       string         instr_asm,
@@ -170,11 +172,13 @@ class VC4_2_OP4_S16_F<bits<4>        opcode,
 }
 class VC4_2_OP4_S16_USE_F<bits<4>        opcode,
                           string         instr_asm,
-                          InstrItinClass itin = IIAlu> :
+                          InstrItinClass itin   = IIAlu,
+                          bit            isComm = 0> :
       S16_OP4<opcode, (outs), (ins FR32:$rd, FR32:$ra),
 	      !strconcat(instr_asm, "\t$rd, $ra"),
               [], itin>
 {
+  let isCommutable = isComm;
 }
 class VC4_2_OP5_S16_G<bits<5>        opcode,
                       string         instr_asm,
@@ -188,12 +192,14 @@ class VC4_2_OP5_S16_G<bits<5>        opcode,
   let isCommutable       = isComm;
 }
 class VC4_NOP<string         instr_asm,
-              InstrItinClass itin = IIAlu> :
+              InstrItinClass itin   = IIAlu,
+              bit            isComm = 0> :
       S16<(outs), (ins),
 	   !strconcat(instr_asm, ""),
            [], itin>
 {
-  let Inst{15-0} = 0b0000000000000001;
+  let Inst{15-0}   = 0b0000000000000001;
+  let isCommutable = isComm;
 }
 
 
@@ -204,7 +210,7 @@ class VC4_NOP<string         instr_asm,
 
 let hasSideEffects = 0 in {
   // 0op
-  def NOP : VC4_NOP <"nop", IIAlu>;
+  def NOP : VC4_NOP <"nop", IIAlu, 0>;
 }
 
 // operand(4) 2op
@@ -212,8 +218,8 @@ def MOV_G : VC4_2_OP4_S16_G <0b0000, "mov", IIAlu, 0>;
 def NOT_G : VC4_2_OP4_S16_G <0b0100, "not", IIAlu, 0>;
 
 let Defs = [SR] in {
-  def CMP_G : VC4_2_OP4_S16_USE_G <0b0101, "cmp", IIAlu>;
-  def CMP_F : VC4_2_OP4_S16_USE_F <0b0101, "cmp", IIAlu>; // Fast
+  def CMP_G : VC4_2_OP4_S16_USE_G <0b0101, "cmp", IIAlu, 0>;
+  def CMP_F : VC4_2_OP4_S16_USE_F <0b0101, "cmp", IIAlu, 0>; // Fast
 }
 
 def BTEST_G : VC4_2_OP4_S16_G <0b0110, "btest", IIAlu, 0>;
@@ -258,7 +264,10 @@ def MULHD_SU_G : VC4_3_OP11_S32_G <0b11000100001, "mulhd.su", IIAlu, 0>;
 def MULHD_US_G : VC4_3_OP11_S32_G <0b11000100010, "mulhd.us", IIAlu, 0>;
 def MULHD_UU_G : VC4_3_OP11_S32_G <0b11000100011, "mulhd.uu", IIAlu, 0>;
 
-//def MULHD_SS_G : VC4_3_OP11_S32_UIMM_G <0b11000100011, "mulhd.ss", IIAlu, 0>;
+def DIV_SS_G : VC4_3_OP11_S32_G <0b11000100100, "div.ss", IIAlu, 0>;
+def DIV_SU_G : VC4_3_OP11_S32_G <0b11000100101, "div.su", IIAlu, 0>;
+def DIV_US_G : VC4_3_OP11_S32_G <0b11000100110, "div.us", IIAlu, 0>;
+def DIV_UU_G : VC4_3_OP11_S32_G <0b11000100111, "div.uu", IIAlu, 0>;
 
 let isReturn = 1, isTerminator = 1, isBarrier = 1, Uses=[LR] in {
   def RET : S32<(outs), (ins variable_ops),
