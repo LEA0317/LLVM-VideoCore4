@@ -138,13 +138,13 @@ class VC4_3_OP5_S16_G<bits<5>        opcode,
   let isReMaterializable = 1;
   let isCommutable       = isComm;
 }
-class VC4_3_OP6_S16_G<bits<6>        opcode,
-                      string         instr_asm,
-                      InstrItinClass itin   = IIAlu,
-                      bit            isComm = 0> :
-      S16_OP6<opcode, (outs GR32:$rd), (ins GR32:$rb, GR32:$ra),
-	      !strconcat(instr_asm, "\tGR32:$rd, GR32:$rb, GR32:$ra"),
-              [], itin>
+class VC4_3_OP11_S32_G<bits<11>        opcode,
+                       string         instr_asm,
+                       InstrItinClass itin   = IIAlu,
+                       bit            isComm = 0> :
+      S32_3_OP11<opcode, (outs GR32:$rd), (ins GR32:$c, GR32:$ra, GR32:$rb), // FIXME
+	         !strconcat(instr_asm, "\tGR32:$c, GR32:$rd, GR32:$ra, GR32:$rb"),
+                 [], itin>
 {
   let isReMaterializable = 1;
   let isCommutable       = isComm;
@@ -171,18 +171,13 @@ class VC4_2_OP5_S16_G<bits<5>        opcode,
   let isReMaterializable = 1;
   let isCommutable       = isComm;
 }
-class VC4_0_OP4_S16_F_NOP<bits<4>        opcode,
-                          string         instr_asm,
-                          InstrItinClass itin   = IIAlu,
-                          bit            isComm = 0> :
-      S16_OP4<opcode, (outs), (ins),
-	      !strconcat(instr_asm, ""),
-              [], itin>
+class VC4_NOP<string         instr_asm,
+              InstrItinClass itin = IIAlu> :
+      S16<(outs), (ins),
+	   !strconcat(instr_asm, ""),
+           [], itin>
 {
-  let Inst{4-0}          = 0;
-  let Inst{9-5}          = 0;
-  let isReMaterializable = 1;
-  let isCommutable       = isComm;
+  let Inst{15-0} = 0b0000000000000001;
 }
 
 
@@ -193,7 +188,7 @@ class VC4_0_OP4_S16_F_NOP<bits<4>        opcode,
 
 let hasSideEffects = 0 in {
   // 0op
-  def NOP : VC4_0_OP4_S16_F_NOP <0b0000, "nop", IIAlu, 0>; // mov dst, src (dst==src and Fast)
+  def NOP : VC4_NOP <"nop", IIAlu>;
 }
 
 // operand(4) 2op
@@ -241,6 +236,13 @@ let Constraints = "$rd = $rb" in {
   def BREV_G      : VC4_3_OP5_S16_G <0b11101, "brev",      IIAlu, 0>;
   def ABS_G       : VC4_3_OP5_S16_G <0b11111, "abs",       IIAlu, 0>;
 }
+// operand(11) 3op
+def MULHD_SS_G : VC4_3_OP11_S32_G <0b11000100000, "mulhd.ss", IIAlu, 0>;
+def MULHD_SU_G : VC4_3_OP11_S32_G <0b11000100001, "mulhd.su", IIAlu, 0>;
+def MULHD_US_G : VC4_3_OP11_S32_G <0b11000100010, "mulhd.us", IIAlu, 0>;
+def MULHD_UU_G : VC4_3_OP11_S32_G <0b11000100011, "mulhd.uu", IIAlu, 0>;
+
+//def MULHD_SS_G : VC4_3_OP11_S32_UIMM_G <0b11000100011, "mulhd.ss", IIAlu, 0>;
 
 let isReturn = 1, isTerminator = 1, isBarrier = 1, Uses=[LR] in {
   def RET : S32<(outs), (ins variable_ops),
