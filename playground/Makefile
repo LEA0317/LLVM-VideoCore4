@@ -14,6 +14,7 @@ LLC_FLAGS += -enable-ipra
 #LLC_FLAGS += -show-mc-encoding
 LLC_FLAGS += -time-passes
 LLC_FLAGS += -filetype=asm
+LLC_FLAGS += -show-mc-encoding
 
 CPP_FILES := $(wildcard *.cpp)
 LL_FILES  := $(subst .cpp,.ll,$(CPP_FILES))
