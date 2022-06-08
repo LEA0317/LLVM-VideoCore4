@@ -63,7 +63,7 @@ VideoCore4TargetLowering::VideoCore4TargetLowering(const VideoCore4TargetMachine
   // Compute derived properties from the register classes
   computeRegisterProperties(Subtarget.getRegisterInfo());
 
-  setOperationAction(ISD::CTPOP, MVT::i32, Expand);
+  setOperationAction(ISD::CTPOP, MVT::i32, Legal);
   setOperationAction(ISD::CTTZ,  MVT::i32, Expand);
   setOperationAction(ISD::CTLZ,  MVT::i32, Legal);
   setOperationAction(ISD::SMAX,  MVT::i32, Legal);

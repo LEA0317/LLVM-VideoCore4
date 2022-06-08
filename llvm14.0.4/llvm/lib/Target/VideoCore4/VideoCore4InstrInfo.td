@@ -144,28 +144,6 @@ class VC4_3_OP4_S16_G<bits<4>        opcode,
   let isReMaterializable = 1;
   let isCommutable       = isComm;
 }
-class VC4_3_OP5_S16_G<bits<5>        opcode,
-                      string         instr_asm,
-                      InstrItinClass itin   = IIAlu,
-                      bit            isComm = 0> :
-      S16_OP5<opcode, (outs GR32:$rd), (ins GR32:$rb, GR32:$ra),
-	      !strconcat(instr_asm, "\t$rd, $rb, $ra"),
-              [], itin>
-{
-  let isReMaterializable = 1;
-  let isCommutable       = isComm;
-}
-class VC4_3_OP11_S32_G<bits<11>        opcode,
-                       string         instr_asm,
-                       InstrItinClass itin   = IIAlu,
-                       bit            isComm = 0> :
-      S32_3_OP11<opcode, (outs GR32:$rd), (ins GR32:$c, GR32:$ra, GR32:$rb), // FIXME
-	         !strconcat(instr_asm, "\t$c, $rd, $ra, $rb"),
-                 [], itin>
-{
-  let isReMaterializable = 1;
-  let isCommutable       = isComm;
-}
 class VC4_2_OP4_S16_F<bits<4>        opcode,
                       string         instr_asm,
                       InstrItinClass itin   = IIAlu,
@@ -198,6 +176,39 @@ class VC4_2_OP5_S16_G<bits<5>        opcode,
   let isReMaterializable = 1;
   let isCommutable       = isComm;
 }
+class VC4_3_OP5_S16_G<bits<5>        opcode,
+                      string         instr_asm,
+                      InstrItinClass itin   = IIAlu,
+                      bit            isComm = 0> :
+      S16_OP5<opcode, (outs GR32:$rd), (ins GR32:$rb, GR32:$ra),
+	      !strconcat(instr_asm, "\t$rd, $rb, $ra"),
+              [], itin>
+{
+  let isReMaterializable = 1;
+  let isCommutable       = isComm;
+}
+class VC4_2_OP6_S16_G<bits<6>        opcode,
+                      string         instr_asm,
+                      InstrItinClass itin   = IIAlu,
+                      bit            isComm = 0> :
+      S16_OP6<opcode, (outs GR32:$rd), (ins GR32:$ra),
+	      !strconcat(instr_asm, "\t$rd, $ra"),
+              [], itin>
+{
+  let isReMaterializable = 1;
+  let isCommutable       = isComm;
+}
+class VC4_3_OP11_S32_G<bits<11>        opcode,
+                       string         instr_asm,
+                       InstrItinClass itin   = IIAlu,
+                       bit            isComm = 0> :
+      S32_3_OP11<opcode, (outs GR32:$rd), (ins GR32:$c, GR32:$ra, GR32:$rb), // FIXME
+	         !strconcat(instr_asm, "\t$c, $rd, $ra, $rb"),
+                 [], itin>
+{
+  let isReMaterializable = 1;
+  let isCommutable       = isComm;
+}
 class VC4_NOP<string         instr_asm,
               InstrItinClass itin   = IIAlu,
               bit            isComm = 0> :
@@ -206,6 +217,37 @@ class VC4_NOP<string         instr_asm,
            [], itin>
 {
   let Inst{15-0}   = 0b0000000000000001;
+  let isCommutable = isComm;
+}
+class VC4_BREAKPOINT<string         instr_asm,
+                     InstrItinClass itin   = IIAlu,
+                     bit            isComm = 0> :
+      S16<(outs), (ins),
+	   !strconcat(instr_asm, ""),
+           [], itin>
+{
+  let Inst{15-0}   = 0b0000000000000000;
+  let isCommutable = isComm;
+
+}
+class VC4_SLEEP<string         instr_asm,
+                InstrItinClass itin   = IIAlu,
+                bit            isComm = 0> :
+      S16<(outs), (ins),
+	   !strconcat(instr_asm, ""),
+           [], itin>
+{
+  let Inst{15-0}   = 0b0000000000000010;
+  let isCommutable = isComm;
+}
+class VC4_USER<string         instr_asm,
+               InstrItinClass itin   = IIAlu,
+               bit            isComm = 0> :
+      S16<(outs), (ins),
+	   !strconcat(instr_asm, ""),
+           [], itin>
+{
+  let Inst{15-0}   = 0b0000000000000011;
   let isCommutable = isComm;
 }
 class VC4_BRANCH_IND<string         instr_asm,
@@ -238,6 +280,9 @@ let hasSideEffects = 0 in {
   // 0op
   def NOP : VC4_NOP <"nop", IIAlu, 0>;
 }
+def BREAKPOINT : VC4_BREAKPOINT <"bkpt",  IIAlu, 0>;
+def SLEEP      : VC4_SLEEP      <"sleep", IIAlu, 0>;
+def USER       : VC4_USER       <"user",  IIAlu, 0>;
 
 // operand(4) 2op
 def MOV_G : VC4_2_OP4_S16_G <0b0000, "mov", IIAlu, 0>;
@@ -248,9 +293,12 @@ let Defs = [SR] in {
   def CMP_F : VC4_2_OP4_S16_USE_F <0b0101, "cmp", IIAlu, 0>; // Fast
 }
 
-def BTEST_G : VC4_2_OP4_S16_G <0b0110, "btest", IIAlu, 0>;
+// operand(4) 2op
+def BTEST_G : VC4_2_OP4_S16_G <0b0110,   "btest", IIAlu, 0>;
 // operand(5) 2op
-def NEG_G   : VC4_2_OP5_S16_G <0b11001, "neg", IIAlu, 0>;
+def NEG_G   : VC4_2_OP5_S16_G <0b11001,  "neg",   IIAlu, 0>;
+// operand(6) 2op
+def COUNT_G : VC4_2_OP6_S16_G <0b110000, "count", IIAlu, 0>;
 
 let Constraints = "$rd = $rb" in {
   // operand(4) 3op
@@ -1217,6 +1265,10 @@ def : Pat<(fneg (f32 GR32:$rA)),
           (FSUBrr (FSUBrr (f32 TMP), (f32 TMP)), (f32 $rA))>;
 def : Pat<(call tglobaladdr:$dst),
           (CALL $dst)>;
+
+// population count
+def : Pat<(ctpop (i32 GR32:$ra)),
+          (COUNT_G (i32 $ra))>;
 
 // branch and link
 //def : Pat<(VideoCore4JmpLink (i32 LR)),
