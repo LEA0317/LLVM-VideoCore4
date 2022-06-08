@@ -250,6 +250,76 @@ class VC4_USER<string         instr_asm,
   let Inst{15-0}   = 0b0000000000000011;
   let isCommutable = isComm;
 }
+class VC4_EI<string         instr_asm,
+             InstrItinClass itin   = IIAlu,
+             bit            isComm = 0> :
+      S16<(outs), (ins),
+	   !strconcat(instr_asm, ""),
+           [], itin>
+{
+  let Inst{15-0}   = 0b0000000000000100;
+  let isCommutable = isComm;
+}
+class VC4_DI<string         instr_asm,
+             InstrItinClass itin   = IIAlu,
+             bit            isComm = 0> :
+      S16<(outs), (ins),
+	   !strconcat(instr_asm, ""),
+           [], itin>
+{
+  let Inst{15-0}   = 0b0000000000000101;
+  let isCommutable = isComm;
+}
+class VC4_CBCLR<string         instr_asm,
+                InstrItinClass itin   = IIAlu,
+                bit            isComm = 0> :
+      S16<(outs), (ins),
+	   !strconcat(instr_asm, ""),
+           [], itin>
+{
+  let Inst{15-0}   = 0b0000000000000110;
+  let isCommutable = isComm;
+}
+class VC4_CBADD1<string         instr_asm,
+                 InstrItinClass itin   = IIAlu,
+                 bit            isComm = 0> :
+      S16<(outs), (ins),
+	   !strconcat(instr_asm, ""),
+           [], itin>
+{
+  let Inst{15-0}   = 0b0000000000000111;
+  let isCommutable = isComm;
+}
+class VC4_CBADD2<string         instr_asm,
+                 InstrItinClass itin   = IIAlu,
+                 bit            isComm = 0> :
+      S16<(outs), (ins),
+	   !strconcat(instr_asm, ""),
+           [], itin>
+{
+  let Inst{15-0}   = 0b0000000000001000;
+  let isCommutable = isComm;
+}
+class VC4_CBADD3<string         instr_asm,
+                 InstrItinClass itin   = IIAlu,
+                 bit            isComm = 0> :
+      S16<(outs), (ins),
+	   !strconcat(instr_asm, ""),
+           [], itin>
+{
+  let Inst{15-0}   = 0b0000000000001001;
+  let isCommutable = isComm;
+}
+class VC4_RTI<string         instr_asm,
+              InstrItinClass itin   = IIAlu,
+              bit            isComm = 0> :
+      S16<(outs), (ins),
+	   !strconcat(instr_asm, ""),
+           [], itin>
+{
+  let Inst{15-0}   = 0b0000000000001010;
+  let isCommutable = isComm;
+}
 class VC4_BRANCH_IND<string         instr_asm,
                      InstrItinClass itin   = IIAlu,
                      bit            isComm = 0> :
@@ -280,9 +350,16 @@ let hasSideEffects = 0 in {
   // 0op
   def NOP : VC4_NOP <"nop", IIAlu, 0>;
 }
-def BREAKPOINT : VC4_BREAKPOINT <"bkpt",  IIAlu, 0>;
-def SLEEP      : VC4_SLEEP      <"sleep", IIAlu, 0>;
-def USER       : VC4_USER       <"user",  IIAlu, 0>;
+def BREAKPOINT : VC4_BREAKPOINT <"bkpt",   IIAlu, 0>;
+def SLEEP      : VC4_SLEEP      <"sleep",  IIAlu, 0>;
+def USER       : VC4_USER       <"user",   IIAlu, 0>;
+def EI         : VC4_EI         <"ei",     IIAlu, 0>;
+def DI         : VC4_DI         <"di",     IIAlu, 0>;
+def CBCLR      : VC4_CBCLR      <"cbclr",  IIAlu, 0>;
+def CBADD1     : VC4_CBADD1     <"cbadd1", IIAlu, 0>;
+def CBADD2     : VC4_CBADD2     <"cbadd2", IIAlu, 0>;
+def CBADD3     : VC4_CBADD3     <"cbadd3", IIAlu, 0>;
+def RTI        : VC4_RTI        <"rti",    IIAlu, 0>;
 
 // operand(4) 2op
 def MOV_G : VC4_2_OP4_S16_G <0b0000, "mov", IIAlu, 0>;
