@@ -110,18 +110,26 @@ class VC4_2_OP4_S16_G<bits<4>        opcode,
                       InstrItinClass itin   = IIAlu,
                       bit            isComm = 0> :
       S16_OP4<opcode, (outs GR32:$rd), (ins GR32:$ra),
-	      !strconcat(instr_asm, "\tGR32:$rd, GR32:$ra"),
+	      !strconcat(instr_asm, "\t$rd, $ra"),
               [], itin>
 {
   let isReMaterializable = 1;
   let isCommutable       = isComm;
+}
+class VC4_2_OP4_S16_USE_G<bits<4>        opcode,
+                          string         instr_asm,
+                          InstrItinClass itin = IIAlu> :
+      S16_OP4<opcode, (outs), (ins GR32:$rd, GR32:$ra),
+	      !strconcat(instr_asm, "\t$rd, $ra"),
+              [], itin>
+{
 }
 class VC4_3_OP4_S16_G<bits<4>        opcode,
                       string         instr_asm,
                       InstrItinClass itin   = IIAlu,
                       bit            isComm = 0> :
       S16_OP4<opcode, (outs GR32:$rd), (ins GR32:$rb, GR32:$ra),
-	      !strconcat(instr_asm, "\tGR32:$rd, GR32:$rb, GR32:$ra"),
+	      !strconcat(instr_asm, "\t$rd, $rb, $ra"),
               [], itin>
 {
   let isReMaterializable = 1;
@@ -132,7 +140,7 @@ class VC4_3_OP5_S16_G<bits<5>        opcode,
                       InstrItinClass itin   = IIAlu,
                       bit            isComm = 0> :
       S16_OP5<opcode, (outs GR32:$rd), (ins GR32:$rb, GR32:$ra),
-	      !strconcat(instr_asm, "\tGR32:$rd, GR32:$rb, GR32:$ra"),
+	      !strconcat(instr_asm, "\t$rd, $rb, $ra"),
               [], itin>
 {
   let isReMaterializable = 1;
@@ -143,7 +151,7 @@ class VC4_3_OP11_S32_G<bits<11>        opcode,
                        InstrItinClass itin   = IIAlu,
                        bit            isComm = 0> :
       S32_3_OP11<opcode, (outs GR32:$rd), (ins GR32:$c, GR32:$ra, GR32:$rb), // FIXME
-	         !strconcat(instr_asm, "\tGR32:$c, GR32:$rd, GR32:$ra, GR32:$rb"),
+	         !strconcat(instr_asm, "\t$c, $rd, $ra, $rb"),
                  [], itin>
 {
   let isReMaterializable = 1;
@@ -154,18 +162,26 @@ class VC4_2_OP4_S16_F<bits<4>        opcode,
                       InstrItinClass itin   = IIAlu,
                       bit            isComm = 0> :
       S16_OP4<opcode, (outs FR32:$rd), (ins FR32:$ra),
-	      !strconcat(instr_asm, "\tFR32:$rd, FR32:$ra"),
+	      !strconcat(instr_asm, "\t$rd, $ra"),
               [], itin>
 {
   let isReMaterializable = 1;
   let isCommutable       = isComm;
+}
+class VC4_2_OP4_S16_USE_F<bits<4>        opcode,
+                          string         instr_asm,
+                          InstrItinClass itin = IIAlu> :
+      S16_OP4<opcode, (outs), (ins FR32:$rd, FR32:$ra),
+	      !strconcat(instr_asm, "\t$rd, $ra"),
+              [], itin>
+{
 }
 class VC4_2_OP5_S16_G<bits<5>        opcode,
                       string         instr_asm,
                       InstrItinClass itin   = IIAlu,
                       bit            isComm = 0> :
       S16_OP5<opcode, (outs GR32:$rd), (ins GR32:$ra),
-	      !strconcat(instr_asm, "\tGR32:$rd, GR32:$ra"),
+	      !strconcat(instr_asm, "\t$rd, $ra"),
               [], itin>
 {
   let isReMaterializable = 1;
@@ -196,8 +212,8 @@ def MOV_G : VC4_2_OP4_S16_G <0b0000, "mov", IIAlu, 0>;
 def NOT_G : VC4_2_OP4_S16_G <0b0100, "not", IIAlu, 0>;
 
 let Defs = [SR] in {
-  def CMP_G : VC4_2_OP4_S16_G <0b0101, "cmp", IIAlu, 0>;
-  //def CMP_F : VC4_2_OP4_S16_F <0b0101, "cmp", IIAlu, 0>; // Fast FIXME
+  def CMP_G : VC4_2_OP4_S16_USE_G <0b0101, "cmp", IIAlu>;
+  def CMP_F : VC4_2_OP4_S16_USE_F <0b0101, "cmp", IIAlu>; // Fast
 }
 
 def BTEST_G : VC4_2_OP4_S16_G <0b0110, "btest", IIAlu, 0>;
@@ -206,8 +222,8 @@ def NEG_G   : VC4_2_OP5_S16_G <0b11001, "neg", IIAlu, 0>;
 
 let Constraints = "$rd = $rb" in {
   // operand(4) 3op
-  def ADD_G       : VC4_3_OP4_S16_G <0b0001, "add",       IIAlu, 0>;
-  def MUL_G       : VC4_3_OP4_S16_G <0b0010, "mul",       IIAlu, 0>;
+  def ADD_G       : VC4_3_OP4_S16_G <0b0001, "add",       IIAlu, 1>;
+  def MUL_G       : VC4_3_OP4_S16_G <0b0010, "mul",       IIAlu, 1>;
   def SUB_G       : VC4_3_OP4_S16_G <0b0011, "sub",       IIAlu, 0>;
   def BMASK_G     : VC4_3_OP4_S16_G <0b0111, "bmask",     IIAlu, 0>;
   def BITSET_G    : VC4_3_OP4_S16_G <0b1000, "bitset",    IIAlu, 0>;
@@ -222,11 +238,11 @@ let Constraints = "$rd = $rb" in {
   // operand(5) 3op 
   def CMN_G       : VC4_3_OP5_S16_G <0b00001, "cmn",       IIAlu, 0>;
   def BIC_G       : VC4_3_OP5_S16_G <0b00011, "bic",       IIAlu, 0>;
-  def EOR_G       : VC4_3_OP5_S16_G <0b00101, "eor",       IIAlu, 0>;
-  def AND_G       : VC4_3_OP5_S16_G <0b00111, "and",       IIAlu, 0>;
+  def EOR_G       : VC4_3_OP5_S16_G <0b00101, "eor",       IIAlu, 1>;
+  def AND_G       : VC4_3_OP5_S16_G <0b00111, "and",       IIAlu, 1>;
   def ROR_G       : VC4_3_OP5_S16_G <0b01001, "ror",       IIAlu, 0>;
   def RSUB_G      : VC4_3_OP5_S16_G <0b01011, "rsub",      IIAlu, 0>;
-  def OR_G        : VC4_3_OP5_S16_G <0b01101, "or",        IIAlu, 0>;
+  def OR_G        : VC4_3_OP5_S16_G <0b01101, "or",        IIAlu, 1>;
   def MAX_G       : VC4_3_OP5_S16_G <0b01111, "max",       IIAlu, 0>;
   def MIN_G       : VC4_3_OP5_S16_G <0b10001, "min",       IIAlu, 0>;
   def ADDSCALE1_G : VC4_3_OP5_S16_G <0b10011, "addscale1", IIAlu, 0>;
@@ -638,9 +654,6 @@ let isBranch=1, isIndirectBranch=1, isTerminator=1, isBarrier = 1 in {
 
 // ToDo
 let Defs = [SR] in {
-  def CMP_F : S16<(outs), (ins FR32:$A, FR32:$B), // replace this
-                  "cmp\t$A, $B",
-                  []>;
   def CMP_LI : S48<(outs), (ins GR32:$A, i32imm:$B),
 		    "cmp\t$A, $B",
 		    []>;
