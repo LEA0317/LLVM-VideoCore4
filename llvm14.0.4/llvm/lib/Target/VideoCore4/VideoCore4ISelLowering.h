@@ -37,6 +37,8 @@ namespace llvm {
       
       BR_JT,
 
+      JmpLink,
+
       RCP,
       RSQRT
     };

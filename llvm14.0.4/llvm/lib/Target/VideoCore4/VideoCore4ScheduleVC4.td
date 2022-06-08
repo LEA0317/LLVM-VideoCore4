@@ -9,6 +9,7 @@
 
 // FIX ME
 def VC4Itineraries : ProcessorItineraries<[ALU, LSU, SFU], [], [
+  InstrItinData<IIBranch, [InstrStage<4,  [ALU]>]>,
   InstrItinData<IIAlu   , [InstrStage<4,  [ALU]>]>,
   InstrItinData<IILsu   , [InstrStage<4,  [ALU, LSU]>]>,
   InstrItinData<IISfu   , [InstrStage<16, [SFU]>]>,

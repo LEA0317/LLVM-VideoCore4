@@ -13,6 +13,16 @@
 
 include "VideoCore4InstrFormats.td"
 
+def SDT_VideoCore4JmpLink : SDTypeProfile<0, 1, [SDTCisVT<0, iPTR>]>;
+def VideoCore4JmpLink     : SDNode<"VideoCore4ISD::JmpLink",SDT_VideoCore4JmpLink,
+                                    [SDNPHasChain, SDNPOutGlue, SDNPOptInGlue,
+                                    SDNPVariadic]>;
+
+// ToDo
+def VideoCoreBR_JT : SDNode<"VideoCore4ISD::BR_JT",
+                             SDTypeProfile<0, 2, [SDTCisVT<0, i32>, SDTCisVT<1, i32>]>,
+                             [SDNPHasChain]>;
+
 def bitcast_fpimm_to_i32 : SDNodeXForm<fpimm, [{
   return CurDAG->getTargetConstant(N->getValueAPF().bitcastToAPInt().getZExtValue(), SDLoc(N), MVT::i32);
 }]>;
@@ -45,9 +55,6 @@ def VCrcp   : SDNode<"VideoCore4ISD::RCP",   SDTFPUnaryOp, []>;
 // def addr : ComplexPattern<iPTR, 1, "SelectAddr", [], []>;
 
 def GlobalWrapper  : SDNode<"VideoCore4ISD::GLOBAL", SDTIntUnaryOp>;
-def VideoCoreBR_JT : SDNode<"VideoCore4ISD::BR_JT",
-                             SDTypeProfile<0, 2, [SDTCisVT<0, i32>, SDTCisVT<1, i32>]>,
-                             [SDNPHasChain]>;
 
 // An address of something on the stack.
 def stacked : Operand<i32>, ComplexPattern<i32, 2, "SelectStacked", [frameindex], []> {
@@ -201,9 +208,28 @@ class VC4_NOP<string         instr_asm,
   let Inst{15-0}   = 0b0000000000000001;
   let isCommutable = isComm;
 }
-
-
-
+class VC4_BRANCH_IND<string         instr_asm,
+                     InstrItinClass itin   = IIAlu,
+                     bit            isComm = 0> :
+      S16<(outs), (ins GR32:$dst),
+	   !strconcat(instr_asm, "\t$dst"),
+	   [(brind GR32:$dst)], itin>
+{
+  let Inst{15-5}         = 0b00000000010;
+  let isReMaterializable = 1;
+  let isCommutable       = isComm;
+}
+class VC4_BRANCH_LINK<string         instr_asm,
+                      InstrItinClass itin   = IIAlu,
+                      bit            isComm = 0> :
+      S16<(outs), (ins GR32:$lr, variable_ops),
+	   !strconcat(instr_asm, "\t$lr"),
+	   [], itin>
+{
+  let Inst{15-5}         = 0b00000000011;
+  let isReMaterializable = 1;
+  let isCommutable       = isComm;
+}
 
 
 
@@ -268,6 +294,13 @@ def DIV_SS_G : VC4_3_OP11_S32_G <0b11000100100, "div.ss", IIAlu, 0>;
 def DIV_SU_G : VC4_3_OP11_S32_G <0b11000100101, "div.su", IIAlu, 0>;
 def DIV_US_G : VC4_3_OP11_S32_G <0b11000100110, "div.us", IIAlu, 0>;
 def DIV_UU_G : VC4_3_OP11_S32_G <0b11000100111, "div.uu", IIAlu, 0>;
+
+let isBranch=1, isTerminator=1, isBarrier=1 in {
+  let isIndirectBranch=1, hasDelaySlot = 1 in {
+    def BR_IND_G  : VC4_BRANCH_IND  <"b",  IIBranch, 0>;
+    def BR_LINK_G : VC4_BRANCH_LINK <"bl", IIBranch, 0>;
+  }
+}
 
 let isReturn = 1, isTerminator = 1, isBarrier = 1, Uses=[LR] in {
   def RET : S32<(outs), (ins variable_ops),
@@ -653,7 +686,7 @@ def LEA_PC_LI : S48<(outs GR32:$D), (ins i32imm:$A),
 def : Pat<(GlobalWrapper tglobaladdr:$addr),
 	  (LEA_PC_LI tglobaladdr:$addr)>;
 
-let isBranch=1, isIndirectBranch=1, isTerminator=1, isBarrier = 1 in {
+let isBranch=1, isIndirectBranch=1, isTerminator=1, isBarrier = 1, hasDelaySlot = 1 in {
   def BR_JT : S48<(outs), (ins InlineJT:$t, GR32:$i),
                    "# BR_JT Pseudo Instruction $i\n$t",
                    [(VideoCoreBR_JT tjumptable:$t, GR32:$i)]>;
@@ -669,14 +702,11 @@ let Defs = [SR] in {
 }
 
 let isTerminator = 1, isBranch = 1 in {
+  // ToDo
   let isBarrier = 1, hasDelaySlot = 1 in {
     def JMP : S32<(outs), (ins brtarget:$dst),
    	           "b\t$dst",
 	           [(br bb:$dst)]>;
-
-    def JMP_R : S16<(outs), (ins GR32:$dst),
-  		     "b\t$dst",
-		     [(brind GR32:$dst)]>;
   }
 	
   /* Generates a 3op compare-and-branch instruction. */
@@ -1187,6 +1217,10 @@ def : Pat<(fneg (f32 GR32:$rA)),
           (FSUBrr (FSUBrr (f32 TMP), (f32 TMP)), (f32 $rA))>;
 def : Pat<(call tglobaladdr:$dst),
           (CALL $dst)>;
+
+// branch and link
+//def : Pat<(VideoCore4JmpLink (i32 LR)),
+//          (BR_LINK_G (i32 LR))>;
 
 // i32 imm (should isel pseudo instr at firsr?)
 def : Pat<(i32 imm:$in),

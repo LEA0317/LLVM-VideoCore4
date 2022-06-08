@@ -813,6 +813,7 @@ VideoCore4TargetLowering::getTargetNodeName(unsigned Opcode) const {
   case VideoCore4ISD::CALL:     return "VideoCore4ISD::CALL";
   case VideoCore4ISD::GLOBAL:   return "VideoCore4ISD::GLOBAL";
   case VideoCore4ISD::BR_JT:    return "VideoCore4ISD::BR_JT";
+  case VideoCore4ISD::JmpLink:  return "VideoCore4ISD::JmpLink";
   }
 }
 
