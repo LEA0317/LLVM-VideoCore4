@@ -114,28 +114,25 @@ def calltarget : Operand<i32>;
 
 class VC4_2_OP4_S16_G<bits<4>        opcode,
                       string         instr_asm,
-                      InstrItinClass itin   = IIAlu,
-                      bit            isComm = 0> :
+                      InstrItinClass itin = IIAlu> :
       S16_OP4<opcode, (outs GR32:$rd), (ins GR32:$ra),
 	      !strconcat(instr_asm, "\t$rd, $ra"),
               [], itin>
 {
   let isReMaterializable = 1;
-  let isCommutable       = isComm;
 }
 class VC4_2_OP4_S16_USE_G<bits<4>        opcode,
                           string         instr_asm,
-                          InstrItinClass itin   = IIAlu,
-                          bit            isComm = 0> :
+                          InstrItinClass itin = IIAlu> :
       S16_OP4<opcode, (outs), (ins GR32:$rd, GR32:$ra),
 	      !strconcat(instr_asm, "\t$rd, $ra"),
               [], itin>
 {
-  let isCommutable = isComm;
+  let isReMaterializable = 1;
 }
 class VC4_3_OP4_S16_G<bits<4>        opcode,
                       string         instr_asm,
-                      InstrItinClass itin   = IIAlu,
+                      InstrItinClass itin = IIAlu,
                       bit            isComm = 0> :
       S16_OP4<opcode, (outs GR32:$rd), (ins GR32:$rb, GR32:$ra),
 	      !strconcat(instr_asm, "\t$rd, $rb, $ra"),
@@ -146,59 +143,52 @@ class VC4_3_OP4_S16_G<bits<4>        opcode,
 }
 class VC4_2_OP4_S16_F<bits<4>        opcode,
                       string         instr_asm,
-                      InstrItinClass itin   = IIAlu,
-                      bit            isComm = 0> :
+                      InstrItinClass itin = IIAlu> :
       S16_OP4<opcode, (outs FR32:$rd), (ins FR32:$ra),
 	      !strconcat(instr_asm, "\t$rd, $ra"),
               [], itin>
 {
   let isReMaterializable = 1;
-  let isCommutable       = isComm;
 }
 class VC4_2_OP4_S16_USE_F<bits<4>        opcode,
                           string         instr_asm,
-                          InstrItinClass itin   = IIAlu,
-                          bit            isComm = 0> :
+                          InstrItinClass itin = IIAlu> :
       S16_OP4<opcode, (outs), (ins FR32:$rd, FR32:$ra),
 	      !strconcat(instr_asm, "\t$rd, $ra"),
               [], itin>
 {
-  let isCommutable = isComm;
+  let isReMaterializable = 1;
 }
 class VC4_2_OP5_S16_G<bits<5>        opcode,
                       string         instr_asm,
-                      InstrItinClass itin   = IIAlu,
-                      bit            isComm = 0> :
+                      InstrItinClass itin = IIAlu> :
       S16_OP5<opcode, (outs GR32:$rd), (ins GR32:$ra),
 	      !strconcat(instr_asm, "\t$rd, $ra"),
               [], itin>
 {
   let isReMaterializable = 1;
-  let isCommutable       = isComm;
 }
 class VC4_3_OP5_S16_G<bits<5>        opcode,
                       string         instr_asm,
-                      InstrItinClass itin   = IIAlu,
+                      InstrItinClass itin = IIAlu,
                       bit            isComm = 0> :
-      S16_OP5<opcode, (outs GR32:$rd), (ins GR32:$rb, GR32:$ra),
+     S16_OP5<opcode, (outs GR32:$rd), (ins GR32:$rb, GR32:$ra),
 	      !strconcat(instr_asm, "\t$rd, $rb, $ra"),
               [], itin>
 {
-  let isReMaterializable = 1;
   let isCommutable       = isComm;
+  let isReMaterializable = 1;
 }
 class VC4_2_OP6_S16_G<bits<6>        opcode,
                       string         instr_asm,
-                      InstrItinClass itin   = IIAlu,
-                      bit            isComm = 0> :
+                      InstrItinClass itin = IIAlu> :
       S16_OP6<opcode, (outs GR32:$rd), (ins GR32:$ra),
 	      !strconcat(instr_asm, "\t$rd, $ra"),
               [], itin>
 {
   let isReMaterializable = 1;
-  let isCommutable       = isComm;
 }
-class VC4_3_OP11_S32_G<bits<11>        opcode,
+class VC4_3_OP11_S32_G<bits<11>       opcode,
                        string         instr_asm,
                        InstrItinClass itin   = IIAlu,
                        bit            isComm = 0> :
@@ -206,119 +196,96 @@ class VC4_3_OP11_S32_G<bits<11>        opcode,
 	         !strconcat(instr_asm, "\t$c, $rd, $ra, $rb"),
                  [], itin>
 {
-  let isReMaterializable = 1;
   let isCommutable       = isComm;
+  let isReMaterializable = 1;
 }
 class VC4_NOP<string         instr_asm,
-              InstrItinClass itin   = IIAlu,
-              bit            isComm = 0> :
+              InstrItinClass itin = IIAlu> :
       S16<(outs), (ins),
 	   !strconcat(instr_asm, ""),
            [], itin>
 {
-  let Inst{15-0}   = 0b0000000000000001;
-  let isCommutable = isComm;
+  let Inst{15-0} = 0b0000000000000001;
 }
 class VC4_BREAKPOINT<string         instr_asm,
-                     InstrItinClass itin   = IIAlu,
-                     bit            isComm = 0> :
+                     InstrItinClass itin = IIAlu> :
       S16<(outs), (ins),
 	   !strconcat(instr_asm, ""),
            [], itin>
 {
-  let Inst{15-0}   = 0b0000000000000000;
-  let isCommutable = isComm;
-
+  let Inst{15-0} = 0b0000000000000000;
 }
 class VC4_SLEEP<string         instr_asm,
-                InstrItinClass itin   = IIAlu,
-                bit            isComm = 0> :
+                InstrItinClass itin = IIAlu> :
       S16<(outs), (ins),
 	   !strconcat(instr_asm, ""),
            [], itin>
 {
-  let Inst{15-0}   = 0b0000000000000010;
-  let isCommutable = isComm;
+  let Inst{15-0} = 0b0000000000000010;
 }
 class VC4_USER<string         instr_asm,
-               InstrItinClass itin   = IIAlu,
-               bit            isComm = 0> :
+               InstrItinClass itin = IIAlu> :
       S16<(outs), (ins),
 	   !strconcat(instr_asm, ""),
            [], itin>
 {
-  let Inst{15-0}   = 0b0000000000000011;
-  let isCommutable = isComm;
+  let Inst{15-0} = 0b0000000000000011;
 }
 class VC4_EI<string         instr_asm,
-             InstrItinClass itin   = IIAlu,
-             bit            isComm = 0> :
+             InstrItinClass itin = IIAlu> :
       S16<(outs), (ins),
 	   !strconcat(instr_asm, ""),
            [], itin>
 {
-  let Inst{15-0}   = 0b0000000000000100;
-  let isCommutable = isComm;
+  let Inst{15-0} = 0b0000000000000100;
 }
 class VC4_DI<string         instr_asm,
-             InstrItinClass itin   = IIAlu,
-             bit            isComm = 0> :
+             InstrItinClass itin = IIAlu> :
       S16<(outs), (ins),
 	   !strconcat(instr_asm, ""),
            [], itin>
 {
-  let Inst{15-0}   = 0b0000000000000101;
-  let isCommutable = isComm;
+  let Inst{15-0} = 0b0000000000000101;
 }
 class VC4_CBCLR<string         instr_asm,
-                InstrItinClass itin   = IIAlu,
-                bit            isComm = 0> :
+                InstrItinClass itin = IIAlu> :
       S16<(outs), (ins),
 	   !strconcat(instr_asm, ""),
            [], itin>
 {
-  let Inst{15-0}   = 0b0000000000000110;
-  let isCommutable = isComm;
+  let Inst{15-0} = 0b0000000000000110;
 }
 class VC4_CBADD1<string         instr_asm,
-                 InstrItinClass itin   = IIAlu,
-                 bit            isComm = 0> :
+                 InstrItinClass itin = IIAlu> :
       S16<(outs), (ins),
 	   !strconcat(instr_asm, ""),
            [], itin>
 {
-  let Inst{15-0}   = 0b0000000000000111;
-  let isCommutable = isComm;
+  let Inst{15-0} = 0b0000000000000111;
 }
 class VC4_CBADD2<string         instr_asm,
-                 InstrItinClass itin   = IIAlu,
-                 bit            isComm = 0> :
+                 InstrItinClass itin = IIAlu> :
       S16<(outs), (ins),
 	   !strconcat(instr_asm, ""),
            [], itin>
 {
-  let Inst{15-0}   = 0b0000000000001000;
-  let isCommutable = isComm;
+  let Inst{15-0} = 0b0000000000001000;
 }
 class VC4_CBADD3<string         instr_asm,
-                 InstrItinClass itin   = IIAlu,
-                 bit            isComm = 0> :
+                 InstrItinClass itin = IIAlu> :
       S16<(outs), (ins),
 	   !strconcat(instr_asm, ""),
            [], itin>
 {
-  let Inst{15-0}   = 0b0000000000001001;
-  let isCommutable = isComm;
+  let Inst{15-0} = 0b0000000000001001;
 }
 class VC4_RTI<string         instr_asm,
-              InstrItinClass itin   = IIAlu,
-              bit            isComm = 0> :
+              InstrItinClass itin = IIAlu> :
       S16<(outs), (ins),
 	   !strconcat(instr_asm, ""),
            [], itin>
 {
-  let Inst{15-0}   = 0b0000000000001010;
-  let isCommutable = isComm;
+  let Inst{15-0} = 0b0000000000001010;
 }
 class VC4_BRANCH_IND<string         instr_asm,
                      InstrItinClass itin   = IIAlu,
@@ -342,40 +309,98 @@ class VC4_BRANCH_LINK<string         instr_asm,
   let isReMaterializable = 1;
   let isCommutable       = isComm;
 }
+class VC4_SWI_G<bits<11>       opcode,
+                string         instr_asm,
+                InstrItinClass itin = IIAlu> :
+      S16_R<opcode,
+            (outs), (ins GR32:$rd),
+	    !strconcat(instr_asm, "\t$rd"),
+	    [], itin>
+{
+  let isReMaterializable = 1;
+}
+class VC4_SWITCH_B_G<bits<11>       opcode,
+                     string         instr_asm,
+                     InstrItinClass itin = IIAlu> :
+      S16_R<opcode,
+            (outs), (ins GR32:$rd),
+	    !strconcat(instr_asm, "\t$rd"),
+	    [], itin>
+{
+  let isReMaterializable = 1;
+}
+class VC4_SWITCH_G<bits<11>       opcode,
+                   string         instr_asm,
+                   InstrItinClass itin = IIAlu> :
+      S16_R<opcode,
+            (outs), (ins GR32:$rd),
+	    !strconcat(instr_asm, "\t$rd"),
+	    [], itin>
+{
+  let isReMaterializable = 1;
+}
+class VC4_VERSION_G<bits<11>       opcode,
+                    string         instr_asm,
+                    InstrItinClass itin = IIAlu> :
+      S16_R<opcode,
+            (outs), (ins GR32:$rd),
+	    !strconcat(instr_asm, "\t$rd"),
+	    [], itin>
+{
+  let isReMaterializable = 1;
+}
+class VC4_SWI_U<bits<10>       opcode,
+                string         instr_asm,
+                InstrItinClass itin   = IIAlu,
+                bit            isComm = 0> :
+      S16_U<opcode,
+            (outs), (ins i32imm:$imm),
+	    !strconcat(instr_asm, "\t$imm"),
+	    [], itin>
+{
+  let isReMaterializable = 1;
+  let isCommutable       = isComm;
+}
+
 
 
 
 
 let hasSideEffects = 0 in {
   // 0op
-  def NOP : VC4_NOP <"nop", IIAlu, 0>;
+  def NOP : VC4_NOP <"nop", IIAlu>;
 }
-def BREAKPOINT : VC4_BREAKPOINT <"bkpt",   IIAlu, 0>;
-def SLEEP      : VC4_SLEEP      <"sleep",  IIAlu, 0>;
-def USER       : VC4_USER       <"user",   IIAlu, 0>;
-def EI         : VC4_EI         <"ei",     IIAlu, 0>;
-def DI         : VC4_DI         <"di",     IIAlu, 0>;
-def CBCLR      : VC4_CBCLR      <"cbclr",  IIAlu, 0>;
-def CBADD1     : VC4_CBADD1     <"cbadd1", IIAlu, 0>;
-def CBADD2     : VC4_CBADD2     <"cbadd2", IIAlu, 0>;
-def CBADD3     : VC4_CBADD3     <"cbadd3", IIAlu, 0>;
-def RTI        : VC4_RTI        <"rti",    IIAlu, 0>;
+def BREAKPOINT : VC4_BREAKPOINT <"bkpt",                    IIAlu>;
+def SLEEP      : VC4_SLEEP      <"sleep",                   IIAlu>;
+def USER       : VC4_USER       <"user",                    IIAlu>;
+def EI         : VC4_EI         <"ei",                      IIAlu>;
+def DI         : VC4_DI         <"di",                      IIAlu>;
+def CBCLR      : VC4_CBCLR      <"cbclr",                   IIAlu>;
+def CBADD1     : VC4_CBADD1     <"cbadd1",                  IIAlu>;
+def CBADD2     : VC4_CBADD2     <"cbadd2",                  IIAlu>;
+def CBADD3     : VC4_CBADD3     <"cbadd3",                  IIAlu>;
+def RTI        : VC4_RTI        <"rti",                     IIAlu>;
+def SWI        : VC4_SWI_G      <0b00000000001, "swi",      IIAlu>;
+def SWITCH_B   : VC4_SWITCH_B_G <0b00000000010, "switch.b", IIAlu>;
+def SWITCH     : VC4_SWITCH_G   <0b00000000011, "switch",   IIAlu>;
+def VERSION    : VC4_VERSION_G  <0b00000000111, "version",  IIAlu>;
+def SWIU       : VC4_SWI_U      <0b0000000111,  "swi",      IIAlu>;
 
 // operand(4) 2op
-def MOV_G : VC4_2_OP4_S16_G <0b0000, "mov", IIAlu, 0>;
-def NOT_G : VC4_2_OP4_S16_G <0b0100, "not", IIAlu, 0>;
+def MOV_G : VC4_2_OP4_S16_G <0b0000, "mov", IIAlu>;
+def NOT_G : VC4_2_OP4_S16_G <0b0100, "not", IIAlu>;
 
 let Defs = [SR] in {
-  def CMP_G : VC4_2_OP4_S16_USE_G <0b0101, "cmp", IIAlu, 0>;
-  def CMP_F : VC4_2_OP4_S16_USE_F <0b0101, "cmp", IIAlu, 0>; // Fast
+  def CMP_G : VC4_2_OP4_S16_USE_G <0b0101, "cmp", IIAlu>;
+  def CMP_F : VC4_2_OP4_S16_USE_F <0b0101, "cmp", IIAlu>; // Fast
 }
 
 // operand(4) 2op
-def BTEST_G : VC4_2_OP4_S16_G <0b0110,   "btest", IIAlu, 0>;
+def BTEST_G : VC4_2_OP4_S16_G <0b0110,   "btest", IIAlu>;
 // operand(5) 2op
-def NEG_G   : VC4_2_OP5_S16_G <0b11001,  "neg",   IIAlu, 0>;
+def NEG_G   : VC4_2_OP5_S16_G <0b11001,  "neg",   IIAlu>;
 // operand(6) 2op
-def COUNT_G : VC4_2_OP6_S16_G <0b110000, "count", IIAlu, 0>;
+def COUNT_G : VC4_2_OP6_S16_G <0b110000, "count", IIAlu>;
 
 let Constraints = "$rd = $rb" in {
   // operand(4) 3op

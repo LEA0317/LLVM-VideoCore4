@@ -137,3 +137,29 @@ class S32_3_OP11<bits<11>       opcode,
   let Inst{20-16} = rd;
   let Inst{31-21} = opcode;
 }
+
+class S16_R<bits<11>       opcode,
+            dag            outs,
+	    dag            ins,
+            string         asmstr,
+            list<dag>      pattern,
+	    InstrItinClass itin> :
+      VideoCore4Inst<outs, ins, asmstr, pattern, itin> {
+  bits<5> rd;
+
+  let Inst{4-0}  = rd;
+  let Inst{15-5} = opcode;
+}
+
+class S16_U<bits<10>       opcode,
+            dag            outs,
+	    dag            ins,
+            string         asmstr,
+            list<dag>      pattern,
+	    InstrItinClass itin> :
+      VideoCore4Inst<outs, ins, asmstr, pattern, itin> {
+  bits<6> imm;
+
+  let Inst{5-0}  = imm;
+  let Inst{15-6} = opcode;
+}
