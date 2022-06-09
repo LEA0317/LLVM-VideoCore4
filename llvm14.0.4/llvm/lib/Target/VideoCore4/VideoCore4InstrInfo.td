@@ -362,6 +362,20 @@ class VC4_JMP32<bits<16>       opcode,
   let Inst{47-32}        = opcode;
   let isReMaterializable = 1;
 }
+class VC4_BRANCH32<bits<16>       opcode,
+                   string         instr_asm,
+                   InstrItinClass itin = IIAlu> :
+      S48<(outs), (ins brtarget32:$target), // ToDo: add encoding
+	   !strconcat(instr_asm, "\t$target"),
+           [], itin>
+{
+  let Inst{47-32}        = opcode;
+  let isReMaterializable = 1;
+}
+
+
+
+
 
 
 let hasSideEffects = 0 in {
@@ -451,8 +465,10 @@ let isBranch=1, isTerminator=1, isBarrier=1 in {
     def BR_LINK_G : VC4_BRANCH_LINK <"bl", IIBranch>;
   }
   let hasDelaySlot = 1 in {
-    def JMP32     : VC4_JMP32 <0b1110000000000000, "j",  IIBranch>;
-    def JMPLINK32 : VC4_JMP32 <0b1110001000000000, "jl", IIBranch>;
+    def JMP32        : VC4_JMP32    <0b1110000000000000, "j",  IIBranch>;
+    def JMPLINK32    : VC4_JMP32    <0b1110001000000000, "jl", IIBranch>;
+    def BRANCH32     : VC4_BRANCH32 <0b1110000100000000, "b",  IIBranch>;
+    def BRANCHLINK32 : VC4_BRANCH32 <0b1110001100000000, "bl", IIBranch>;
   }
 }
 
