@@ -106,6 +106,7 @@ def immU12 : PatLeaf<(i32 imm), [{ return isUInt<12>(N->getZExtValue()); }]>;
 def immU16 : PatLeaf<(i32 imm), [{ return isUInt<16>(N->getZExtValue()); }]>;
 
 def brtarget32 : Operand<OtherVT>;
+def brtarget23 : Operand<OtherVT>;
 def brtarget   : Operand<OtherVT>; // FIXME
 def calltarget : Operand<i32>;
 
@@ -372,6 +373,26 @@ class VC4_BRANCH32<bits<16>       opcode,
   let Inst{47-32}        = opcode;
   let isReMaterializable = 1;
 }
+class VC4_BRANCH23_CC<bits<4>        cc,
+                      string         instr_asm,
+                      InstrItinClass itin = IIAlu> :
+      S32<(outs), (ins brtarget23:$target), // ToDo: add encoding
+	  !strconcat(instr_asm, "\t$target"),
+          [], itin>
+{
+  let Inst{31-28}        = 0b1001;
+  let Inst{27-24}        = cc;
+  let isReMaterializable = 1;
+}
+class VC4_BRANCHLINK23<string         instr_asm,
+                       InstrItinClass itin = IIAlu> :
+      S32<(outs), (ins brtarget23:$target), // ToDo: add encoding
+	   !strconcat(instr_asm, "\t$target"),
+           [], itin>
+{
+  let Inst{31-28}        = 0b1001;
+  let isReMaterializable = 1;
+}
 class VC4_3_OP6_S48_G<bits<6>        opcode,
                       string         instr_asm,
                       InstrItinClass itin = IIAlu> :
@@ -382,6 +403,20 @@ class VC4_3_OP6_S48_G<bits<6>        opcode,
 {
   let isReMaterializable = 1;
 }
+class VC4_3_OP5_S32_G<bits<5>        opcode,
+                      string         instr_asm,
+                      InstrItinClass itin = IIAlu> :
+      S32_ARITH_IMM_ACC<opcode,
+                        (outs GR32:$rd), (ins GR32:$ra, i32imm:$imm),
+	                !strconcat(instr_asm, "\t$rd, $ra, $imm"),
+                        [], itin>
+{
+  let isReMaterializable = 1;
+}
+
+
+
+
 
 
 
@@ -475,12 +510,23 @@ let isBranch=1, isTerminator=1, isBarrier=1 in {
     def BR_LINK_G : VC4_BRANCH_LINK <"bl", IIBranch>;
   }
   let hasDelaySlot = 1 in {
-    def JMP32        : VC4_JMP32    <0b1110000000000000, "j",  IIBranch>;
-    def JMPLINK32    : VC4_JMP32    <0b1110001000000000, "jl", IIBranch>;
-    def BRANCH32     : VC4_BRANCH32 <0b1110000100000000, "b",  IIBranch>;
-    def BRANCHLINK32 : VC4_BRANCH32 <0b1110001100000000, "bl", IIBranch>;
+    def JMP32        : VC4_JMP32        <0b1110000000000000, "j",   IIBranch>;
+    def JMPLINK32    : VC4_JMP32        <0b1110001000000000, "jl",  IIBranch>;
+
+    def BRANCH23_CC  : VC4_BRANCH23_CC  <0b0000,             "b<cc>", IIBranch>; // branch cc (FIXME)
+    def BRANCHLINK23 : VC4_BRANCHLINK23 <                    "bl",    IIBranch>; // branch link
+
+    def BRANCH32     : VC4_BRANCH32     <0b1110000100000000, "b",   IIBranch>;
+    def BRANCHLINK32 : VC4_BRANCH32     <0b1110001100000000, "bl",  IIBranch>;
   }
 }
+
+let Constraints = "$rd = $ra" in {
+  def ADD16I : VC4_3_OP5_S32_G <0b00000, "add", IIAlu>; // FIXME
+}
+
+def ADD32I : VC4_3_OP6_S48_G <0b111011, "add", IIAlu>;
+
 
 let isReturn = 1, isTerminator = 1, isBarrier = 1, Uses=[LR] in {
   def RET : S32<(outs), (ins variable_ops),

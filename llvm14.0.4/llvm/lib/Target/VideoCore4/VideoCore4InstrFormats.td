@@ -190,3 +190,18 @@ class S48_ARITH_IMM<bits<6>        opcode,
   let Inst{47-42} = opcode;
 }
 
+class S32_ARITH_IMM_ACC<bits<5>        opcode,
+                        dag            outs,
+	                dag            ins,
+                        string         asmstr,
+                        list<dag>      pattern,
+	                InstrItinClass itin> :
+      VideoCore4Inst<outs, ins, asmstr, pattern, itin> {
+  bits<5>  rd;
+  bits<16> imm;
+
+  let Inst{15-0}  = imm;
+  let Inst{20-16} = rd;
+  let Inst{25-21} = opcode;
+  let Inst{31-26} = 0b101100;
+}
