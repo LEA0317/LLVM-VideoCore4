@@ -372,6 +372,16 @@ class VC4_BRANCH32<bits<16>       opcode,
   let Inst{47-32}        = opcode;
   let isReMaterializable = 1;
 }
+class VC4_3_OP6_S48_G<bits<6>        opcode,
+                      string         instr_asm,
+                      InstrItinClass itin = IIAlu> :
+      S48_ARITH_IMM<opcode,
+                    (outs GR32:$rd), (ins GR32:$rs, i32imm:$imm),
+	            !strconcat(instr_asm, "\t$rd, $rs, $imm"),
+                    [], itin>
+{
+  let isReMaterializable = 1;
+}
 
 
 

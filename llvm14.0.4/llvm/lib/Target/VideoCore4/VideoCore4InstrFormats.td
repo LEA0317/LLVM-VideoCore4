@@ -172,3 +172,21 @@ class S16_OP5_IMM<bits<5>        opcode,
   let Inst{10-5}  = imm;
   let Inst{15-11} = opcode;
 }
+
+class S48_ARITH_IMM<bits<6>        opcode,
+                    dag            outs,
+	            dag            ins,
+                    string         asmstr,
+                    list<dag>      pattern,
+	            InstrItinClass itin> :
+      VideoCore4Inst<outs, ins, asmstr, pattern, itin> {
+  bits<5>  rd;
+  bits<5>  rs;
+  bits<32> imm;
+
+  let Inst{31-0}  = imm;
+  let Inst{36-32} = rd;
+  let Inst{41-37} = rs;
+  let Inst{47-42} = opcode;
+}
+
