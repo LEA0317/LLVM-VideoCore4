@@ -157,3 +157,18 @@ class S16_U<dag            outs,
   bits<6> imm;
   let Inst{5-0} = imm;
 }
+
+class S16_OP5_IMM<bits<5>        opcode,
+                  dag            outs,
+	          dag            ins,
+                  string         asmstr,
+                  list<dag>      pattern,
+	          InstrItinClass itin> :
+      VideoCore4Inst<outs, ins, asmstr, pattern, itin> {
+  bits<5> rd;
+  bits<6> imm;
+
+  let Inst{4-0}   = rd;
+  let Inst{10-5}  = imm;
+  let Inst{15-11} = opcode;
+}

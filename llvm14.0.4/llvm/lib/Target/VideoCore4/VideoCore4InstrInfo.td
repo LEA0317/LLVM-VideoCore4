@@ -341,7 +341,16 @@ class VC4_SWI_U<string         instr_asm,
   let Inst{15-6}         = 0b0000000111;
   let isReMaterializable = 1;
 }
-
+class VC4_2_OP5_S16_IMM<bits<5>        opcode,
+                        string         instr_asm,
+                        InstrItinClass itin = IIAlu> :
+      S16_OP5_IMM<opcode,
+                  (outs GR32:$rd), (ins i32imm:$imm),
+	          !strconcat(instr_asm, "\t$rd, %sp, $imm"),
+                  [], itin>
+{
+  let isReMaterializable = 1;
+}
 
 
 
@@ -376,11 +385,13 @@ let Defs = [SR] in {
 }
 
 // operand(4) 2op
-def BTEST_G : VC4_2_OP4_S16_G <0b0110,   "btest", IIAlu>;
+def BTEST_G : VC4_2_OP4_S16_G   <0b0110,   "btest", IIAlu>;
 // operand(5) 2op
-def NEG_G   : VC4_2_OP5_S16_G <0b11001,  "neg",   IIAlu>;
+def NEG_G   : VC4_2_OP5_S16_G   <0b11001,  "neg",   IIAlu>;
 // operand(6) 2op
-def COUNT_G : VC4_2_OP6_S16_G <0b110000, "count", IIAlu>;
+def COUNT_G : VC4_2_OP6_S16_G   <0b110000, "count", IIAlu>;
+// operand(4) 2op
+def ADDSP_G : VC4_2_OP5_S16_IMM <0b00010,  "addsp", IIAlu>;
 
 let Constraints = "$rd = $rb" in {
   // operand(4) 3op
