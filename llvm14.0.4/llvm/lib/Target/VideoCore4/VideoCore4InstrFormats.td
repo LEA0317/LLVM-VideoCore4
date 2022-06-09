@@ -225,6 +225,27 @@ class S32_FOP<bits<4>        opcode,
   let Inst{15-11} = ra;
   let Inst{20-16} = rd;
   let Inst{24-21} = opcode;
-  let Inst{31-26} = 0b101100;
+  let Inst{31-25} = 0b1100100;
 }
 
+class S32_FOPI<bits<4>        opcode,
+               bits<4>        cc,
+               dag            outs,
+	       dag            ins,
+               string         asmstr,
+               list<dag>      pattern,
+	       InstrItinClass itin> :
+      VideoCore4Inst<outs, ins, asmstr, pattern, itin> {
+  bits<5>  rd;
+  bits<5>  ra;
+  bits<6>  b;
+  bits<16> imm;
+
+  let Inst{5-0}   = b;
+  let Inst{6}     = 1;
+  let Inst{10-7}  = cc;
+  let Inst{15-11} = ra;
+  let Inst{20-16} = rd;
+  let Inst{24-21} = opcode;
+  let Inst{31-25} = 0b1100100;
+}

@@ -54,7 +54,7 @@ def VCrcp   : SDNode<"VideoCore4ISD::RCP",   SDTFPUnaryOp, []>;
 // An address of something in memory.
 // def addr : ComplexPattern<iPTR, 1, "SelectAddr", [], []>;
 
-def GlobalWrapper  : SDNode<"VideoCore4ISD::GLOBAL", SDTIntUnaryOp>;
+def GlobalWrapper : SDNode<"VideoCore4ISD::GLOBAL", SDTIntUnaryOp>;
 
 // An address of something on the stack.
 def stacked : Operand<i32>, ComplexPattern<i32, 2, "SelectStacked", [frameindex], []> {
@@ -163,7 +163,7 @@ class VC4_2_OP5_S16_G<bits<5>        opcode,
 }
 class VC4_3_OP5_S16_G<bits<5>        opcode,
                       string         instr_asm,
-                      InstrItinClass itin = IIAlu,
+                      InstrItinClass itin   = IIAlu,
                       bit            isComm = 0> :
      S16_OP5<opcode, (outs GR32:$rd), (ins GR32:$rb, GR32:$ra),
 	      !strconcat(instr_asm, "\t$rd, $rb, $ra"),
@@ -335,7 +335,7 @@ class VC4_VERSION_G<string         instr_asm,
   let isReMaterializable = 1;
 }
 class VC4_SWI_U<string         instr_asm,
-                InstrItinClass itin   = IIAlu> :
+                InstrItinClass itin = IIAlu> :
       S16_U<(outs), (ins i32imm:$imm),
 	    !strconcat(instr_asm, "\t$imm"),
 	    [], itin>
@@ -422,7 +422,17 @@ class VC4_3_OP4_S32_G<bits<4>        opcode,
               !strconcat(instr_asm, "\t$rd, $ra, $rb"),
               [], itin>
 {
-  let Inst{31-25}        = 0b1100100;
+  let isReMaterializable = 1;
+}
+class VC4_3_OP4_S32_IMM_G<bits<4>        opcode,
+                          bits<4>        cc,
+                          string         instr_asm,
+                          InstrItinClass itin = IIAlu> :
+      S32_FOPI<opcode, cc,
+               (outs GR32:$rd), (ins GR32:$ra, i32imm:$b), // FIXME: to fpimm
+               !strconcat(instr_asm, "\t$rd, $ra, $b"),
+               [], itin>
+{
   let isReMaterializable = 1;
 }
  
@@ -526,8 +536,23 @@ let isBranch=1, isTerminator=1, isBarrier=1 in {
     def JMP32        : VC4_JMP32        <0b1110000000000000, "j",   IIBranch>;
     def JMPLINK32    : VC4_JMP32        <0b1110001000000000, "jl",  IIBranch>;
 
-    def BRANCH23_CC  : VC4_BRANCH23_CC  <0b0000,             "b<cc>", IIBranch>; // branch cc (FIXME)
-    def BRANCHLINK23 : VC4_BRANCHLINK23 <                    "bl",    IIBranch>; // branch link
+    def BRANCH23_EQ  : VC4_BRANCH23_CC  <0b0000,             "beq", IIBranch>; // branch eq
+    def BRANCH23_NE  : VC4_BRANCH23_CC  <0b0001,             "bne", IIBranch>; // branch ne
+    def BRANCH23_CS  : VC4_BRANCH23_CC  <0b0010,             "bcs", IIBranch>; // branch cs
+    def BRANCH23_CC  : VC4_BRANCH23_CC  <0b0011,             "bcc", IIBranch>; // branch cc
+    def BRANCH23_MI  : VC4_BRANCH23_CC  <0b0100,             "bmi", IIBranch>; // branch mi
+    def BRANCH23_PL  : VC4_BRANCH23_CC  <0b0101,             "bpl", IIBranch>; // branch pl
+    def BRANCH23_VS  : VC4_BRANCH23_CC  <0b0110,             "bvs", IIBranch>; // branch vs
+    def BRANCH23_VC  : VC4_BRANCH23_CC  <0b0111,             "bvc", IIBranch>; // branch vc
+    def BRANCH23_HI  : VC4_BRANCH23_CC  <0b1000,             "bhi", IIBranch>; // branch hi
+    def BRANCH23_LS  : VC4_BRANCH23_CC  <0b1001,             "bls", IIBranch>; // branch ls
+    def BRANCH23_GE  : VC4_BRANCH23_CC  <0b1010,             "bge", IIBranch>; // branch ge
+    def BRANCH23_LT  : VC4_BRANCH23_CC  <0b1011,             "blt", IIBranch>; // branch lt
+    def BRANCH23_GT  : VC4_BRANCH23_CC  <0b1100,             "bgt", IIBranch>; // branch gt
+    def BRANCH23_LE  : VC4_BRANCH23_CC  <0b1101,             "ble", IIBranch>; // branch le
+    def BRANCH23_A   : VC4_BRANCH23_CC  <0b1110,             "ba",  IIBranch>; // branch a
+    def BRANCH23_N   : VC4_BRANCH23_CC  <0b1111,             "bn",  IIBranch>; // branch n
+    def BRANCHLINK23 : VC4_BRANCHLINK23 <                    "bl",  IIBranch>; // branch link
 
     def BRANCH32     : VC4_BRANCH32     <0b1110000100000000, "b",   IIBranch>;
     def BRANCHLINK32 : VC4_BRANCH32     <0b1110001100000000, "bl",  IIBranch>;
@@ -540,12 +565,211 @@ let Constraints = "$rd = $ra" in {
 
 def ADD32I : VC4_3_OP6_S48_G <0b111011, "add", IIAlu>;
 
-def FADD_CC : VC4_3_OP4_S32_G<0b0000, 0b0000, "fadd.<cc>", IIFpu>;
-def FSUB_CC : VC4_3_OP4_S32_G<0b0000, 0b0000, "fsub.<cc>", IIFpu>;
-def FMUL_CC : VC4_3_OP4_S32_G<0b0000, 0b0000, "fmul.<cc>", IIFpu>;
-def FDIV_CC : VC4_3_OP4_S32_G<0b0000, 0b0000, "fdiv.<cc>", IIFpu>;
-def FMAX_CC : VC4_3_OP4_S32_G<0b0000, 0b0000, "fmax.<cc>", IIFpu>;
-def FMIN_CC : VC4_3_OP4_S32_G<0b0000, 0b0000, "fmin<cc>", IIFpu>;
+
+
+def FADD_EQ : VC4_3_OP4_S32_G <0b0000, 0b0000, "fadd.eq", IIFpu>; // FIXME
+def FADD_NE : VC4_3_OP4_S32_G <0b0000, 0b0001, "fadd.ne", IIFpu>; // FIXME
+def FADD_CS : VC4_3_OP4_S32_G <0b0000, 0b0010, "fadd.cs", IIFpu>; // FIXME
+def FADD_CC : VC4_3_OP4_S32_G <0b0000, 0b0011, "fadd.cc", IIFpu>; // FIXME
+def FADD_MI : VC4_3_OP4_S32_G <0b0000, 0b0100, "fadd.mi", IIFpu>; // FIXME
+def FADD_PL : VC4_3_OP4_S32_G <0b0000, 0b0101, "fadd.pl", IIFpu>; // FIXME
+def FADD_VS : VC4_3_OP4_S32_G <0b0000, 0b0110, "fadd.vs", IIFpu>; // FIXME
+def FADD_VC : VC4_3_OP4_S32_G <0b0000, 0b0111, "fadd.vc", IIFpu>; // FIXME
+def FADD_HI : VC4_3_OP4_S32_G <0b0000, 0b1000, "fadd.hi", IIFpu>; // FIXME
+def FADD_LS : VC4_3_OP4_S32_G <0b0000, 0b1001, "fadd.ls", IIFpu>; // FIXME
+def FADD_GE : VC4_3_OP4_S32_G <0b0000, 0b1010, "fadd.ge", IIFpu>; // FIXME
+def FADD_LT : VC4_3_OP4_S32_G <0b0000, 0b1011, "fadd.lt", IIFpu>; // FIXME
+def FADD_GT : VC4_3_OP4_S32_G <0b0000, 0b1100, "fadd.gt", IIFpu>; // FIXME
+def FADD_LE : VC4_3_OP4_S32_G <0b0000, 0b1101, "fadd.le", IIFpu>; // FIXME
+def FADD_A  : VC4_3_OP4_S32_G <0b0000, 0b1110, "fadd.a",  IIFpu>; // FIXME
+def FADD_N  : VC4_3_OP4_S32_G <0b0000, 0b1111, "fadd.n",  IIFpu>; // FIXME
+
+def FSUB_EQ : VC4_3_OP4_S32_G <0b0000, 0b0000, "fsub.eq", IIFpu>; // FIXME
+def FSUB_NE : VC4_3_OP4_S32_G <0b0000, 0b0001, "fsub.ne", IIFpu>; // FIXME
+def FSUB_CS : VC4_3_OP4_S32_G <0b0000, 0b0010, "fsub.cs", IIFpu>; // FIXME
+def FSUB_CC : VC4_3_OP4_S32_G <0b0000, 0b0011, "fsub.cc", IIFpu>; // FIXME
+def FSUB_MI : VC4_3_OP4_S32_G <0b0000, 0b0100, "fsub.mi", IIFpu>; // FIXME
+def FSUB_PL : VC4_3_OP4_S32_G <0b0000, 0b0101, "fsub.pl", IIFpu>; // FIXME
+def FSUB_VS : VC4_3_OP4_S32_G <0b0000, 0b0110, "fsub.vs", IIFpu>; // FIXME
+def FSUB_VC : VC4_3_OP4_S32_G <0b0000, 0b0111, "fsub.vc", IIFpu>; // FIXME
+def FSUB_HI : VC4_3_OP4_S32_G <0b0000, 0b1000, "fsub.hi", IIFpu>; // FIXME
+def FSUB_LS : VC4_3_OP4_S32_G <0b0000, 0b1001, "fsub.ls", IIFpu>; // FIXME
+def FSUB_GE : VC4_3_OP4_S32_G <0b0000, 0b1010, "fsub.ge", IIFpu>; // FIXME
+def FSUB_LT : VC4_3_OP4_S32_G <0b0000, 0b1011, "fsub.lt", IIFpu>; // FIXME
+def FSUB_GT : VC4_3_OP4_S32_G <0b0000, 0b1100, "fsub.gt", IIFpu>; // FIXME
+def FSUB_LE : VC4_3_OP4_S32_G <0b0000, 0b1101, "fsub.le", IIFpu>; // FIXME
+def FSUB_A  : VC4_3_OP4_S32_G <0b0000, 0b1110, "fsub.a",  IIFpu>; // FIXME
+def FSUB_N  : VC4_3_OP4_S32_G <0b0000, 0b1111, "fsub.n",  IIFpu>; // FIXME
+
+def FMUL_EQ : VC4_3_OP4_S32_G <0b0000, 0b0000, "fmul.eq", IIFpu>; // FIXME
+def FMUL_NE : VC4_3_OP4_S32_G <0b0000, 0b0001, "fmul.ne", IIFpu>; // FIXME
+def FMUL_CS : VC4_3_OP4_S32_G <0b0000, 0b0010, "fmul.cs", IIFpu>; // FIXME
+def FMUL_CC : VC4_3_OP4_S32_G <0b0000, 0b0011, "fmul.cc", IIFpu>; // FIXME
+def FMUL_MI : VC4_3_OP4_S32_G <0b0000, 0b0100, "fmul.mi", IIFpu>; // FIXME
+def FMUL_PL : VC4_3_OP4_S32_G <0b0000, 0b0101, "fmul.pl", IIFpu>; // FIXME
+def FMUL_VS : VC4_3_OP4_S32_G <0b0000, 0b0110, "fmul.vs", IIFpu>; // FIXME
+def FMUL_VC : VC4_3_OP4_S32_G <0b0000, 0b0111, "fmul.vc", IIFpu>; // FIXME
+def FMUL_HI : VC4_3_OP4_S32_G <0b0000, 0b1000, "fmul.hi", IIFpu>; // FIXME
+def FMUL_LS : VC4_3_OP4_S32_G <0b0000, 0b1001, "fmul.ls", IIFpu>; // FIXME
+def FMUL_GE : VC4_3_OP4_S32_G <0b0000, 0b1010, "fmul.ge", IIFpu>; // FIXME
+def FMUL_LT : VC4_3_OP4_S32_G <0b0000, 0b1011, "fmul.lt", IIFpu>; // FIXME
+def FMUL_GT : VC4_3_OP4_S32_G <0b0000, 0b1100, "fmul.gt", IIFpu>; // FIXME
+def FMUL_LE : VC4_3_OP4_S32_G <0b0000, 0b1101, "fmul.le", IIFpu>; // FIXME
+def FMUL_A  : VC4_3_OP4_S32_G <0b0000, 0b1110, "fmul.a",  IIFpu>; // FIXME
+def FMUL_N  : VC4_3_OP4_S32_G <0b0000, 0b1111, "fmul.n",  IIFpu>; // FIXME
+
+def FDIV_EQ : VC4_3_OP4_S32_G <0b0000, 0b0000, "fdiv.eq", IIFpu>; // FIXME
+def FDIV_NE : VC4_3_OP4_S32_G <0b0000, 0b0001, "fdiv.ne", IIFpu>; // FIXME
+def FDIV_CS : VC4_3_OP4_S32_G <0b0000, 0b0010, "fdiv.cs", IIFpu>; // FIXME
+def FDIV_CC : VC4_3_OP4_S32_G <0b0000, 0b0011, "fdiv.cc", IIFpu>; // FIXME
+def FDIV_MI : VC4_3_OP4_S32_G <0b0000, 0b0100, "fdiv.mi", IIFpu>; // FIXME
+def FDIV_PL : VC4_3_OP4_S32_G <0b0000, 0b0101, "fdiv.pl", IIFpu>; // FIXME
+def FDIV_VS : VC4_3_OP4_S32_G <0b0000, 0b0110, "fdiv.vs", IIFpu>; // FIXME
+def FDIV_VC : VC4_3_OP4_S32_G <0b0000, 0b0111, "fdiv.vc", IIFpu>; // FIXME
+def FDIV_HI : VC4_3_OP4_S32_G <0b0000, 0b1000, "fdiv.hi", IIFpu>; // FIXME
+def FDIV_LS : VC4_3_OP4_S32_G <0b0000, 0b1001, "fdiv.ls", IIFpu>; // FIXME
+def FDIV_GE : VC4_3_OP4_S32_G <0b0000, 0b1010, "fdiv.ge", IIFpu>; // FIXME
+def FDIV_LT : VC4_3_OP4_S32_G <0b0000, 0b1011, "fdiv.lt", IIFpu>; // FIXME
+def FDIV_GT : VC4_3_OP4_S32_G <0b0000, 0b1100, "fdiv.gt", IIFpu>; // FIXME
+def FDIV_LE : VC4_3_OP4_S32_G <0b0000, 0b1101, "fdiv.le", IIFpu>; // FIXME
+def FDIV_A  : VC4_3_OP4_S32_G <0b0000, 0b1110, "fdiv.a",  IIFpu>; // FIXME
+def FDIV_N  : VC4_3_OP4_S32_G <0b0000, 0b1111, "fdiv.n",  IIFpu>; // FIXME
+
+def FMAX_EQ : VC4_3_OP4_S32_G <0b0000, 0b0000, "fmax.eq", IIFpu>; // FIXME
+def FMAX_NE : VC4_3_OP4_S32_G <0b0000, 0b0001, "fmax.ne", IIFpu>; // FIXME
+def FMAX_CS : VC4_3_OP4_S32_G <0b0000, 0b0010, "fmax.cs", IIFpu>; // FIXME
+def FMAX_CC : VC4_3_OP4_S32_G <0b0000, 0b0011, "fmax.cc", IIFpu>; // FIXME
+def FMAX_MI : VC4_3_OP4_S32_G <0b0000, 0b0100, "fmax.mi", IIFpu>; // FIXME
+def FMAX_PL : VC4_3_OP4_S32_G <0b0000, 0b0101, "fmax.pl", IIFpu>; // FIXME
+def FMAX_VS : VC4_3_OP4_S32_G <0b0000, 0b0110, "fmax.vs", IIFpu>; // FIXME
+def FMAX_VC : VC4_3_OP4_S32_G <0b0000, 0b0111, "fmax.vc", IIFpu>; // FIXME
+def FMAX_HI : VC4_3_OP4_S32_G <0b0000, 0b1000, "fmax.hi", IIFpu>; // FIXME
+def FMAX_LS : VC4_3_OP4_S32_G <0b0000, 0b1001, "fmax.ls", IIFpu>; // FIXME
+def FMAX_GE : VC4_3_OP4_S32_G <0b0000, 0b1010, "fmax.ge", IIFpu>; // FIXME
+def FMAX_LT : VC4_3_OP4_S32_G <0b0000, 0b1011, "fmax.lt", IIFpu>; // FIXME
+def FMAX_GT : VC4_3_OP4_S32_G <0b0000, 0b1100, "fmax.gt", IIFpu>; // FIXME
+def FMAX_LE : VC4_3_OP4_S32_G <0b0000, 0b1101, "fmax.le", IIFpu>; // FIXME
+def FMAX_A  : VC4_3_OP4_S32_G <0b0000, 0b1110, "fmax.a",  IIFpu>; // FIXME
+def FMAX_N  : VC4_3_OP4_S32_G <0b0000, 0b1111, "fmax.n",  IIFpu>; // FIXME
+
+def FMIN_EQ : VC4_3_OP4_S32_G <0b0000, 0b0000, "fmin.eq", IIFpu>; // FIXME
+def FMIN_NE : VC4_3_OP4_S32_G <0b0000, 0b0001, "fmin.ne", IIFpu>; // FIXME
+def FMIN_CS : VC4_3_OP4_S32_G <0b0000, 0b0010, "fmin.cs", IIFpu>; // FIXME
+def FMIN_CC : VC4_3_OP4_S32_G <0b0000, 0b0011, "fmin.cc", IIFpu>; // FIXME
+def FMIN_MI : VC4_3_OP4_S32_G <0b0000, 0b0100, "fmin.mi", IIFpu>; // FIXME
+def FMIN_PL : VC4_3_OP4_S32_G <0b0000, 0b0101, "fmin.pl", IIFpu>; // FIXME
+def FMIN_VS : VC4_3_OP4_S32_G <0b0000, 0b0110, "fmin.vs", IIFpu>; // FIXME
+def FMIN_VC : VC4_3_OP4_S32_G <0b0000, 0b0111, "fmin.vc", IIFpu>; // FIXME
+def FMIN_HI : VC4_3_OP4_S32_G <0b0000, 0b1000, "fmin.hi", IIFpu>; // FIXME
+def FMIN_LS : VC4_3_OP4_S32_G <0b0000, 0b1001, "fmin.ls", IIFpu>; // FIXME
+def FMIN_GE : VC4_3_OP4_S32_G <0b0000, 0b1010, "fmin.ge", IIFpu>; // FIXME
+def FMIN_LT : VC4_3_OP4_S32_G <0b0000, 0b1011, "fmin.lt", IIFpu>; // FIXME
+def FMIN_GT : VC4_3_OP4_S32_G <0b0000, 0b1100, "fmin.gt", IIFpu>; // FIXME
+def FMIN_LE : VC4_3_OP4_S32_G <0b0000, 0b1101, "fmin.le", IIFpu>; // FIXME
+def FMIN_A  : VC4_3_OP4_S32_G <0b0000, 0b1110, "fmin.a",  IIFpu>; // FIXME
+def FMIN_N  : VC4_3_OP4_S32_G <0b0000, 0b1111, "fmin.n",  IIFpu>; // FIXME
+
+def FADDI_EQ : VC4_3_OP4_S32_IMM_G <0b0000, 0b0000, "faddi.eq", IIFpu>; // FIXME
+def FADDI_NE : VC4_3_OP4_S32_IMM_G <0b0000, 0b0001, "faddi.ne", IIFpu>; // FIXME
+def FADDI_CS : VC4_3_OP4_S32_IMM_G <0b0000, 0b0010, "faddi.cs", IIFpu>; // FIXME
+def FADDI_CC : VC4_3_OP4_S32_IMM_G <0b0000, 0b0011, "faddi.cc", IIFpu>; // FIXME
+def FADDI_MI : VC4_3_OP4_S32_IMM_G <0b0000, 0b0100, "faddi.mi", IIFpu>; // FIXME
+def FADDI_PL : VC4_3_OP4_S32_IMM_G <0b0000, 0b0101, "faddi.pl", IIFpu>; // FIXME
+def FADDI_VS : VC4_3_OP4_S32_IMM_G <0b0000, 0b0110, "faddi.vs", IIFpu>; // FIXME
+def FADDI_VC : VC4_3_OP4_S32_IMM_G <0b0000, 0b0111, "faddi.vc", IIFpu>; // FIXME
+def FADDI_HI : VC4_3_OP4_S32_IMM_G <0b0000, 0b1000, "faddi.hi", IIFpu>; // FIXME
+def FADDI_LS : VC4_3_OP4_S32_IMM_G <0b0000, 0b1001, "faddi.ls", IIFpu>; // FIXME
+def FADDI_GE : VC4_3_OP4_S32_IMM_G <0b0000, 0b1010, "faddi.ge", IIFpu>; // FIXME
+def FADDI_LT : VC4_3_OP4_S32_IMM_G <0b0000, 0b1011, "faddi.lt", IIFpu>; // FIXME
+def FADDI_GT : VC4_3_OP4_S32_IMM_G <0b0000, 0b1100, "faddi.gt", IIFpu>; // FIXME
+def FADDI_LE : VC4_3_OP4_S32_IMM_G <0b0000, 0b1101, "faddi.le", IIFpu>; // FIXME
+def FADDI_A  : VC4_3_OP4_S32_IMM_G <0b0000, 0b1110, "faddi.a",  IIFpu>; // FIXME
+def FADDI_N  : VC4_3_OP4_S32_IMM_G <0b0000, 0b1111, "faddi.n",  IIFpu>; // FIXME
+
+def FSUBI_EQ : VC4_3_OP4_S32_IMM_G <0b0000, 0b0000, "fsubi.eq", IIFpu>; // FIXME
+def FSUBI_NE : VC4_3_OP4_S32_IMM_G <0b0000, 0b0001, "fsubi.ne", IIFpu>; // FIXME
+def FSUBI_CS : VC4_3_OP4_S32_IMM_G <0b0000, 0b0010, "fsubi.cs", IIFpu>; // FIXME
+def FSUBI_CC : VC4_3_OP4_S32_IMM_G <0b0000, 0b0011, "fsubi.cc", IIFpu>; // FIXME
+def FSUBI_MI : VC4_3_OP4_S32_IMM_G <0b0000, 0b0100, "fsubi.mi", IIFpu>; // FIXME
+def FSUBI_PL : VC4_3_OP4_S32_IMM_G <0b0000, 0b0101, "fsubi.pl", IIFpu>; // FIXME
+def FSUBI_VS : VC4_3_OP4_S32_IMM_G <0b0000, 0b0110, "fsubi.vs", IIFpu>; // FIXME
+def FSUBI_VC : VC4_3_OP4_S32_IMM_G <0b0000, 0b0111, "fsubi.vc", IIFpu>; // FIXME
+def FSUBI_HI : VC4_3_OP4_S32_IMM_G <0b0000, 0b1000, "fsubi.hi", IIFpu>; // FIXME
+def FSUBI_LS : VC4_3_OP4_S32_IMM_G <0b0000, 0b1001, "fsubi.ls", IIFpu>; // FIXME
+def FSUBI_GE : VC4_3_OP4_S32_IMM_G <0b0000, 0b1010, "fsubi.ge", IIFpu>; // FIXME
+def FSUBI_LT : VC4_3_OP4_S32_IMM_G <0b0000, 0b1011, "fsubi.lt", IIFpu>; // FIXME
+def FSUBI_GT : VC4_3_OP4_S32_IMM_G <0b0000, 0b1100, "fsubi.gt", IIFpu>; // FIXME
+def FSUBI_LE : VC4_3_OP4_S32_IMM_G <0b0000, 0b1101, "fsubi.le", IIFpu>; // FIXME
+def FSUBI_A  : VC4_3_OP4_S32_IMM_G <0b0000, 0b1110, "fsubi.a",  IIFpu>; // FIXME
+def FSUBI_N  : VC4_3_OP4_S32_IMM_G <0b0000, 0b1111, "fsubi.n",  IIFpu>; // FIXME
+
+def FMULI_EQ : VC4_3_OP4_S32_IMM_G <0b0000, 0b0000, "fmuli.eq", IIFpu>; // FIXME
+def FMULI_NE : VC4_3_OP4_S32_IMM_G <0b0000, 0b0001, "fmuli.ne", IIFpu>; // FIXME
+def FMULI_CS : VC4_3_OP4_S32_IMM_G <0b0000, 0b0010, "fmuli.cs", IIFpu>; // FIXME
+def FMULI_CC : VC4_3_OP4_S32_IMM_G <0b0000, 0b0011, "fmuli.cc", IIFpu>; // FIXME
+def FMULI_MI : VC4_3_OP4_S32_IMM_G <0b0000, 0b0100, "fmuli.mi", IIFpu>; // FIXME
+def FMULI_PL : VC4_3_OP4_S32_IMM_G <0b0000, 0b0101, "fmuli.pl", IIFpu>; // FIXME
+def FMULI_VS : VC4_3_OP4_S32_IMM_G <0b0000, 0b0110, "fmuli.vs", IIFpu>; // FIXME
+def FMULI_VC : VC4_3_OP4_S32_IMM_G <0b0000, 0b0111, "fmuli.vc", IIFpu>; // FIXME
+def FMULI_HI : VC4_3_OP4_S32_IMM_G <0b0000, 0b1000, "fmuli.hi", IIFpu>; // FIXME
+def FMULI_LS : VC4_3_OP4_S32_IMM_G <0b0000, 0b1001, "fmuli.ls", IIFpu>; // FIXME
+def FMULI_GE : VC4_3_OP4_S32_IMM_G <0b0000, 0b1010, "fmuli.ge", IIFpu>; // FIXME
+def FMULI_LT : VC4_3_OP4_S32_IMM_G <0b0000, 0b1011, "fmuli.lt", IIFpu>; // FIXME
+def FMULI_GT : VC4_3_OP4_S32_IMM_G <0b0000, 0b1100, "fmuli.gt", IIFpu>; // FIXME
+def FMULI_LE : VC4_3_OP4_S32_IMM_G <0b0000, 0b1101, "fmuli.le", IIFpu>; // FIXME
+def FMULI_A  : VC4_3_OP4_S32_IMM_G <0b0000, 0b1110, "fmuli.a",  IIFpu>; // FIXME
+def FMULI_N  : VC4_3_OP4_S32_IMM_G <0b0000, 0b1111, "fmuli.n",  IIFpu>; // FIXME
+
+def FDIVI_EQ : VC4_3_OP4_S32_IMM_G <0b0000, 0b0000, "fdivi.eq", IIFpu>; // FIXME
+def FDIVI_NE : VC4_3_OP4_S32_IMM_G <0b0000, 0b0001, "fdivi.ne", IIFpu>; // FIXME
+def FDIVI_CS : VC4_3_OP4_S32_IMM_G <0b0000, 0b0010, "fdivi.cs", IIFpu>; // FIXME
+def FDIVI_CC : VC4_3_OP4_S32_IMM_G <0b0000, 0b0011, "fdivi.cc", IIFpu>; // FIXME
+def FDIVI_MI : VC4_3_OP4_S32_IMM_G <0b0000, 0b0100, "fdivi.mi", IIFpu>; // FIXME
+def FDIVI_PL : VC4_3_OP4_S32_IMM_G <0b0000, 0b0101, "fdivi.pl", IIFpu>; // FIXME
+def FDIVI_VS : VC4_3_OP4_S32_IMM_G <0b0000, 0b0110, "fdivi.vs", IIFpu>; // FIXME
+def FDIVI_VC : VC4_3_OP4_S32_IMM_G <0b0000, 0b0111, "fdivi.vc", IIFpu>; // FIXME
+def FDIVI_HI : VC4_3_OP4_S32_IMM_G <0b0000, 0b1000, "fdivi.hi", IIFpu>; // FIXME
+def FDIVI_LS : VC4_3_OP4_S32_IMM_G <0b0000, 0b1001, "fdivi.ls", IIFpu>; // FIXME
+def FDIVI_GE : VC4_3_OP4_S32_IMM_G <0b0000, 0b1010, "fdivi.ge", IIFpu>; // FIXME
+def FDIVI_LT : VC4_3_OP4_S32_IMM_G <0b0000, 0b1011, "fdivi.lt", IIFpu>; // FIXME
+def FDIVI_GT : VC4_3_OP4_S32_IMM_G <0b0000, 0b1100, "fdivi.gt", IIFpu>; // FIXME
+def FDIVI_LE : VC4_3_OP4_S32_IMM_G <0b0000, 0b1101, "fdivi.le", IIFpu>; // FIXME
+def FDIVI_A  : VC4_3_OP4_S32_IMM_G <0b0000, 0b1110, "fdivi.a",  IIFpu>; // FIXME
+def FDIVI_N  : VC4_3_OP4_S32_IMM_G <0b0000, 0b1111, "fdivi.n",  IIFpu>; // FIXME
+
+def FMAXI_EQ : VC4_3_OP4_S32_IMM_G <0b0000, 0b0000, "fmaxi.eq", IIFpu>; // FIXME
+def FMAXI_NE : VC4_3_OP4_S32_IMM_G <0b0000, 0b0001, "fmaxi.ne", IIFpu>; // FIXME
+def FMAXI_CS : VC4_3_OP4_S32_IMM_G <0b0000, 0b0010, "fmaxi.cs", IIFpu>; // FIXME
+def FMAXI_CC : VC4_3_OP4_S32_IMM_G <0b0000, 0b0011, "fmaxi.cc", IIFpu>; // FIXME
+def FMAXI_MI : VC4_3_OP4_S32_IMM_G <0b0000, 0b0100, "fmaxi.mi", IIFpu>; // FIXME
+def FMAXI_PL : VC4_3_OP4_S32_IMM_G <0b0000, 0b0101, "fmaxi.pl", IIFpu>; // FIXME
+def FMAXI_VS : VC4_3_OP4_S32_IMM_G <0b0000, 0b0110, "fmaxi.vs", IIFpu>; // FIXME
+def FMAXI_VC : VC4_3_OP4_S32_IMM_G <0b0000, 0b0111, "fmaxi.vc", IIFpu>; // FIXME
+def FMAXI_HI : VC4_3_OP4_S32_IMM_G <0b0000, 0b1000, "fmaxi.hi", IIFpu>; // FIXME
+def FMAXI_LS : VC4_3_OP4_S32_IMM_G <0b0000, 0b1001, "fmaxi.ls", IIFpu>; // FIXME
+def FMAXI_GE : VC4_3_OP4_S32_IMM_G <0b0000, 0b1010, "fmaxi.ge", IIFpu>; // FIXME
+def FMAXI_LT : VC4_3_OP4_S32_IMM_G <0b0000, 0b1011, "fmaxi.lt", IIFpu>; // FIXME
+def FMAXI_GT : VC4_3_OP4_S32_IMM_G <0b0000, 0b1100, "fmaxi.gt", IIFpu>; // FIXME
+def FMAXI_LE : VC4_3_OP4_S32_IMM_G <0b0000, 0b1101, "fmaxi.le", IIFpu>; // FIXME
+def FMAXI_A  : VC4_3_OP4_S32_IMM_G <0b0000, 0b1110, "fmaxi.a",  IIFpu>; // FIXME
+def FMAXI_N  : VC4_3_OP4_S32_IMM_G <0b0000, 0b1111, "fmaxi.n",  IIFpu>; // FIXME
+
+def FMINI_EQ : VC4_3_OP4_S32_IMM_G <0b0000, 0b0000, "fmini.eq", IIFpu>; // FIXME
+def FMINI_NE : VC4_3_OP4_S32_IMM_G <0b0000, 0b0001, "fmini.ne", IIFpu>; // FIXME
+def FMINI_CS : VC4_3_OP4_S32_IMM_G <0b0000, 0b0010, "fmini.cs", IIFpu>; // FIXME
+def FMINI_CC : VC4_3_OP4_S32_IMM_G <0b0000, 0b0011, "fmini.cc", IIFpu>; // FIXME
+def FMINI_MI : VC4_3_OP4_S32_IMM_G <0b0000, 0b0100, "fmini.mi", IIFpu>; // FIXME
+def FMINI_PL : VC4_3_OP4_S32_IMM_G <0b0000, 0b0101, "fmini.pl", IIFpu>; // FIXME
+def FMINI_VS : VC4_3_OP4_S32_IMM_G <0b0000, 0b0110, "fmini.vs", IIFpu>; // FIXME
+def FMINI_VC : VC4_3_OP4_S32_IMM_G <0b0000, 0b0111, "fmini.vc", IIFpu>; // FIXME
+def FMINI_HI : VC4_3_OP4_S32_IMM_G <0b0000, 0b1000, "fmini.hi", IIFpu>; // FIXME
+def FMINI_LS : VC4_3_OP4_S32_IMM_G <0b0000, 0b1001, "fmini.ls", IIFpu>; // FIXME
+def FMINI_GE : VC4_3_OP4_S32_IMM_G <0b0000, 0b1010, "fmini.ge", IIFpu>; // FIXME
+def FMINI_LT : VC4_3_OP4_S32_IMM_G <0b0000, 0b1011, "fmini.lt", IIFpu>; // FIXME
+def FMINI_GT : VC4_3_OP4_S32_IMM_G <0b0000, 0b1100, "fmini.gt", IIFpu>; // FIXME
+def FMINI_LE : VC4_3_OP4_S32_IMM_G <0b0000, 0b1101, "fmini.le", IIFpu>; // FIXME
+def FMINI_A  : VC4_3_OP4_S32_IMM_G <0b0000, 0b1110, "fmini.a",  IIFpu>; // FIXME
+def FMINI_N  : VC4_3_OP4_S32_IMM_G <0b0000, 0b1111, "fmini.n",  IIFpu>; // FIXME
 
 let isReturn = 1, isTerminator = 1, isBarrier = 1, Uses=[LR] in {
   def RET : S32<(outs), (ins variable_ops),
