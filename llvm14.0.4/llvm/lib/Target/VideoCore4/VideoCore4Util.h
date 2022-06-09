@@ -35,7 +35,8 @@ namespace vc4util {
     case llvm::VideoCore4::RET:
     case llvm::VideoCore4::CALL:
     case llvm::VideoCore4::CALL_R:
-    case llvm::VideoCore4::JMP:
+    case llvm::VideoCore4::JMP32:
+    case llvm::VideoCore4::JMPLINK32:
     case llvm::VideoCore4::BR_JT: // ToDo: erase this
     case llvm::VideoCore4::BR_IND_G:
     case llvm::VideoCore4::BR_LINK_G:
@@ -389,7 +390,8 @@ namespace vc4util {
   inline bool
   isUnconditionalJump(unsigned opcode) {
     switch (opcode) {
-    case llvm::VideoCore4::JMP:
+    case llvm::VideoCore4::JMP32:
+    case llvm::VideoCore4::JMPLINK32:
     case llvm::VideoCore4::BR_LINK_G:
     case llvm::VideoCore4::BR_IND_G:
       {

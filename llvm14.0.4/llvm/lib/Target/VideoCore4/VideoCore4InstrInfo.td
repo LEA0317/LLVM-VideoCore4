@@ -105,7 +105,8 @@ def immU12 : PatLeaf<(i32 imm), [{ return isUInt<12>(N->getZExtValue()); }]>;
 // true if the immediate fits in a 16-bit unsigned field.
 def immU16 : PatLeaf<(i32 imm), [{ return isUInt<16>(N->getZExtValue()); }]>;
 
-def brtarget   : Operand<OtherVT>;
+def brtarget32 : Operand<OtherVT>;
+def brtarget   : Operand<OtherVT>; // FIXME
 def calltarget : Operand<i32>;
 
 //===----------------------------------------------------------------------===//
@@ -351,8 +352,16 @@ class VC4_2_OP5_S16_IMM<bits<5>        opcode,
 {
   let isReMaterializable = 1;
 }
-
-
+class VC4_JMP32<bits<16>       opcode,
+                string         instr_asm,
+                InstrItinClass itin = IIAlu> :
+      S48<(outs), (ins brtarget32:$target), // ToDo: add encoding
+	   !strconcat(instr_asm, "\t$target"),
+           [], itin>
+{
+  let Inst{47-32}        = opcode;
+  let isReMaterializable = 1;
+}
 
 
 let hasSideEffects = 0 in {
@@ -440,6 +449,10 @@ let isBranch=1, isTerminator=1, isBarrier=1 in {
   let isIndirectBranch=1, hasDelaySlot = 1 in {
     def BR_IND_G  : VC4_BRANCH_IND  <"b",  IIBranch>;
     def BR_LINK_G : VC4_BRANCH_LINK <"bl", IIBranch>;
+  }
+  let hasDelaySlot = 1 in {
+    def JMP32     : VC4_JMP32 <0b1110000000000000, "j",  IIBranch>;
+    def JMPLINK32 : VC4_JMP32 <0b1110001000000000, "jl", IIBranch>;
   }
 }
 
@@ -843,17 +856,10 @@ let Defs = [SR] in {
 }
 
 let isTerminator = 1, isBranch = 1 in {
-  // ToDo
-  let isBarrier = 1, hasDelaySlot = 1 in {
-    def JMP : S32<(outs), (ins brtarget:$dst),
-   	           "b\t$dst",
-	           [(br bb:$dst)]>;
-  }
-	
   /* Generates a 3op compare-and-branch instruction. */
   let Uses = [SR], hasDelaySlot = 1 in {
     class JMP_CC<string cond> : S32<
- 		 (outs), (ins brtarget:$dst),
+ 		 (outs), (ins brtarget:$dst), // FIXME?
 		 "b"#cond#"\t$dst",
 		 []>;
     def JMP_CC_EQ : JMP_CC<"eq">;
@@ -1366,6 +1372,10 @@ def : Pat<(ctpop (i32 GR32:$ra)),
 // branch and link
 //def : Pat<(VideoCore4JmpLink (i32 LR)),
 //          (BR_LINK_G (i32 LR))>;
+
+// jmp32
+def : Pat<(br bb:$dst),
+          (JMP32 $dst)>;
 
 // i32 imm (should isel pseudo instr at firsr?)
 def : Pat<(i32 imm:$in),

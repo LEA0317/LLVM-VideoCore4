@@ -282,7 +282,7 @@ VideoCore4InstrInfo::insertBranch(MachineBasicBlock       &MBB,
 				  const DebugLoc          &DL,
 				  int                     *BytesAdded) const {
   if (Cond.empty()) {
-    BuildMI(&MBB, DL, get(VideoCore4::JMP))
+    BuildMI(&MBB, DL, get(VideoCore4::JMP32))
       .addMBB(TBB);
     return 1;
   }
@@ -295,7 +295,7 @@ VideoCore4InstrInfo::insertBranch(MachineBasicBlock       &MBB,
     return 1;
   }
 
-  BuildMI(&MBB, DL, get(VideoCore4::JMP))
+  BuildMI(&MBB, DL, get(VideoCore4::JMP32))
     .addMBB(FBB);
 
   return 2;
@@ -340,7 +340,7 @@ VideoCore4InstrInfo::getBranchDestBlock(const MachineInstr &MI) const {
   case VideoCore4::JMP_CC_HS:
   case VideoCore4::JMP_CC_LO:
   case VideoCore4::JMP_CC_LS:
-  case VideoCore4::JMP:
+  case VideoCore4::JMP32:
     {
       return MI.getOperand(0).getMBB();
     }
