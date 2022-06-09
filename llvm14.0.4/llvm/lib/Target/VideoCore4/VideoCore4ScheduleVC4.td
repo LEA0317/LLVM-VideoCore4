@@ -8,9 +8,10 @@
 //===----------------------------------------------------------------------===//
 
 // FIX ME
-def VC4Itineraries : ProcessorItineraries<[ALU, LSU, SFU], [], [
+def VC4Itineraries : ProcessorItineraries<[ALU, LSU, SFU, FPU], [], [
   InstrItinData<IIBranch, [InstrStage<4,  [ALU]>]>,
   InstrItinData<IIAlu   , [InstrStage<4,  [ALU]>]>,
+  InstrItinData<IIFpu   , [InstrStage<4,  [FPU]>]>,
   InstrItinData<IILsu   , [InstrStage<4,  [ALU, LSU]>]>,
   InstrItinData<IISfu   , [InstrStage<16, [SFU]>]>,
   InstrItinData<IIPseudo, [InstrStage<4,  [ALU], 0>, InstrStage<4, [ALU]>]>

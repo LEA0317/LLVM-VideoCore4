@@ -11,6 +11,7 @@
 // Functional units across VideoCore4 chips sets. 
 //===----------------------------------------------------------------------===//
 // temporal
+def FPU : FuncUnit;
 def ALU : FuncUnit;
 def LSU : FuncUnit;
 def SFU : FuncUnit;
@@ -18,6 +19,7 @@ def SFU : FuncUnit;
 //===----------------------------------------------------------------------===//
 // Instruction Itinerary classes used for VideoCore4
 //===----------------------------------------------------------------------===//
+def IIFpu    : InstrItinClass;
 def IIAlu    : InstrItinClass;
 def IILsu    : InstrItinClass;
 def IISfu    : InstrItinClass;
@@ -29,9 +31,10 @@ def IIPseudo : InstrItinClass;
 //===----------------------------------------------------------------------===/
 
 // FIX ME
-def VC4GenericItineraries : ProcessorItineraries<[ALU, LSU, SFU], [], [
+def VC4GenericItineraries : ProcessorItineraries<[ALU, LSU, SFU, FPU], [], [
   InstrItinData<IIBranch, [InstrStage<4,  [ALU]>]>,
   InstrItinData<IIAlu   , [InstrStage<4,  [ALU]>]>,
+  InstrItinData<IIFpu   , [InstrStage<4,  [FPU]>]>,
   InstrItinData<IILsu   , [InstrStage<4,  [ALU, LSU]>]>,
   InstrItinData<IISfu   , [InstrStage<16, [SFU]>]>,
   InstrItinData<IIPseudo, [InstrStage<4,  [ALU], 0>, InstrStage<4, [ALU]>]>

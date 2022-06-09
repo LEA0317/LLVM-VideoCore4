@@ -403,9 +403,9 @@ class VC4_3_OP6_S48_G<bits<6>        opcode,
 {
   let isReMaterializable = 1;
 }
-class VC4_3_OP5_S32_G<bits<5>        opcode,
-                      string         instr_asm,
-                      InstrItinClass itin = IIAlu> :
+class VC4_3_OP5_S32_ACC_G<bits<5>        opcode,
+                          string         instr_asm,
+                          InstrItinClass itin = IIAlu> :
       S32_ARITH_IMM_ACC<opcode,
                         (outs GR32:$rd), (ins GR32:$ra, i32imm:$imm),
 	                !strconcat(instr_asm, "\t$rd, $ra, $imm"),
@@ -413,6 +413,19 @@ class VC4_3_OP5_S32_G<bits<5>        opcode,
 {
   let isReMaterializable = 1;
 }
+class VC4_3_OP4_S32_G<bits<4>        opcode,
+                      bits<4>        cc,
+                      string         instr_asm,
+                      InstrItinClass itin = IIAlu> :
+      S32_FOP<opcode, cc,
+              (outs GR32:$rd), (ins GR32:$ra, GR32:$rb),
+              !strconcat(instr_asm, "\t$rd, $ra, $rb"),
+              [], itin>
+{
+  let Inst{31-25}        = 0b1100100;
+  let isReMaterializable = 1;
+}
+ 
 
 
 
@@ -522,11 +535,17 @@ let isBranch=1, isTerminator=1, isBarrier=1 in {
 }
 
 let Constraints = "$rd = $ra" in {
-  def ADD16I : VC4_3_OP5_S32_G <0b00000, "add", IIAlu>; // FIXME
+  def ADD16I : VC4_3_OP5_S32_ACC_G <0b00000, "add", IIAlu>; // FIXME
 }
 
 def ADD32I : VC4_3_OP6_S48_G <0b111011, "add", IIAlu>;
 
+def FADD_CC : VC4_3_OP4_S32_G<0b0000, 0b0000, "fadd.<cc>", IIFpu>;
+def FSUB_CC : VC4_3_OP4_S32_G<0b0000, 0b0000, "fsub.<cc>", IIFpu>;
+def FMUL_CC : VC4_3_OP4_S32_G<0b0000, 0b0000, "fmul.<cc>", IIFpu>;
+def FDIV_CC : VC4_3_OP4_S32_G<0b0000, 0b0000, "fdiv.<cc>", IIFpu>;
+def FMAX_CC : VC4_3_OP4_S32_G<0b0000, 0b0000, "fmax.<cc>", IIFpu>;
+def FMIN_CC : VC4_3_OP4_S32_G<0b0000, 0b0000, "fmin<cc>", IIFpu>;
 
 let isReturn = 1, isTerminator = 1, isBarrier = 1, Uses=[LR] in {
   def RET : S32<(outs), (ins variable_ops),

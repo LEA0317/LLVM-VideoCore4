@@ -205,3 +205,26 @@ class S32_ARITH_IMM_ACC<bits<5>        opcode,
   let Inst{25-21} = opcode;
   let Inst{31-26} = 0b101100;
 }
+
+class S32_FOP<bits<4>        opcode,
+              bits<4>        cc,
+              dag            outs,
+	      dag            ins,
+              string         asmstr,
+              list<dag>      pattern,
+	      InstrItinClass itin> :
+      VideoCore4Inst<outs, ins, asmstr, pattern, itin> {
+  bits<5>  rd;
+  bits<5>  ra;
+  bits<5>  rb;
+  bits<16> imm;
+
+  let Inst{4-0}   = rb;
+  let Inst{6-5}   = 0;
+  let Inst{10-7}  = cc;
+  let Inst{15-11} = ra;
+  let Inst{20-16} = rd;
+  let Inst{24-21} = opcode;
+  let Inst{31-26} = 0b101100;
+}
+
